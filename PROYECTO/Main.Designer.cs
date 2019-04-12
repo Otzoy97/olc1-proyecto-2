@@ -36,8 +36,6 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ItemGuardar = new System.Windows.Forms.ToolStripMenuItem();
             this.ItemGuardarComo = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.ItemSalir = new System.Windows.Forms.ToolStripMenuItem();
             this.herramientasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ItemErrores = new System.Windows.Forms.ToolStripMenuItem();
             this.ItemAST = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,9 +69,7 @@
             this.ItemNuevo,
             this.toolStripSeparator1,
             this.ItemGuardar,
-            this.ItemGuardarComo,
-            this.toolStripSeparator2,
-            this.ItemSalir});
+            this.ItemGuardarComo});
             this.archivoToolStripMenuItem.Name = "archivoToolStripMenuItem";
             this.archivoToolStripMenuItem.Size = new System.Drawing.Size(71, 24);
             this.archivoToolStripMenuItem.Text = "Archivo";
@@ -115,18 +111,6 @@
             this.ItemGuardarComo.Size = new System.Drawing.Size(293, 26);
             this.ItemGuardarComo.Text = "Guardar como...";
             this.ItemGuardarComo.Click += new System.EventHandler(this.ItemGuardarComo_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(290, 6);
-            // 
-            // ItemSalir
-            // 
-            this.ItemSalir.Name = "ItemSalir";
-            this.ItemSalir.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.ItemSalir.Size = new System.Drawing.Size(293, 26);
-            this.ItemSalir.Text = "Salir";
             // 
             // herramientasToolStripMenuItem
             // 
@@ -194,7 +178,7 @@
             this.TabVariable.Location = new System.Drawing.Point(4, 29);
             this.TabVariable.Name = "TabVariable";
             this.TabVariable.Padding = new System.Windows.Forms.Padding(3);
-            this.TabVariable.Size = new System.Drawing.Size(839, 183);
+            this.TabVariable.Size = new System.Drawing.Size(970, 183);
             this.TabVariable.TabIndex = 1;
             this.TabVariable.Text = "Variables";
             this.TabVariable.UseVisualStyleBackColor = true;
@@ -257,8 +241,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ItemGuardar;
         private System.Windows.Forms.ToolStripMenuItem ItemGuardarComo;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem ItemSalir;
         private System.Windows.Forms.ToolStripMenuItem herramientasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ItemErrores;
         private System.Windows.Forms.ToolStripMenuItem ItemAST;

@@ -1,4 +1,5 @@
 ﻿using FastColoredTextBoxNS;
+using PROYECTO.Archivo;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,8 +9,6 @@ namespace PROYECTO
 {
     public partial class Main : Form
     {
-        //Servirá para llevar un mejor control de las tab generadas
-        private LinkedList<TabPage> tabPages;
         private int tabContador;
         //Servirá para guardar o abrir un archivo
         private SaveFileDialog saveDialog;
@@ -41,72 +40,143 @@ namespace PROYECTO
                 //el tiempo de ejecuacion
                 RestoreDirectory = true,
             };
-            tabPages = new LinkedList<TabPage>();
             tabContador = 0;
+            NewTab("Untitled" + tabContador, "Untitled" + tabContador++);
         }
-
+        /// <summary>
+        /// Despliega un OpenDialogFile para seleccionar una archivo *.txt
+        /// Determina si ya existe un tab con la dirección seleccionada
+        /// Crea un nuevo tab (si no existe otro con la misma información) y escribe
+        /// el texto del archivo dentro del FastTextBox que se encuentra dentro
+        /// del nuevo tab creados
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ItemAbrir_Click(object sender, EventArgs e)
         {
+            //flag que servirá para evitar que se abrán dos archivos 
+            //con una misma referencia
+            bool flag = false;
             //Hace visible el dialogo
             //Si se presiona OK se selecciona un archivo y ejecuta la instrucción dentro del if
             if (openDialog.ShowDialog()==DialogResult.OK && !String.IsNullOrEmpty(openDialog.FileName))
             {
-                //Crea un nuevo tab y agrega el contenido al txtbox, a menos que la dirección 
-                //del fileName ya exista en la lista de Nombres
-
+                //Crea un nuevo tab y agrega el contenido al txtbox, a menos que la dirección ya exista previamente
+                foreach (TabPage tb in TabInput.Controls)
+                {
+                    //Verifica que el nombre (dirección) no exista ya en los
+                    //tabs abiertos
+                    if (tb.Name.Equals(openDialog.FileName))
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+                //Si no existe ningun tab que ya posea la dirección abierta
+                //Se creará un nuevo tab
+                if (!flag)
+                {
+                    //Crea el tab, especifica su ID como el AbsPath del archivo leído
+                    //y el nombre como el nombre del archivo
+                    var txtBox = NewTab(openDialog.FileName, Path.GetFileNameWithoutExtension(openDialog.FileName));
+                    //Agrega el texto leído al txt que se encuentra
+                    //dentro del tab recién creado
+                    txtBox.Text = new ES().Leer(openDialog.FileName);
+                }
             }
         }
+        /// <summary>
+        /// Crea un nuevo tab con una referencia "Untitled"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ItemNuevo_Click(object sender, EventArgs e)
         {
-            //Tabpage y FastTextBox
-            TabPage tabPage = new TabPage
-            {
-                Text = "Untitled"+tabContador,
-                Name = "TabPage" + tabContador++
-            };
-            FastColoredTextBox textBox = new FastColoredTextBox
-            {
-                Name = "TextBox",
-                ShowScrollBars = true,
-                Dock = DockStyle.Fill
-                /*Height = 223,
-                Width = 625*/
-            };
-            tabPage.Controls.Add(textBox);
-            tabPages.AddLast(tabPage);
-            this.TabInput.Controls.Add(tabPage);
-            //this.TabInput.Controls.Add(tabPage.Controls.Add(textBox));
+            NewTab("Untitled"+tabContador, "Untitled" + tabContador++);
         }
-
+        /// <summary>
+        /// Ejecuta las acciones de SaveFileLike
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ItemGuardarComo_Click(object sender, EventArgs e)
         {
-            //this.SaveFileLike();
+            this.SaveFileLike();
         }
-
+        /// <summary>
+        /// Detecta si el tab actual posee alguna entrada en la lista de archivos
+        /// si no posee , procede a un guardar como, si lo posee solo guarda
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ItemGuardar_Click(object sender, EventArgs e)
         {
-            //Detecta si el tab actual posee alguna entrada en la lista de archivos
-            //si no posee , procede a un guardar como, si lo posee solo guarda
+            //Detecta el tab seleccionado
+            var tabSelected = TabInput.SelectedTab;
+            //Realiza un "focus" al tab
+            tabSelected.Focus();
+            //Determina si el texto del tab aún no ha sido guardado
+            if (tabSelected.Name.Contains("Untitled"))
+            {
+                //Se dirige a SaveFileLike
+                SaveFileLike();
+            } else
+            {
+                //Se dirige a SaveFile
+                var Txt = (FastColoredTextBox)tabSelected.Controls[0];
+                SaveFile(tabSelected.Name, Txt.Text);
+                tabSelected.Text = Path.GetFileNameWithoutExtension(tabSelected.Name);
+            }
         }
-
+        /// <summary>
+        /// Despliega el dialogo para guardar el texto de la pestaña seleccionada
+        /// Recupera la referencia de la pestaña y procede a escribir un nuevo archivo
+        /// </summary>
         private void SaveFileLike()
-        { 
+        {
+            //Detecta el tab seleccionado
+            var tabSelected = TabInput.SelectedTab;
+            //Realiza un "focus" al tab
+            tabSelected.Focus();
             //Despliega el dialogo para guardar un archivo
             if (saveDialog.ShowDialog()==DialogResult.OK)
             {
-                //Detecta el tab al cual se le tiene focus y procede a guardar el archivo
-                //SaveFile(saveDialog.FileName,);
+                //Establece la nueva referencia de la dirección del saveDialog 
+                //al tab seleccionado
+                if (!String.IsNullOrEmpty(saveDialog.FileName))
+                {
+                    //Recupera la referencia anterior del Tab
+                    String tempName = tabSelected.Name;
+                    //Actualiza la referencia y el nombre del Tab
+                    tabSelected.Name = saveDialog.FileName;
+                    tabSelected.Text = Path.GetFileNameWithoutExtension(saveDialog.FileName);
+                    try
+                    {
+                        //Recupera el contenido del texto del Tab, con la referencia "tempName"
+                        var Txt = (FastColoredTextBox) tabSelected.Controls[0];
+                        SaveFile(saveDialog.FileName, Txt.Text);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write(ex.Message);
+                    }
+                }
             }
         }
-        
-        private void SaveFile(String direccionArchivo, String contenidoArchivo, String extensionArchivo)
+        /// <summary>
+        /// Guarda un archivo
+        /// </summary>
+        /// <param name="direccionArchivo"></param>
+        /// <param name="contenidoArchivo"></param>
+        /// <param name="extensionArchivo"></param>
+        private void SaveFile(String direccionArchivo, String contenidoArchivo)
         {
             if (!String.IsNullOrEmpty(direccionArchivo))
             {
                 StreamWriter outputFile = null;
                 try
                 {
-                    using (outputFile = new StreamWriter(direccionArchivo + "." + extensionArchivo))
+                    using (outputFile = new StreamWriter(direccionArchivo))
                     {
                         outputFile.Write(contenidoArchivo);
                     }
@@ -132,10 +202,46 @@ namespace PROYECTO
                 }
             }
         }
-
-        private void TabInput_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Crea un nuevo tab, asigna un ID y un texto que se mostrará en la pestaña
+        /// </summary>
+        /// <param name="IDTab"></param>
+        /// <param name="TextTab"></param>
+        /// <returns>Devuelve el <code>FastColoredTextBox</code> que se insertó dentro del Tab recién creado</returns>
+        private FastColoredTextBox NewTab(String IDTab, String TextTab)
         {
-
+            //Instancia un nuevo tab y un cuadro de texto
+            TabPage tabPage = new TabPage
+            {
+                Text = TextTab,
+                Name = IDTab
+            };
+            FastColoredTextBox textBox = new FastColoredTextBox
+            {
+                Name = "txt" + IDTab,
+                ShowScrollBars = true,
+                Dock = DockStyle.Fill,
+            };
+            textBox.TextChanged += TextBox_TextChanged; //new EventHandler(TextBox_TextChanged);
+            //Añade el textbox al tab
+            tabPage.Controls.Add(textBox);
+            //Añada el tab al control de Tab
+            this.TabInput.Controls.Add(tabPage);
+            return textBox;
+        }
+        /// <summary>
+        /// Método que se agrega al evento TextChanged del fasttext para identificar los cambios dentro de él
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void TextBox_TextChanged(object sender, EventArgs e)
+        {
+            var txtSender = (FastColoredTextBox)sender;
+            var parentTab = (TabPage) txtSender.Parent;
+            if (!parentTab.Text.Substring(0,1).Equals("*"))
+            {
+                parentTab.Text= "*" + parentTab.Text;
+            }
         }
     }
 }
