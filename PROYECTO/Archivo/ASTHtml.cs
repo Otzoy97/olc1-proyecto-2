@@ -13,7 +13,7 @@ namespace PROYECTO.Archivo
         /// <summary> 
         /// </summary>
         /// <param name="raiz">Nodo raíz del AST devuelto por Irony</param>
-        ASTHtml(ParseTreeNode raiz)
+        public ASTHtml(ParseTreeNode raiz)
         {
             this.raiz = raiz;
         }
@@ -109,6 +109,7 @@ namespace PROYECTO.Archivo
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("digraph G{");
+            sb.AppendLine("graph[dpi=200]");
             sb.AppendLine("node[shape=\"box\"];");
             sb.AppendFormat("Nodo0[label=\"{0}\"];", Escapar(raiz.ToString())).AppendLine();
             sb.Append(RecorrerAST("Nodo0",raiz));
