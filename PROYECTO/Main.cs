@@ -1,5 +1,7 @@
 ﻿using FastColoredTextBoxNS;
+using Irony.Parsing;
 using PROYECTO.Archivo;
+using PROYECTO.Gramatica;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -240,7 +242,32 @@ namespace PROYECTO
             var parentTab = (TabPage) txtSender.Parent;
             if (!parentTab.Text.Substring(0,1).Equals("*"))
             {
+                var d = -8.0;
                 parentTab.Text= "*" + parentTab.Text;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ItemCompilar_Click(object sender, EventArgs e)
+        {
+            Parser p = new Parser(new LanguageData(new Sintactico()));
+            ParseTree arbol = p.Parse(((FastColoredTextBox)TabInput.SelectedTab.Controls[0]).Text);
+            if (arbol.Root != null)
+            {
+                var ASTGraph = new ASTHtml(arbol.Root);
+                this.SaveFile("ASTGraph.html", ASTGraph.GenerarHTML());
+            } else
+            {
+                try {
+                    foreach (var dd in arbol.Tokens)
+                    {
+                        Console.WriteLine("Error: Token: {0}, Lexema: {1}, Fila: {2}, Columna: {3}", dd.Value, dd.Text, dd.Location.Line, dd.Location.Column);
+                    }
+                }
+                 catch (Exception) { }
             }
         }
     }

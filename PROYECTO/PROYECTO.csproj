@@ -124,6 +124,9 @@
     <Content Include="External\gvplugin_gdiplus.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="External\gvplugin_pango.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="External\iconv.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

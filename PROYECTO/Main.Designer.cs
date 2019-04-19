@@ -148,6 +148,7 @@
             this.ItemCompilar.ShortcutKeys = System.Windows.Forms.Keys.F6;
             this.ItemCompilar.Size = new System.Drawing.Size(257, 26);
             this.ItemCompilar.Text = "Compilar";
+            this.ItemCompilar.Click += new System.EventHandler(this.ItemCompilar_Click);
             // 
             // TabOutput
             // 
