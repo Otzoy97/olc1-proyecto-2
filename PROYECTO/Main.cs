@@ -242,7 +242,6 @@ namespace PROYECTO
             var parentTab = (TabPage) txtSender.Parent;
             if (!parentTab.Text.Substring(0,1).Equals("*"))
             {
-                var d = -8.0;
                 parentTab.Text= "*" + parentTab.Text;
             }
         }
@@ -258,16 +257,26 @@ namespace PROYECTO
             if (arbol.Root != null)
             {
                 var ASTGraph = new ASTHtml(arbol.Root);
+                
                 this.SaveFile("ASTGraph.html", ASTGraph.GenerarHTML());
             } else
             {
                 try {
-                    foreach (var dd in arbol.Tokens)
-                    {
-                        Console.WriteLine("Error: Token: {0}, Lexema: {1}, Fila: {2}, Columna: {3}", dd.Value, dd.Text, dd.Location.Line, dd.Location.Column);
-                    }
+                    var Errores = new ERRHtml(arbol.Tokens);
+                    this.SaveFile("Errores.html",Errores.GenerarHTML());
                 }
                  catch (Exception) { }
+            }
+        }
+
+        private void ItemErrores_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("Errores.html");
+            } catch (Exception ex)
+            {
+                MessageBox.Show(this, "Nada que mostrar. " + ex.Message, "Archivo no existe", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

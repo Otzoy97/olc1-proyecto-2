@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archivo\ASTHtml.cs" />
+    <Compile Include="Archivo\ERRHtml.cs" />
     <Compile Include="Archivo\ES.cs" />
     <Compile Include="Gramatica\Sintactico.cs" />
     <Compile Include="Main.cs">
