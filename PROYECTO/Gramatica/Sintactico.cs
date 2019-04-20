@@ -96,57 +96,61 @@ namespace PROYECTO.Gramatica
             #endregion
 
             #region No terminales
-            var INICIO = new NonTerminal("INICIO");
+            NonTerminal INICIO = new NonTerminal("INICIO"),
+            INSTRUCCION = new NonTerminal("INSTRUCCION"),
             /*Contiene los tipos de datos utilizados*/
-            var DATATYPE = new NonTerminal("DATATYPE");
+            DATATYPE = new NonTerminal("DATATYPE"),
             /*Contiene una lista de variables*/
-            var VARLIST = new NonTerminal("VARLIST");
+            VARLIST = new NonTerminal("VARLIST"),
             /*Declara las variables normales*/
-            var DECLARACION_SIMPLE = new NonTerminal("DECLARACION_SIMPLE");
+            DECLARACION_SIMPLE = new NonTerminal("DECLARACION_SIMPLE"),
             /*Declara arreglos*/
-            var DECLARACION_ARRAY = new NonTerminal("DECLARACION_ARRAY");
+            DECLARACION_ARRAY = new NonTerminal("DECLARACION_ARRAY"),
             /*Asigna variables normales*/
-            var ASIGNACION_SIMPLE = new NonTerminal("ASIGNACION_SIMPLE");
+            ASIGNACION_SIMPLE = new NonTerminal("ASIGNACION_SIMPLE"),
             /*Asigna arreglos*/
-            var ASIGNACION_ARRAY = new NonTerminal("ASIGNACION_SIMPLE");
+            ASIGNACION_ARRAY = new NonTerminal("ASIGNACION_SIMPLE"),
             /*Establece la dimensión de los arreglos*/
-            var DIMENSION = new NonTerminal("SET_DIMENSION");
-            var DIMENSION_1 = new NonTerminal("SET_DIMENSION");
-            var DIMENSION_2 = new NonTerminal("SET_DIMENSION");
-            var DIMENSION_3 = new NonTerminal("SET_DIMENSION");
+            DIMENSION = new NonTerminal("DIMENSION"),
+            DIMENSION_LIST = new NonTerminal("DIMENSION_LIST"),
             /*Establece el contenido de los arreglos al declararse*/
-            var SET_CONTENT = new NonTerminal("SET_CONTENT");
+            ARRCONTENT = new NonTerminal("ARRCONTENT"),
+            ARRCONTENT_LIST = new NonTerminal("ARRCONTENT_LIST"),
             /*Específica la forma de las operaciones*/
-            var OPER = new NonTerminal("OPER");
+            OPER = new NonTerminal("OPER"),
+            /*Lista de operaciones :v*/
+            OPERLIST = new NonTerminal("OPERLIST");
             #endregion
 
             #region Producciones
-            INICIO.Rule = OPER;
+            INICIO.Rule =  MakePlusRule(INICIO, INSTRUCCION);
+            INSTRUCCION.Rule = DECLARACION_ARRAY | DECLARACION_SIMPLE | ASIGNACION_ARRAY | ASIGNACION_SIMPLE;
 
             #region DECLARACION, ASIGNACION Y GET DE VARIABLES Y ARREGLOS
-
             DATATYPE.Rule = INT | CHAR | STRING | DOUBLE | BOOL;
-            VARLIST.Rule = VARLIST + COMMA + Variable | Variable;
-
-
-            DIMENSION.Rule = 
-
+            //var, var , var
+            VARLIST.Rule = MakeListRule(VARLIST, COMMA, Variable);
+            //[oper][oper][oper]
+            DIMENSION_LIST.Rule = MakePlusRule(DIMENSION_LIST, DIMENSION);
+            DIMENSION.Rule = CORIZQ + OPER + CORDER;
+            //{3,3} {{3,3},{3,3}} {{{3,3},{3,3}},{{3,3},{3,3}}}
+            ARRCONTENT.Rule = LLVIZQ + ARRCONTENT_LIST + LLVDER | LLVIZQ + OPERLIST + LLVDER;
+            ARRCONTENT_LIST.Rule = MakeListRule(ARRCONTENT_LIST, COMMA, ARRCONTENT);
+            //int var, var, var;
+            //int var, var  = oper;
             DECLARACION_SIMPLE.Rule = DATATYPE + VARLIST + SEMICOLON
                 | DATATYPE + VARLIST + ASIGNACION + OPER + SEMICOLON;
-
-            DECLARACION_ARRAY.Rule = DATATYPE + ARRAY + VARLIST + DIMENSION + SEMICOLON
-                | DATATYPE + ARRAY + VARLIST + DIMENSION + ASIGNACION + SET_CONTENT + SEMICOLON;
-
+            //int array var, var, var[oper][oper];
+            //int array var, var, var[oper][oper] = {{3,3},{3,3}};
+            DECLARACION_ARRAY.Rule = DATATYPE + ARRAY + VARLIST + DIMENSION_LIST + SEMICOLON
+                | DATATYPE + ARRAY + VARLIST + DIMENSION_LIST + ASIGNACION + ARRCONTENT + SEMICOLON;
+            //var = oper;
+            //var[oper] = oper;
             ASIGNACION_SIMPLE.Rule = Variable + ASIGNACION + OPER + SEMICOLON;
-            ASIGNACION_ARRAY.Rule = Variable + DIMENSION + ASIGNACION + OPER + SEMICOLON;
-            
-            
-
+            ASIGNACION_ARRAY.Rule = Variable + DIMENSION_LIST + ASIGNACION + OPER + SEMICOLON;
             #endregion
-            
 
-
-
+            #region OPERACIONES
             OPER.Rule = OPER + MAS + OPER
                 | OPER + MENOS + OPER
                 | OPER + POR + OPER
@@ -172,7 +176,11 @@ namespace PROYECTO.Gramatica
                 | "verdadero"
                 | "falso"
                 | Variable
-                | Variable + DIMENSION;
+                /*Llamadas a función*/
+                | Variable + DIMENSION_LIST;
+
+            OPERLIST.Rule = MakeListRule(OPERLIST, COMMA , OPER);
+            #endregion
             #endregion
 
             #region Preferencias
@@ -199,6 +207,8 @@ namespace PROYECTO.Gramatica
                 PRINT.Text, SHOW.Text, IF.Text, ELSE.Text, FOR.Text, REPEAT.Text,
                 WHILE.Text, COMPROBAR.Text, CASO.Text, DEFECTO.Text, SALIR.Text,
                 HACER.Text, MIENTRAS.Text, CONTINUAR.Text, "false", "true","verdadero", "falso");
+            /*-------- NO TERMINAL TRANSIENT --------*/
+            MarkTransient(DATATYPE, ARRCONTENT, DIMENSION, INSTRUCCION);
             #endregion
         }
     }
