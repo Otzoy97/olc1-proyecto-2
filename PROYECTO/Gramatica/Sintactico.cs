@@ -10,6 +10,9 @@ namespace PROYECTO.Gramatica
 {
     class Sintactico : Grammar
     {
+
+        
+
         public Sintactico() : base(caseSensitive: false)
         {
             #region Regex
@@ -74,6 +77,7 @@ namespace PROYECTO.Gramatica
             var NEW = ToTerm("new", "NEW");
             var MAIN = ToTerm("main", "MAIN");
             var RETURN = ToTerm("return", "RETURN");
+            var CLASE = ToTerm("clase", "CLASE");
             /*-------- NATIVA --------*/
             var PRINT = ToTerm("print", "PRINT");
             var SHOW = ToTerm("show", "SHOW");
@@ -96,8 +100,20 @@ namespace PROYECTO.Gramatica
             #endregion
 
             #region No terminales
+            /*PRODUCCIONES INICIALES*/
             NonTerminal INICIO = new NonTerminal("INICIO"),
+            CLASE_STA = new NonTerminal("CLASE_STA"),
+            CLASE_STA_LIST = new NonTerminal("CLASE_STA_LIST"),
+            CLASE_STA_BODY = new NonTerminal("CLASE_STA_BODY"),
+            IMPORTAR_STA = new NonTerminal("IMPORTAR_STA"),
+            IMPORTAR_STA_LIST = new NonTerminal("IMPORTAR_STA_LIST"),
+            FUNCION = new NonTerminal("FUNCION"),
+            METODO = new NonTerminal("METODO"),
             INSTRUCCION = new NonTerminal("INSTRUCCION"),
+            INSTRUCCION_LIST = new NonTerminal("INSTRUCCION"),
+            VISIBILIDAD = new NonTerminal("VISIBILIDAD"),
+            MAIN_STA = new NonTerminal("MAIN_STA"),
+            OVER_STA = new NonTerminal("OVER_STA"),
             /*Contiene los tipos de datos utilizados*/
             DATATYPE = new NonTerminal("DATATYPE"),
             /*Contiene una lista de variables*/
@@ -119,15 +135,48 @@ namespace PROYECTO.Gramatica
             /*Específica la forma de las operaciones*/
             OPER = new NonTerminal("OPER"),
             /*Lista de operaciones :v*/
-            OPERLIST = new NonTerminal("OPERLIST");
+            OPERLIST = new NonTerminal("OPERLIST"),
+            /*Producciones para if*/
+            IF_STA = new NonTerminal("IF_STA"),
+            ELSE_STA = new NonTerminal("ELSE_STA");
             #endregion
 
             #region Producciones
-            INICIO.Rule =  MakePlusRule(INICIO, INSTRUCCION);
-            INSTRUCCION.Rule = DECLARACION_ARRAY | DECLARACION_SIMPLE | ASIGNACION_ARRAY | ASIGNACION_SIMPLE;
+            INICIO.Rule =  MakePlusRule(INICIO, CLASE_STA);
+            
+            #region CLASE
+            //ESTRUCTURA BASICA DE UN CLASE
+            CLASE_STA.Rule = CLASE + Identificador + IMPORTAR_STA+ LLVIZQ + CLASE_STA_LIST + LLVDER;
+            //IMPORTACIONES
+            IMPORTAR_STA_LIST.Rule = MakeListRule(IMPORTAR_STA_LIST, COMMA, Identificador);
+            IMPORTAR_STA.Rule = IMPORTAR + IMPORTAR_STA_LIST | Empty;
+            //CUERPO DE UNA CLASE, VARIABLES GLOBALES, FUNCIONES Y METODOS
+            CLASE_STA_LIST.Rule = MakePlusRule(CLASE_STA_LIST, CLASE_STA_BODY);
+            CLASE_STA_BODY.Rule = MAIN_STA | VISIBILIDAD + FUNCION | VISIBILIDAD + METODO | VISIBILIDAD + DECLARACION_ARRAY | VISIBILIDAD + DECLARACION_SIMPLE ;
+            //VISIBILIDAD DE UNA FUNCION, METODO O VARIABLE GLOBAL
+            VISIBILIDAD.Rule = PUBLICO | PRIVADO | Empty;
+            //SOBRECARGA DE MÉTODOS
+            OVER_STA.Rule = OVERRIDE | Empty;
+            //LISTA DE INSTRUCCIONES VÁLIDAS DENTRO DE FUNCIONES Y MÉTODOS
+            INSTRUCCION_LIST.Rule = MakePlusRule(INSTRUCCION_LIST, INSTRUCCION);
+            INSTRUCCION.Rule = DECLARACION_ARRAY | DECLARACION_SIMPLE | ASIGNACION_ARRAY | ASIGNACION_SIMPLE | IF_STA;
+            #endregion
+            
+            #region FUNCION
+            FUNCION.Rule = Identificador + DATATYPE + OVER_STA + PARIZQ + /*LISTA DE PARAMETROS*/ PARDER + LLVIZQ + INSTRUCCION_LIST + /*RETURN_STA*/ LLVDER
+                | Identificador + ARRAY + DATATYPE + DIMENSION + OVER_STA+ PARIZQ + /*LISTA DE PARAMETROS*/ PARDER + LLVIZQ + INSTRUCCION_LIST + /*RETURN_STA*/ LLVDER;
+            #endregion
+
+            #region METODO
+            METODO.Rule = Identificador + VOID + OVER_STA + PARIZQ + /*LISTA DE PARAMETROS*/ PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
+            #endregion
+
+            #region MAIN
+            MAIN_STA.Rule = MAIN + PARIZQ + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
+            #endregion
 
             #region DECLARACION, ASIGNACION Y GET DE VARIABLES Y ARREGLOS
-            DATATYPE.Rule = INT | CHAR | STRING | DOUBLE | BOOL;
+            DATATYPE.Rule = INT | CHAR | STRING | DOUBLE | BOOL | Identificador;
             //var, var , var
             VARLIST.Rule = MakeListRule(VARLIST, COMMA, Variable);
             //[oper][oper][oper]
@@ -181,6 +230,12 @@ namespace PROYECTO.Gramatica
 
             OPERLIST.Rule = MakeListRule(OPERLIST, COMMA , OPER);
             #endregion
+
+            #region IF
+            IF_STA.Rule = IF + PARIZQ + OPER + PARDER + LLVIZQ + INSTRUCCION_LIST +  LLVDER + ELSE_STA;
+            ELSE_STA.Rule = ELSE + LLVIZQ + INSTRUCCION_LIST + LLVDER | ELSE + IF_STA | Empty;
+            #endregion
+
             #endregion
 
             #region Preferencias
@@ -190,7 +245,7 @@ namespace PROYECTO.Gramatica
             NonGrammarTerminals.Add(LineComment);
             NonGrammarTerminals.Add(BlockComment);
             /*-------- PUNTUACIÓN Y AGRUPACIÓN --------*/
-            MarkPunctuation(SEMICOLON, COLON, DOT, COMMA, PARIZQ, PARDER, LLVIZQ, LLVDER, CORIZQ, CORDER);
+            MarkPunctuation(SEMICOLON, COLON, DOT, COMMA, PARIZQ, PARDER, LLVIZQ, LLVDER, CORIZQ, CORDER, IMPORTAR);
             /*-------- ASOCIATIVIDAD --------*/
             RegisterOperators(0, Associativity.Left, OR);
             RegisterOperators(1, Associativity.Left, AND);
@@ -206,9 +261,9 @@ namespace PROYECTO.Gramatica
                 OVERRIDE.Text, IMPORTAR.Text, NEW.Text, MAIN.Text, RETURN.Text,
                 PRINT.Text, SHOW.Text, IF.Text, ELSE.Text, FOR.Text, REPEAT.Text,
                 WHILE.Text, COMPROBAR.Text, CASO.Text, DEFECTO.Text, SALIR.Text,
-                HACER.Text, MIENTRAS.Text, CONTINUAR.Text, "false", "true","verdadero", "falso");
-            /*-------- NO TERMINAL TRANSIENT --------*/
-            MarkTransient(DATATYPE, ARRCONTENT, DIMENSION, INSTRUCCION);
+                HACER.Text, MIENTRAS.Text, CONTINUAR.Text, CLASE.Text ,  "false", "true","verdadero", "falso");
+            /*-------- NOTERMINAL TRANSIENT --------*/
+            MarkTransient(DATATYPE, ARRCONTENT, DIMENSION, INSTRUCCION, IMPORTAR_STA, VISIBILIDAD, OVER_STA);
             #endregion
         }
     }
