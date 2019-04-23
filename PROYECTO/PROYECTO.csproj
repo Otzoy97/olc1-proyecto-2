@@ -97,7 +97,6 @@
     <Folder Include="Gramatica\Acciones\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EJEMPLO.html" />
     <Content Include="External\cdt.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

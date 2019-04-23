@@ -18,7 +18,7 @@ namespace PROYECTO.Archivo
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<!DOCTYPE html>").AppendLine("<html lang=\"es-GT\" xmlns=\"http://www.w3.org/1999/xhtml\">");
-            sb.AppendFormat("<head>{0}{1}</head>", "<meta charset=\"utf-8\">", String.Format("<title>{0}</title>", "Arbol sintáctico")).AppendLine();
+            sb.AppendFormat("<head>{0}{1}</head>", "<meta charset=\"utf-8\">", String.Format("<title>{0}</title>", "Errores léxicos y sintácticos")).AppendLine();
             sb.AppendLine("<body>");
             sb.AppendLine("<div>");
             sb.AppendLine("<table>");
