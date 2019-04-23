@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Irony.Ast;
-using Irony.Parsing;
+﻿using Irony.Parsing;
 
 namespace PROYECTO.Gramatica
 {
@@ -86,7 +80,7 @@ namespace PROYECTO.Gramatica
             var WHILE = ToTerm("while", "WHILE");
             var COMPROBAR = ToTerm("comprobar", "COMPROBAR");
             var CASO = ToTerm("caso", "CASO");
-            var DEFECTO = ToTerm("default", "DEFECTO");
+            var DEFECTO = ToTerm("defecto", "DEFECTO");
             var SALIR = ToTerm("salir", "SALIR");
             var HACER = ToTerm("hacer", "HACER");
             var MIENTRAS = ToTerm("mientras", "MIENTRAS");
@@ -143,41 +137,49 @@ namespace PROYECTO.Gramatica
             CASE_LST = new NonTerminal("CASE_LST"),
             CASE = new NonTerminal("CASE"),
             /*Producciones para un DO-WHILE*/
-            DO = new NonTerminal("DO");
+            DO = new NonTerminal("DO"),
+            /*Produccion para un RETURN STATEMENT*/
+            RTN_STA = new NonTerminal("RTN_STA");
             #endregion
 
             #region Producciones
-            INICIO.Rule =  MakePlusRule(INICIO, CLASE_STA);
-            
+            INICIO.Rule = MakePlusRule(INICIO, CLASE_STA);
+
             #region CLASE
             //ESTRUCTURA BASICA DE UN CLASE
-            CLASE_STA.Rule = CLASE + Identificador + IMPORTAR_STA+ LLVIZQ + CLASE_STA_LIST + LLVDER;
+            CLASE_STA.Rule = CLASE + Identificador + IMPORTAR_STA + LLVIZQ + CLASE_STA_LIST + LLVDER;
             //IMPORTACIONES
             IMPORTAR_STA_LIST.Rule = MakeListRule(IMPORTAR_STA_LIST, COMMA, Identificador);
             IMPORTAR_STA.Rule = IMPORTAR + IMPORTAR_STA_LIST | Empty;
             //CUERPO DE UNA CLASE, VARIABLES GLOBALES, FUNCIONES Y METODOS
             CLASE_STA_LIST.Rule = MakePlusRule(CLASE_STA_LIST, CLASE_STA_BODY);
-            CLASE_STA_BODY.Rule = MAIN_STA | FUNCION | METODO | DECLARACION + SEMICOLON ;
+            CLASE_STA_BODY.Rule = MAIN_STA | FUNCION | METODO | DECLARACION + SEMICOLON;
             //VISIBILIDAD DE UNA FUNCION, METODO O VARIABLE GLOBAL
             VISIBILIDAD.Rule = PUBLICO | PRIVADO | Empty;
             //SOBRECARGA DE MÉTODOS
             OVER_STA.Rule = OVERRIDE | Empty;
             //LISTA DE INSTRUCCIONES VÁLIDAS DENTRO DE FUNCIONES Y MÉTODOS
             INSTRUCCION_LIST.Rule = MakePlusRule(INSTRUCCION_LIST, INSTRUCCION);
-            INSTRUCCION.Rule =  DECLARACION + SEMICOLON |  ASSIGNMENT + SEMICOLON | IF_STA | FOR_STA | REPEAT_STA | WHILE_STA |SWITCH | DO |CONTINUAR + SEMICOLON | SALIR + SEMICOLON ;
-            #endregion
-            
-            #region FUNCION
-            FUNCION.Rule = VISIBILIDAD + Identificador + DATATYPE + OVER_STA + PARIZQ + /*LISTA DE PARAMETROS*/ PARDER + LLVIZQ + INSTRUCCION_LIST + /*RETURN_STA*/ LLVDER
-                | VISIBILIDAD+ Identificador + ARRAY + DATATYPE + DIMENSION + OVER_STA+ PARIZQ + /*LISTA DE PARAMETROS*/ PARDER + LLVIZQ + INSTRUCCION_LIST + /*RETURN_STA*/ LLVDER;
+            INSTRUCCION.Rule = DECLARACION + SEMICOLON | ASSIGNMENT + SEMICOLON | IF_STA | FOR_STA | REPEAT_STA | WHILE_STA | SWITCH | DO | CONTINUAR + SEMICOLON | SALIR + SEMICOLON | RTN_STA + SEMICOLON| Empty;
             #endregion
 
-            #region METODO
-            METODO.Rule = VISIBILIDAD + Identificador + VOID + OVER_STA + PARIZQ + /*LISTA DE PARAMETROS*/ PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
+            #region FUNCION
+            FUNCION.Rule = VISIBILIDAD + Identificador + DATATYPE + OVER_STA + PARIZQ + /*PARAMETRO_LST + */PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER
+                | VISIBILIDAD + Identificador + ARRAY + DATATYPE + DIMENSION + OVER_STA + PARIZQ +/*+ PARAMETRO_LST +*/ PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
             #endregion
+            
+            #region METODO
+            METODO.Rule = VISIBILIDAD + Identificador + VOID + OVER_STA + PARIZQ + /*PARAMETRO_LST +*/ PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
+            #endregion
+
+            #region RETURN  STATEMENT
+            RTN_STA.Rule = RETURN + ASSIGNMENT;
+            #endregion
+
             #region MAIN
             MAIN_STA.Rule = MAIN + PARIZQ + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
             #endregion
+
             #region DECLARACION, ASIGNACION Y GET DE VARIABLES Y ARREGLOS
             DATATYPE.Rule = INT | CHAR | STRING | DOUBLE | BOOL | Identificador;
             //var, var , var
@@ -186,20 +188,21 @@ namespace PROYECTO.Gramatica
             DIMENSION_LIST.Rule = MakePlusRule(DIMENSION_LIST, DIMENSION);
             DIMENSION.Rule = CORIZQ + OPER + CORDER;
             //{3,3} {{3,3},{3,3}} {{{3,3},{3,3}},{{3,3},{3,3}}}
-            ARRCONTENT.Rule = LLVIZQ + ARRCONTENT_LIST + LLVDER | LLVIZQ + OPERLIST + LLVDER;
             ARRCONTENT_LIST.Rule = MakeListRule(ARRCONTENT_LIST, COMMA, ARRCONTENT);
+            ARRCONTENT.Rule = LLVIZQ + ARRCONTENT_LIST + LLVDER | LLVIZQ + OPERLIST + LLVDER;
             //int var, var, var;
             //int var, var  = oper;
             //int array var, var, var[oper][oper];
             //int array var, var, var[oper][oper] = {{3,3},{3,3}};
             DECLARACION.Rule = VISIBILIDAD + DATATYPE + VARLIST
-                | VISIBILIDAD + DATATYPE + VARLIST + ASIGNACION + OPER 
+                | VISIBILIDAD + DATATYPE + VARLIST + ASIGNACION + OPER
                 | VISIBILIDAD + DATATYPE + ARRAY + VARLIST + DIMENSION_LIST
                 | VISIBILIDAD + DATATYPE + ARRAY + VARLIST + DIMENSION_LIST + ASIGNACION + ARRCONTENT;
             //var = oper;
             //var[oper] = oper;
-            ASSIGNMENT.Rule = Variable + ASIGNACION + OPER| Variable + DIMENSION_LIST + ASIGNACION + OPER | OPER;
+            ASSIGNMENT.Rule = Variable + ASIGNACION + OPER | Variable + DIMENSION_LIST + ASIGNACION + OPER | OPER;
             #endregion
+
             #region OPERACIONES
             OPER.Rule = OPER + MAS + OPER
                 | OPER + MENOS + OPER
@@ -226,19 +229,20 @@ namespace PROYECTO.Gramatica
                 | "verdadero"
                 | "falso"
                 | Variable
+                | Variable + DIMENSION_LIST
                 /*Llamadas a función*/
-                | Variable + DIMENSION_LIST;
+                | NEW + Identificador + PARIZQ + PARDER;
 
-            OPERLIST.Rule = MakeListRule(OPERLIST, COMMA , OPER);
+            OPERLIST.Rule = MakeListRule(OPERLIST, COMMA, OPER);
             #endregion
 
             #region IF
-            IF_STA.Rule = IF + PARIZQ + OPER + PARDER + LLVIZQ + INSTRUCCION_LIST +  LLVDER + ELSE_STA;
+            IF_STA.Rule = IF + PARIZQ + OPER + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER + ELSE_STA;
             ELSE_STA.Rule = ELSE + LLVIZQ + INSTRUCCION_LIST + LLVDER | ELSE + IF_STA | Empty;
             #endregion
 
             #region FOR
-            FOR_STA.Rule = FOR + PARIZQ + FOR_CND +PARDER + LLVIZQ + INSTRUCCION_LIST +LLVDER;
+            FOR_STA.Rule = FOR + PARIZQ + FOR_CND + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
             FOR_CND.Rule = DECLARACION + SEMICOLON + OPER + SEMICOLON + ASSIGNMENT
                 | ASSIGNMENT + SEMICOLON + OPER + SEMICOLON + ASSIGNMENT;
             #endregion
@@ -253,13 +257,13 @@ namespace PROYECTO.Gramatica
 
             #region COMPROBAR
             SWITCH.Rule = COMPROBAR + PARIZQ + OPER + PARDER + LLVIZQ + CASE_LST + LLVDER;
-            CASE_LST.Rule = MakePlusRule(CASE_LST,CASE);
-            CASE.Rule = CASO + OPER + COLON + INSTRUCCION_LIST 
+            CASE_LST.Rule = MakePlusRule(CASE_LST, CASE);
+            CASE.Rule = CASO + OPER + COLON + INSTRUCCION_LIST
                 | DEFECTO + COLON + INSTRUCCION_LIST;
             #endregion
 
             #region DO-WHILE
-            DO.Rule = HACER + LLVIZQ + INSTRUCCION_LIST + LLVDER + MIENTRAS + PARIZQ + OPER +PARDER + SEMICOLON;
+            DO.Rule = HACER + LLVIZQ + INSTRUCCION_LIST + LLVDER + MIENTRAS + PARIZQ + OPER + PARDER + SEMICOLON;
             #endregion
 
             #endregion
@@ -273,7 +277,7 @@ namespace PROYECTO.Gramatica
             /*-------- PUNTUACIÓN Y AGRUPACIÓN --------*/
             MarkPunctuation(SEMICOLON, COLON, DOT, COMMA, PARIZQ, PARDER, LLVIZQ, LLVDER, CORIZQ, CORDER);
             MarkPunctuation(IMPORTAR, CLASE, MAIN, IF, ELSE, FOR, COMPROBAR, CASO, DEFECTO, WHILE, REPEAT);
-            MarkPunctuation(HACER, MIENTRAS);
+            MarkPunctuation(HACER, MIENTRAS, ARRAY);
             /*-------- ASOCIATIVIDAD --------*/
             RegisterOperators(0, Associativity.Left, OR);
             RegisterOperators(1, Associativity.Left, AND);
@@ -289,7 +293,7 @@ namespace PROYECTO.Gramatica
                 OVERRIDE.Text, IMPORTAR.Text, NEW.Text, MAIN.Text, RETURN.Text,
                 PRINT.Text, SHOW.Text, IF.Text, ELSE.Text, FOR.Text, REPEAT.Text,
                 WHILE.Text, COMPROBAR.Text, CASO.Text, DEFECTO.Text, SALIR.Text,
-                HACER.Text, MIENTRAS.Text, CONTINUAR.Text, CLASE.Text ,  "false", "true","verdadero", "falso");
+                HACER.Text, MIENTRAS.Text, CONTINUAR.Text, CLASE.Text, "false", "true", "verdadero", "falso");
             /*-------- NOTERMINAL TRANSIENT --------*/
             MarkTransient(DATATYPE, ARRCONTENT, DIMENSION, INSTRUCCION, IMPORTAR_STA, VISIBILIDAD, OVER_STA, CLASE_STA_BODY);
             MarkTransient(ELSE_STA);
