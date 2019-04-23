@@ -71,6 +71,7 @@ namespace PROYECTO
                     if (tb.Name.Equals(openDialog.FileName))
                     {
                         flag = true;
+                        tb.Focus();
                         break;
                     }
                 }
@@ -229,6 +230,8 @@ namespace PROYECTO
             tabPage.Controls.Add(textBox);
             //Añada el tab al control de Tab
             this.TabInput.Controls.Add(tabPage);
+            //Hace focusa la pestaña recién creada
+            tabPage.Focus();
             return textBox;
         }
         /// <summary>
