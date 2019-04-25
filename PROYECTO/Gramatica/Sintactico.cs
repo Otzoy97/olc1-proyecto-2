@@ -138,6 +138,10 @@ namespace PROYECTO.Gramatica
             CASE = new NonTerminal("CASE"),
             /*Producciones para un DO-WHILE*/
             DO = new NonTerminal("DO"),
+            /*Lista de parametros al declarar funcion/metodo*/
+            PAR_LST = new NonTerminal("PAR_LST"),
+            PAR  = new NonTerminal("PAR"),
+            CALL = new NonTerminal("CALL"),
             /*Produccion para un RETURN STATEMENT*/
             RTN_STA = new NonTerminal("RTN_STA");
             #endregion
@@ -153,7 +157,7 @@ namespace PROYECTO.Gramatica
             IMPORTAR_STA.Rule = IMPORTAR + IMPORTAR_STA_LIST | Empty;
             //CUERPO DE UNA CLASE, VARIABLES GLOBALES, FUNCIONES Y METODOS
             CLASE_STA_LIST.Rule = MakePlusRule(CLASE_STA_LIST, CLASE_STA_BODY);
-            CLASE_STA_BODY.Rule = MAIN_STA | FUNCION | METODO | DECLARACION + SEMICOLON;
+            CLASE_STA_BODY.Rule = MAIN_STA | FUNCION | METODO |  DECLARACION + SEMICOLON;
             //VISIBILIDAD DE UNA FUNCION, METODO O VARIABLE GLOBAL
             VISIBILIDAD.Rule = PUBLICO | PRIVADO | Empty;
             //SOBRECARGA DE MÉTODOS
@@ -163,13 +167,20 @@ namespace PROYECTO.Gramatica
             INSTRUCCION.Rule = DECLARACION + SEMICOLON | ASSIGNMENT + SEMICOLON | IF_STA | FOR_STA | REPEAT_STA | WHILE_STA | SWITCH | DO | CONTINUAR + SEMICOLON | SALIR + SEMICOLON | RTN_STA + SEMICOLON| Empty;
             #endregion
 
+            #region PARAMETROS
+            PAR_LST.Rule = MakeListRule(PAR_LST, COMMA, PAR) | Empty;
+            PAR.Rule =  DATATYPE + Variable | DATATYPE + ARRAY + Variable + DIMENSION_LIST;
+            //
+            CALL.Rule = Variable + PARIZQ + OPERLIST + PARDER | Variable + PARIZQ + PARDER;
+            #endregion
+
             #region FUNCION
-            FUNCION.Rule = VISIBILIDAD + Identificador + DATATYPE + OVER_STA + PARIZQ + /*PARAMETRO_LST + */PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER
-                | VISIBILIDAD + Identificador + ARRAY + DATATYPE + DIMENSION + OVER_STA + PARIZQ +/*+ PARAMETRO_LST +*/ PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
+            FUNCION.Rule = VISIBILIDAD + Identificador + DATATYPE + OVER_STA + PARIZQ + PAR_LST + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER
+                | VISIBILIDAD + Identificador + ARRAY + DATATYPE + DIMENSION + OVER_STA + PARIZQ + PAR_LST + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
             #endregion
             
             #region METODO
-            METODO.Rule = VISIBILIDAD + Identificador + VOID + OVER_STA + PARIZQ + /*PARAMETRO_LST +*/ PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
+            METODO.Rule = VISIBILIDAD + Identificador + VOID + OVER_STA + PARIZQ + PAR_LST + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
             #endregion
 
             #region RETURN  STATEMENT
@@ -215,6 +226,7 @@ namespace PROYECTO.Gramatica
                 | OPER + MENOR + OPER
                 | OPER + MAYOR_IGUAL + OPER
                 | OPER + MENOR_IGUAL + OPER
+                | OPER + DOT + OPER
                 | OPER + OR + OPER
                 | OPER + AND + OPER
                 | NOT + OPER
@@ -230,8 +242,8 @@ namespace PROYECTO.Gramatica
                 | "falso"
                 | Variable
                 | Variable + DIMENSION_LIST
-                /*Llamadas a función*/
-                | NEW + Identificador + PARIZQ + PARDER;
+                | NEW + Identificador + PARIZQ + PARDER
+                | CALL;
 
             OPERLIST.Rule = MakeListRule(OPERLIST, COMMA, OPER);
             #endregion
@@ -275,18 +287,19 @@ namespace PROYECTO.Gramatica
             NonGrammarTerminals.Add(LineComment);
             NonGrammarTerminals.Add(BlockComment);
             /*-------- PUNTUACIÓN Y AGRUPACIÓN --------*/
-            MarkPunctuation(SEMICOLON, COLON, DOT, COMMA, PARIZQ, PARDER, LLVIZQ, LLVDER, CORIZQ, CORDER);
+            MarkPunctuation(SEMICOLON, COLON, /*DOT ,*/ COMMA, PARIZQ, PARDER, LLVIZQ, LLVDER, CORIZQ, CORDER);
             MarkPunctuation(IMPORTAR, CLASE, MAIN, IF, ELSE, FOR, COMPROBAR, CASO, DEFECTO, WHILE, REPEAT);
             MarkPunctuation(HACER, MIENTRAS, ARRAY);
             /*-------- ASOCIATIVIDAD --------*/
-            RegisterOperators(0, Associativity.Left, OR);
-            RegisterOperators(1, Associativity.Left, AND);
-            RegisterOperators(2, Associativity.Left, IGUAL, DIFERENTE, MAYOR, MAYOR_IGUAL, MENOR, MENOR_IGUAL);
-            RegisterOperators(3, Associativity.Right, NOT);
-            RegisterOperators(4, Associativity.Left, MAS, MENOS);
-            RegisterOperators(5, Associativity.Left, POR, DIVISION);
-            RegisterOperators(6, Associativity.Left, POTENCIA);
-            RegisterOperators(7, Associativity.Left, PARIZQ, PARDER);
+            RegisterOperators(0, Associativity.Left, DOT);
+            RegisterOperators(1, Associativity.Left, OR);
+            RegisterOperators(2, Associativity.Left, AND);
+            RegisterOperators(3, Associativity.Left, IGUAL, DIFERENTE, MAYOR, MAYOR_IGUAL, MENOR, MENOR_IGUAL);
+            RegisterOperators(4, Associativity.Right, NOT);
+            RegisterOperators(5, Associativity.Left, MAS, MENOS);
+            RegisterOperators(6, Associativity.Left, POR, DIVISION);
+            RegisterOperators(7, Associativity.Left, POTENCIA);
+            RegisterOperators(8, Associativity.Left, PARIZQ, PARDER);
             /*-------- PALABRAS RESERVADAS --------*/
             MarkReservedWords(INT.Text, CHAR.Text, STRING.Text, DOUBLE.Text,
                 BOOL.Text, VOID.Text, ARRAY.Text, PUBLICO.Text, PRIVADO.Text,
@@ -295,7 +308,7 @@ namespace PROYECTO.Gramatica
                 WHILE.Text, COMPROBAR.Text, CASO.Text, DEFECTO.Text, SALIR.Text,
                 HACER.Text, MIENTRAS.Text, CONTINUAR.Text, CLASE.Text, "false", "true", "verdadero", "falso");
             /*-------- NOTERMINAL TRANSIENT --------*/
-            MarkTransient(DATATYPE, ARRCONTENT, DIMENSION, INSTRUCCION, IMPORTAR_STA, VISIBILIDAD, OVER_STA, CLASE_STA_BODY);
+            MarkTransient(DATATYPE, ARRCONTENT, DIMENSION, INSTRUCCION, IMPORTAR_STA, OVER_STA, CLASE_STA_BODY, VISIBILIDAD);
             MarkTransient(ELSE_STA);
             #endregion
         }
