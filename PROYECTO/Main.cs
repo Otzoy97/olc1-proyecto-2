@@ -39,11 +39,11 @@ namespace PROYECTO
                 FilterIndex = 0,
                 //Deja el directorio en el directorio en el que se cerro la 
                 //última vez que se abrio el cuadro de dialogo durante 
-                //el tiempo de ejecuacion
+                //el tiempzo de ejecuacion
                 RestoreDirectory = true,
             };
             tabContador = 0;
-            NewTab("Untitled" + tabContador, "Untitled" + tabContador++);
+            //NewTab("Untitled" + tabContador, "Untitled" + tabContador++);
         }
         /// <summary>
         /// Despliega un OpenDialogFile para seleccionar una archivo *.txt

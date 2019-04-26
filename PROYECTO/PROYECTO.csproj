@@ -55,6 +55,16 @@
     <Compile Include="Archivo\ASTHtml.cs" />
     <Compile Include="Archivo\ERRHtml.cs" />
     <Compile Include="Archivo\ES.cs" />
+    <Compile Include="Gramatica\Entorno\Clase.cs" />
+    <Compile Include="Gramatica\Entorno\Condicional\Comprobar.cs" />
+    <Compile Include="Gramatica\Entorno\Condicional\Si.cs" />
+    <Compile Include="Gramatica\Entorno\IEntorno.cs" />
+    <Compile Include="Gramatica\Entorno\Funcion.cs" />
+    <Compile Include="Gramatica\Entorno\Loop\Hacer.cs" />
+    <Compile Include="Gramatica\Entorno\Loop\Mientras.cs" />
+    <Compile Include="Gramatica\Entorno\Loop\Para.cs" />
+    <Compile Include="Gramatica\Entorno\Loop\Repetir.cs" />
+    <Compile Include="Gramatica\Simbolo\Simbolo.cs" />
     <Compile Include="Gramatica\Sintactico.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
