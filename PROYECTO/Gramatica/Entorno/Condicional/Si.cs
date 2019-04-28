@@ -6,15 +6,33 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
 {
     class Si : Funcion, IEntorno
     {
-        public new LinkedList<IEntorno> SubEntornos { get; }
-        public new Dictionary<string, Symbol> Simbolos { get; }
-        public new ParseTreeNode SubArbol { get; }
+        public LinkedList<IEntorno> EntornoTrue { get; }
+        public Dictionary<string, Symbol> SimbolosTrue { get; }
+        public ParseTreeNode SubArbolTrue { get; }
 
-        public Si(LinkedList<IEntorno> subentornos, Dictionary<string, Symbol> simbolos, ParseTreeNode subArbol)
+        public LinkedList<IEntorno> EntornoFalse { get; }
+        public Dictionary<string, Symbol> SimbolosFalse { get; }
+        public ParseTreeNode SubArbolFalse { get; }
+
+        public Dictionary<string, Symbol> Condicion { get; }
+
+        public Si(LinkedList<IEntorno> entornotrue, Dictionary<string, Symbol> simbolostrue, ParseTreeNode subarboltrue, Dictionary<string, Symbol> condicion)
         {
-            this.SubEntornos = subentornos;
-            this.Simbolos = simbolos;
-            this.SubArbol = subArbol;
+            this.EntornoTrue = entornotrue;
+            this.SimbolosTrue = simbolostrue;
+            this.SubArbolTrue = subarboltrue;
+            this.Condicion = condicion;
+        }
+        public Si(LinkedList<IEntorno> entornotrue, Dictionary<string, Symbol> simbolostrue, ParseTreeNode subarboltrue, Dictionary<string, Symbol> condicion,
+            LinkedList<IEntorno> entornofalse, Dictionary<string, Symbol> simbolosfalse, ParseTreeNode subarbolfalse)
+        {
+            this.EntornoTrue = entornotrue;
+            this.SimbolosTrue = simbolostrue;
+            this.SubArbolTrue = subarboltrue;
+            this.Condicion = condicion;
+            this.EntornoFalse = entornofalse;
+            this.SimbolosFalse = simbolosfalse;
+            this.SubArbolFalse = subarbolfalse;
         }
     }
 }

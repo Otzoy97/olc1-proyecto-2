@@ -10,11 +10,14 @@ namespace PROYECTO.Gramatica.Entorno.Loop
         public new Dictionary<string, Symbol> Simbolos { get; }
         public new ParseTreeNode SubArbol { get; }
 
-        public Mientras(LinkedList<IEntorno> subentornos, Dictionary<string, Symbol> simbolos, ParseTreeNode subArbol)
+        public Dictionary<string,Symbol> Condicion { get; }
+
+        public Mientras(LinkedList<IEntorno> subentornos, Dictionary<string, Symbol> simbolos, ParseTreeNode subArbol, Dictionary<string, Symbol> condicion)
         {
             this.SubEntornos = subentornos;
             this.Simbolos = simbolos;
             this.SubArbol = subArbol;
+            this.Condicion = condicion;
         }
     }
 }

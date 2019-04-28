@@ -55,8 +55,12 @@
     <Compile Include="Archivo\ASTHtml.cs" />
     <Compile Include="Archivo\ERRHtml.cs" />
     <Compile Include="Archivo\ES.cs" />
+    <Compile Include="Gramatica\Acciones\IAccion.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\IOperacion.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Suma.cs" />
     <Compile Include="Gramatica\Entorno\Clase.cs" />
-    <Compile Include="Gramatica\Entorno\Condicional\Comprobar.cs" />
+    <Compile Include="Gramatica\Entorno\Condicional\Switch\Caso.cs" />
+    <Compile Include="Gramatica\Entorno\Condicional\Switch\Comprobar.cs" />
     <Compile Include="Gramatica\Entorno\Condicional\Si.cs" />
     <Compile Include="Gramatica\Entorno\IEntorno.cs" />
     <Compile Include="Gramatica\Entorno\Funcion.cs" />
@@ -64,6 +68,7 @@
     <Compile Include="Gramatica\Entorno\Loop\Mientras.cs" />
     <Compile Include="Gramatica\Entorno\Loop\Para.cs" />
     <Compile Include="Gramatica\Entorno\Loop\Repetir.cs" />
+    <Compile Include="Gramatica\Simbolo\ISimbolo.cs" />
     <Compile Include="Gramatica\Simbolo\Simbolo.cs" />
     <Compile Include="Gramatica\Sintactico.cs" />
     <Compile Include="Main.cs">
@@ -103,9 +108,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Gramatica\Acciones\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="External\cdt.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
