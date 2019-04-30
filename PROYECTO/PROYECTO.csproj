@@ -68,6 +68,7 @@
     <Compile Include="Gramatica\Entorno\Loop\Mientras.cs" />
     <Compile Include="Gramatica\Entorno\Loop\Para.cs" />
     <Compile Include="Gramatica\Entorno\Loop\Repetir.cs" />
+    <Compile Include="Gramatica\Recorrido.cs" />
     <Compile Include="Gramatica\Simbolo\ISimbolo.cs" />
     <Compile Include="Gramatica\Simbolo\Simbolo.cs" />
     <Compile Include="Gramatica\Sintactico.cs" />
@@ -108,7 +109,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Gramatica\Acciones\Nativa\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="External\cdt.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
