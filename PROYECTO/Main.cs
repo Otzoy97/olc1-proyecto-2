@@ -6,7 +6,6 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-
 namespace PROYECTO
 {
     public partial class Main : Form
@@ -265,8 +264,12 @@ namespace PROYECTO
             } else
             {
                 try {
-                    var Errores = new ERRHtml(arbol.Tokens);
-                    this.SaveFile("Errores.html",Errores.GenerarHTML());
+                    //var Errores = new ERRHtml();.
+                    foreach (var msg in arbol.ParserMessages)
+                    {
+                        Console.WriteLine(String.Format("{0} - {1}, ({2},{3}), {4}",msg.Level,msg.Message,msg.Location.Line,msg.Location.Column,msg.ParserState));
+                    }
+                    //this.SaveFile("Errores.html",Errores.GenerarHTML());
                 }
                  catch (Exception) { }
             }

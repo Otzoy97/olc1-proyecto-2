@@ -6,7 +6,6 @@ namespace PROYECTO.Gramatica.Entorno
 {
     class Funcion : Clase, IEntorno
     {
-
         public new LinkedList<IEntorno> SubEntornos { get; }
         public new Dictionary<string, Symbol> Simbolos { get; }
         public ParseTreeNode SubArbol { get; }
