@@ -9,7 +9,7 @@ namespace PROYECTO.Gramatica.Entorno
         public new LinkedList<IEntorno> SubEntornos { get; }
         public new Dictionary<string, Symbol> Simbolos { get; }
         public ParseTreeNode SubArbol { get; }
-
+        public bool EsPrivado { get; set; }
         public Funcion()
         {
             SubEntornos = null;
