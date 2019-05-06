@@ -69,8 +69,7 @@
     <Compile Include="Gramatica\Entorno\Loop\Para.cs" />
     <Compile Include="Gramatica\Entorno\Loop\Repetir.cs" />
     <Compile Include="Gramatica\Recorrido.cs" />
-    <Compile Include="Gramatica\Simbolo\ISimbolo.cs" />
-    <Compile Include="Gramatica\Simbolo\Simbolo.cs" />
+    <Compile Include="Gramatica\Entorno\Simbolo.cs" />
     <Compile Include="Gramatica\Sintactico.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>

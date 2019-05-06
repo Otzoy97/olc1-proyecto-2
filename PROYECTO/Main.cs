@@ -254,6 +254,7 @@ namespace PROYECTO
         /// <param name="e"></param>
         private void ItemCompilar_Click(object sender, EventArgs e)
         {
+            /*
             Parser p = new Parser(new LanguageData(new Sintactico()));
             ParseTree arbol = p.Parse(((FastColoredTextBox)TabInput.SelectedTab.Controls[0]).Text);
             if (arbol.Root != null)
@@ -261,6 +262,7 @@ namespace PROYECTO
                 var ASTGraph = new ASTHtml(arbol.Root);
                 
                 this.SaveFile("ASTGraph.html", ASTGraph.GenerarHTML());
+                new Recorrido().CrearClase(arbol.Root);
             } else
             {
                 try {
@@ -272,7 +274,9 @@ namespace PROYECTO
                     //this.SaveFile("Errores.html",Errores.GenerarHTML());
                 }
                  catch (Exception) { }
-            }
+            }*/
+            int flag;
+            Console.WriteLine(flag);
         }
 
         private void ItemErrores_Click(object sender, EventArgs e)

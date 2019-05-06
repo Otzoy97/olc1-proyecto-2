@@ -53,16 +53,16 @@ namespace PROYECTO.Gramatica
             var NOT = ToTerm("!", "NOT");
             /*-------- RESERVADAS --------*/
             /*-------- DEFINICION DE TIPOS --------*/
-            var INT = ToTerm("int", "INT");
-            var CHAR = ToTerm("char", "CHAR");
-            var STRING = ToTerm("string", "STRING");
-            var DOUBLE = ToTerm("double", "DOUBLE");
-            var BOOL = ToTerm("bool", "BOOL");
+            var INT = ToTerm("int", "tkINT");
+            var CHAR = ToTerm("char", "tkCHAR");
+            var STRING = ToTerm("string", "tkSTR");
+            var DOUBLE = ToTerm("double", "tkDOUBLE");
+            var BOOL = ToTerm("bool", "tkBOOL");
             var VOID = ToTerm("void", "VOID");
-            var ARRAY = ToTerm("array", "ARRAY");
+            var ARRAY = ToTerm("array", "tkARR");
             /*-------- CLASES --------*/
-            var PUBLICO = ToTerm("publico", "PUBLICO");
-            var PRIVADO = ToTerm("privado", "PRIVADO");
+            var PUBLICO = ToTerm("publico", "tkVISIBLE");
+            var PRIVADO = ToTerm("privado", "tkVISIBLE");
             var OVERRIDE = ToTerm("override", "OVERRIDE");
             var IMPORTAR = ToTerm("importar", "IMPORTAR");
             var NEW = ToTerm("new", "NEW");
