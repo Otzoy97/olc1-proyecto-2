@@ -1,5 +1,4 @@
-﻿using PROYECTO.Gramatica.Simbolo;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Irony.Parsing;
 
 namespace PROYECTO.Gramatica.Entorno
@@ -13,7 +12,7 @@ namespace PROYECTO.Gramatica.Entorno
         /// <summary>
         /// Almacenará todo tipo de dato que se declare (int,string,bool,char,double,clases)
         /// </summary>
-        public Dictionary<string, Symbol> Simbolos { get; set; }
+        public Dictionary<string, Simbolo> Simbolos { get; set; }
         /// <summary>
         /// Almacenará cualquier otras clases que se hayan importado
         /// -Esto se especificará en la segunda pasada-
@@ -30,7 +29,7 @@ namespace PROYECTO.Gramatica.Entorno
         public Clase()
         {
             SubEntornos = new Dictionary<string, Funcion>();
-            Simbolos = new Dictionary<string, Symbol>();
+            Simbolos = new Dictionary<string, Simbolo>();
             Imports = null;
             SubArbolImports = null;
         }

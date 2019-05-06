@@ -1,5 +1,4 @@
 ﻿using Irony.Parsing;
-using PROYECTO.Gramatica.Simbolo;
 using System.Collections.Generic;
 
 namespace PROYECTO.Gramatica.Entorno.Loop
@@ -7,13 +6,13 @@ namespace PROYECTO.Gramatica.Entorno.Loop
     class Para : Funcion, IEntorno
     {
         public new LinkedList<IEntorno> SubEntornos { get; }
-        public new Dictionary<string, Symbol> Simbolos { get; }
+        public new Dictionary<string, Simbolo> Simbolos { get; }
         public new ParseTreeNode SubArbol { get; }
 
-        public Dictionary<string, Symbol> Variable { get; }
+        public Dictionary<string, Simbolo> Variable { get; }
         public ParseTreeNode Condicion { get; }
         
-        public Para(LinkedList<IEntorno> subentornos, Dictionary<string, Symbol> simbolos, ParseTreeNode subArbol, Dictionary<string, Symbol> variable, ParseTreeNode condicion)
+        public Para(LinkedList<IEntorno> subentornos, Dictionary<string, Simbolo> simbolos, ParseTreeNode subArbol, Dictionary<string, Simbolo> variable, ParseTreeNode condicion)
         {
             this.SubEntornos = subentornos;
             this.Simbolos = simbolos;

@@ -1,5 +1,4 @@
 ﻿using Irony.Parsing;
-using PROYECTO.Gramatica.Simbolo;
 using System.Collections.Generic;
 
 namespace PROYECTO.Gramatica.Entorno
@@ -7,7 +6,7 @@ namespace PROYECTO.Gramatica.Entorno
     class Funcion : Clase, IEntorno
     {
         public new LinkedList<IEntorno> SubEntornos { get; }
-        public new Dictionary<string, Symbol> Simbolos { get; }
+        public new Dictionary<string, Simbolo> Simbolos { get; }
         public ParseTreeNode SubArbol { get; }
         public bool EsPrivado { get; set; }
         public Funcion()
@@ -17,7 +16,7 @@ namespace PROYECTO.Gramatica.Entorno
             SubArbol = null;
         }
 
-        public Funcion(LinkedList<IEntorno> subentornos, Dictionary<string, Symbol> simbolos, ParseTreeNode subArbol)
+        public Funcion(LinkedList<IEntorno> subentornos, Dictionary<string, Simbolo> simbolos, ParseTreeNode subArbol)
         {
             this.SubEntornos = subentornos;
             this.Simbolos = simbolos;

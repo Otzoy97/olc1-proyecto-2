@@ -1,5 +1,4 @@
 ﻿using Irony.Parsing;
-using PROYECTO.Gramatica.Simbolo;
 using System.Collections.Generic;
 
 namespace PROYECTO.Gramatica.Entorno.Loop
@@ -7,12 +6,12 @@ namespace PROYECTO.Gramatica.Entorno.Loop
     class Repetir : Funcion, IEntorno
     {
         public new LinkedList<IEntorno> SubEntornos { get; }
-        public new Dictionary<string, Symbol> Simbolos { get; }
+        public new Dictionary<string, Simbolo> Simbolos { get; }
         public new ParseTreeNode SubArbol { get; }
 
-        public Dictionary<string, Symbol> Iteracion { get; }
+        public ParseTreeNode Iteracion { get; }
 
-        public Repetir(LinkedList<IEntorno> subentornos, Dictionary<string, Symbol> simbolos, ParseTreeNode subArbol, Dictionary<string, Symbol> iteracion)
+        public Repetir(LinkedList<IEntorno> subentornos, Dictionary<string, Simbolo> simbolos, ParseTreeNode subArbol, ParseTreeNode iteracion)
         {
             this.SubEntornos = subentornos;
             this.Simbolos = simbolos;

@@ -1,10 +1,11 @@
 ﻿using System.Windows.Forms;
 
-namespace PROYECTO.Gramatica.Simbolo
+namespace PROYECTO.Gramatica.Entorno
 {
     public enum Tipo
     {
-        INT, STRING, DOUBLE, CHAR, BOOLEAN, CLASE
+        INT, STRING, DOUBLE, CHAR, BOOLEAN, CLASE, 
+        INTARR, STRINGARR, DOUBLEARR, CHARARR, BOOLEANARR, CLASEARR
     }
 
     public class Posicion
@@ -22,7 +23,7 @@ namespace PROYECTO.Gramatica.Simbolo
 
     }
 
-    public class Symbol
+    public class Simbolo
     {
         public object dat;
         public Posicion Posicion { get; set; }
@@ -46,13 +47,18 @@ namespace PROYECTO.Gramatica.Simbolo
         }
         public Tipo TipoDato { get; set; }
         public bool EsPrivado { get; set; }
-
-        Symbol(Posicion pos, object dato, Tipo tipoDato)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <param name="dato"></param>
+        /// <param name="tipoDato"></param>
+        public Simbolo(Posicion pos, object dato, bool esPrivado, Tipo tipoDato)
         {
             this.Posicion = pos;
             this.Dato = dato;
             this.TipoDato = tipoDato;
-            this.EsPrivado = false;
+            this.EsPrivado = esPrivado;
         }
     }
 }
