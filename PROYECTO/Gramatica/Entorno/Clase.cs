@@ -22,7 +22,7 @@ namespace PROYECTO.Gramatica.Entorno
         /// Servirá de auxilio para determinar cuales son las clases que se hayan importado
         /// -Servirá en la primera pasada-
         /// </summary>
-        public ParseTreeNode ClaseImpTree { get; set; }
+        public ParseTreeNodeList ClaseImpTree { get; set; }
         /// <summary>
         /// Constructor por defecto
         /// </summary>

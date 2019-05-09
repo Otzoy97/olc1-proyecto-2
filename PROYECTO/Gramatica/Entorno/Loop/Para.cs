@@ -7,12 +7,12 @@ namespace PROYECTO.Gramatica.Entorno.Loop
     {
         public LinkedList<IEntorno> ForEnt { get; }
         public Dictionary<string, Simbolo> ForSym { get; }
-        public ParseTreeNode ForTree { get; }
+        public ParseTreeNodeList ForTree { get; }
 
         public Dictionary<string, Simbolo> ForVar { get; }
-        public ParseTreeNode ForCond { get; }
+        public ParseTreeNodeList ForCond { get; }
 
-        public Para(Dictionary<string, Simbolo> variable, ParseTreeNode acciones, ParseTreeNode condicion)
+        public Para(Dictionary<string, Simbolo> variable, ParseTreeNodeList acciones, ParseTreeNodeList condicion)
         {
             this.ForEnt = new LinkedList<IEntorno>();
             this.ForSym = new Dictionary<string, Simbolo>();

@@ -7,22 +7,22 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
     {
         public LinkedList<IEntorno> IfEnt { get; }
         public Dictionary<string, Simbolo> IfSym { get; }
-        public ParseTreeNode IfTree { get; }
+        public ParseTreeNodeList IfTree { get; }
 
         public LinkedList<IEntorno> ElseEnt { get; }
         public Dictionary<string, Simbolo> ElseSym { get; }
-        public ParseTreeNode ElseTree { get; }
+        public ParseTreeNodeList ElseTree { get; }
 
-        public ParseTreeNode Condicion { get; }
+        public ParseTreeNodeList Condicion { get; }
 
-        public Si(ParseTreeNode condicion, ParseTreeNode accionesTrue)
+        public Si(ParseTreeNodeList condicion, ParseTreeNodeList accionesTrue)
         {
             this.IfEnt = new LinkedList<IEntorno>();
             this.IfSym = new Dictionary<string, Simbolo>();
-            this.IfTree = accionesTrue;
+            this.IfTree = subarboltrue;
             this.Condicion = condicion;
         }
-        public Si(ParseTreeNode condicion, ParseTreeNode accionesTrue, ParseTreeNode accionesFalse)
+        public Si(ParseTreeNodeList condicion, ParseTreeNodeList accionesTrue, ParseTreeNodeList accionesFalse)
         {
             this.IfEnt = new LinkedList<IEntorno>();
             this.IfSym = new Dictionary<string, Simbolo>();

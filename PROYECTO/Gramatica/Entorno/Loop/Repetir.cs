@@ -7,11 +7,11 @@ namespace PROYECTO.Gramatica.Entorno.Loop
     {
         public LinkedList<IEntorno> RepeatEnt { get; }
         public Dictionary<string, Simbolo> RepeatSym { get; }
-        public ParseTreeNode RepeatTree { get; }
+        public ParseTreeNodeList RepeatTree { get; }
 
-        public ParseTreeNode Iteracion { get; }
+        public ParseTreeNodeList Iteracion { get; }
 
-        public Repetir(ParseTreeNode subArbol, ParseTreeNode iteracion)
+        public Repetir(ParseTreeNodeList subArbol, ParseTreeNodeList iteracion)
         {
             this.RepeatEnt = new LinkedList<IEntorno>();
             this.RepeatSym = new Dictionary<string, Simbolo>();

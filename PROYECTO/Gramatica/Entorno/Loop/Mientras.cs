@@ -7,11 +7,11 @@ namespace PROYECTO.Gramatica.Entorno.Loop
     {
         public LinkedList<IEntorno> WhileEnt { get; }
         public Dictionary<string, Simbolo> WhileSym { get; }
-        public ParseTreeNode WhileTree { get; }
+        public ParseTreeNodeList WhileTree { get; }
 
-        public ParseTreeNode WhileCond { get; }
+        public ParseTreeNodeList WhileCond { get; }
 
-        public Mientras(ParseTreeNode acciones, ParseTreeNode condicion)
+        public Mientras(ParseTreeNodeList acciones, ParseTreeNodeList condicion)
         {
             this.WhileEnt = new LinkedList<IEntorno>();
             this.WhileSym = new Dictionary<string, Simbolo>();
