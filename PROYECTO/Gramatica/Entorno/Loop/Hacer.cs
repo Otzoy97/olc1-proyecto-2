@@ -7,12 +7,12 @@ namespace PROYECTO.Gramatica.Entorno.Loop
     {
         public LinkedList<IEntorno> DoEnt { get; }
         public Dictionary<string, Simbolo> DoSym { get; }
-        public ParseTreeNodeList DoTree { get; }
+        public ParseTreeNode DoTree { get; }
 
-        public ParseTreeNodeList DoCond { get; }
+        public ParseTreeNode DoCond { get; }
 
 
-        public Hacer(ParseTreeNodeList acciones, ParseTreeNodeList condicion)
+        public Hacer(ParseTreeNode acciones, ParseTreeNode condicion)
         {
             this.DoEnt = new LinkedList<IEntorno>();
             this.DoSym = new Dictionary<string, Simbolo>();
