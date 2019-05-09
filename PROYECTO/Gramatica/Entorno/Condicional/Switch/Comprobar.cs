@@ -13,5 +13,11 @@ namespace PROYECTO.Gramatica.Entorno.Condicional.Switch
             this.Casos = new LinkedList<IEntorno>();
             this.Variable = variable;
         }
+
+        public Comprobar()
+        {
+            this.Casos = new LinkedList<IEntorno>();
+            this.Variable = null;
+        }
     }
 }
