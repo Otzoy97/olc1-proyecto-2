@@ -219,7 +219,9 @@ namespace PROYECTO.Gramatica
                 | VISIBILIDAD + DATATYPE + ARRAY + VARLIST + DIMENSION_LIST + ASIGNACION + ARRCONTENT;
             //var = oper;
             //var[oper] = oper;
-            ASSIGNMENT.Rule = Variable + ASIGNACION + OPER | Variable + DIMENSION_LIST + ASIGNACION + OPER | OPER;
+            ASSIGNMENT.Rule = Variable + ASIGNACION + OPER 
+                | Variable + DIMENSION_LIST + ASIGNACION + OPER 
+                | OPER;
             #endregion
 
             #region OPERACIONES

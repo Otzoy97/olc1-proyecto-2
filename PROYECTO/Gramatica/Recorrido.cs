@@ -38,7 +38,8 @@ namespace PROYECTO.Gramatica
                         if (!Clases.ContainsKey(nombreClase))
                         {
                             punteroClase = new Clase();
-                            
+                            this.Clases.Add(rama.ChildNodes[0].Token.Value.ToString(), punteroClase);
+                            this.CrearEntorno(rama.ChildNodes[1]);
                         }
                         else
                         {
@@ -46,6 +47,20 @@ namespace PROYECTO.Gramatica
                         }
                         break;
                     case 3:
+                        //Primero verifica que no exista esa clase ya en el Diccionario
+                        if (!Clases.ContainsKey(rama.ChildNodes[0].Token.Value.ToString()))
+                        {
+                            punteroClase = new Clase
+                            {
+                                ClaseImpTree = rama.ChildNodes[1]
+                            };
+                            this.Clases.Add(rama.ChildNodes[0].Token.Value.ToString(), punteroClase);
+                            this.CrearEntorno(rama.ChildNodes[2]);
+                        }
+                        else
+                        {
+                            //No puede haber dos clases con el mismo nombre
+                        }
                         break;
                     default:
                         Console.WriteLine("No sé we, algo petó :'v");
@@ -59,7 +74,7 @@ namespace PROYECTO.Gramatica
             {
                 //Apuntador al nodo hijo de esta rama
                 var ramaAux = rama.ChildNodes;
-                switch (rama.Token.KeyTerm.Name)
+                switch (rama.Term.Name)
                 {
                     case "DECLARACION":
                         //Obtiene la posición de la variable
@@ -74,43 +89,79 @@ namespace PROYECTO.Gramatica
                             //Elimna el nodo 
                             ramaAux.RemoveAt(0);
                         }
-                        //Recupera el tipo de dato que se debe guardar
-                        var dataType = this.GetTipoDato(ramaAux[0].Token.Text, ramaAux[1].Token.KeyTerm.Name.Equals("tkARR"));
-                        //Elimina el nodo del tipo de dato
-                        ramaAux.RemoveAt(0);
+                        //Obtiene el tipo de dato
+                        Tipo dataType = GetTipoDato(ramaAux);
                         //Contando el número de nodos que posee el Nodo padre
-                        //Ejecuta diferente acciones
-                        switch (ramaAux.Count)
+                        //ejecuta diferente acciones
+                        switch (dataType)
                         {
-                            case 1:
-                                //Declaración simple sin asignación
-                                //Recorre la lista de nodos hijos y crea los simbolos 
+                            case Tipo.INT:
+                            case Tipo.STRING:
+                            case Tipo.DOUBLE:
+                            case Tipo.CHAR:
+                            case Tipo.BOOLEAN:
+                            case Tipo.CLASE:
                                 foreach (var varlst in ramaAux[0].ChildNodes)
                                 {
-                                    punteroClase.Simbolos.Add(varlst.Token.Text, new Simbolo(pos, null, esPrivado, dataType));
+                                    if (!punteroClase.ClaseSym.ContainsKey(varlst.Token.Text))
+                                    {
+                                        punteroClase.ClaseSym.Add(varlst.Token.Text, new Simbolo(pos, esPrivado, ramaAux.Count != 2 ? null : ramaAux[1], dataType));
+                                    }
+                                    else
+                                    {
+                                        //Error variable duplicada
+                                    }
                                 }
                                 break;
-                            case 2:
-                                //Declaración array sin asignación
-                                if (ramaAux[1].Token.KeyTerm.Name.Equals("DIMENSION_LIST"))
+                            case Tipo.INTARR:
+                            case Tipo.STRINGARR:
+                            case Tipo.DOUBLEARR:
+                            case Tipo.CHARARR:
+                            case Tipo.BOOLEANARR:
+                            case Tipo.CLASEARR:
+                                if (ramaAux[1].ChildNodes.Count > 3)
                                 {
-
-                                } else
-                                //Declaración simple con asignación
-                                if (ramaAux[1].Token.KeyTerm.Name.Equals("OPER"))
-                                {
-
+                                    //Marcar error de dimensiones máximas 
                                 }
-                                break;
-                            case 3:
-                                
-                                break;
-                            case 4:
-                                //Declaración array con asignación
+                                else
+                                {
+                                    //Guarda el array
+                                    foreach (var varlst in ramaAux[0].ChildNodes)
+                                    {
+                                        if (!punteroClase.ClaseSym.ContainsKey(varlst.Token.Text))
+                                        {
+                                            punteroClase.ClaseSym.Add(varlst.Token.Text, new Simbolo(pos, esPrivado, ramaAux.Count != 3 ? null : ramaAux[2], ramaAux[1], dataType));
+                                        }
+                                        else
+                                        {
+                                            //Error variable duplicada
+                                        }
+                                    }
+                                }
                                 break;
                         }
                         break;
                     case "MAIN_STA":
+                        //Verifica que no exista ya un main
+                        if (!punteroClase.ClaseEnt.ContainsKey("main"))
+                        {
+                            //Crea el subentorno main
+                            Funcion main = new Funcion
+                            {
+                                //Enlaza el hijo con el padre
+                                ClaseSym = punteroClase.ClaseSym,
+                                ClaseImp = punteroClase.ClaseImp,
+                                ClaseEnt = punteroClase.ClaseEnt,
+                                ClaseImpTree = punteroClase.ClaseImpTree
+                            };
+                            //Establece los atributos de la funcion
+                            punteroClase.ClaseEnt.Add("main",main);
+                        }
+                        else
+                        {
+                            //Arroja error de dos main en la misma clase
+                            Console.WriteLine("Main duplicado. No pueden existir dos main en la misma clase");
+                        }
                         break;
                     case "FUNCION":
                         break;
@@ -120,15 +171,29 @@ namespace PROYECTO.Gramatica
             }
         }
         /// <summary>
-        /// Determina el tipo de dato que se utilizará dada la cadena de entrada
+        /// Determina el tipo de dato que se utilizará según la lista de nodo dada
         /// </summary>
-        /// <param name="tipoDato">cadena que especifica el tipo de dato</param>
-        /// <param name="esArray">determina si el tipo de dato es un array o no</param>
+        /// <param name="tipoDato">Lista de nodos que contiene la info de una declaración de variable</param>
         /// <returns></returns>
-        private Tipo GetTipoDato(string tipoDato, bool esArray)
+        private Tipo GetTipoDato(ParseTreeNodeList tipoDato)
         {
+            //Servirá para determinar si la variable es o no un array
+            bool esArray = false;
+            switch (tipoDato.Count)
+            {
+                case 2:
+                    esArray = false;
+                    break;
+                case 3:
+                    esArray = tipoDato[2].Term.Name.Equals("DIMENSION_LIST");
+                    break;
+                case 4:
+                    esArray = true;
+                    break;
+            }
+            //Establece el tipo de dato
             Tipo tipo = esArray ? Tipo.CLASEARR : Tipo.CLASE;
-            switch (tipoDato)
+            switch (tipoDato[0].Token.Text)
             {
                 case "int":
                     tipo = esArray ? Tipo.INTARR : Tipo.INT;
@@ -146,30 +211,9 @@ namespace PROYECTO.Gramatica
                     tipo = esArray ? Tipo.DOUBLEARR : Tipo.DOUBLE;
                     break;
             }
+            //Elimina el nodo, pues ya se recuperó la info deseada
+            tipoDato.RemoveAt(0);
             return tipo;
         }
-
-
-
-        public void RecorrerVarList(ParseTreeNodeList Root, Posicion Location)
-        {
-            foreach (var Nodo in Root) { 
-                switch ()
-                {   
-                    case "int":
-                        break;
-                    case "string":
-                        break;
-                    case "bool":
-                        break;
-                    case "char":
-                        break;
-                    case "double":
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-    
+    }
 }
