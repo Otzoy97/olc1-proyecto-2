@@ -6,17 +6,17 @@ namespace PROYECTO.Gramatica.Entorno.Condicional.Switch
 {
     class Caso : Comprobar
     {
-        public new LinkedList<IEntorno> SubEntornos { get; }
-        public new Dictionary<string, Simbolo> Simbolos { get; }
-        public new ParseTreeNode SubArbol { get; }
+        public LinkedList<IEntorno> CaseEnt { get; }
+        public Dictionary<string, Simbolo> CaseSym { get; }
+        public ParseTreeNode CaseTree { get; }
 
         public ParseTreeNode Condicion;
 
-        public Caso(LinkedList<IEntorno> subentornos, Dictionary<string, Simbolo> simbolos, ParseTreeNode subarbol, ParseTreeNode variable)
+        public Caso(ParseTreeNode acciones, ParseTreeNode variable)
         {
-            this.SubEntornos = subentornos;
-            this.Simbolos = simbolos;
-            this.SubArbol = subarbol;
+            this.CaseEnt = new LinkedList<IEntorno>();
+            this.CaseSym = new Dictionary<string, Simbolo>();
+            this.CaseTree = acciones;
             this.Condicion = variable;
         }
     }

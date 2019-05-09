@@ -5,17 +5,17 @@ namespace PROYECTO.Gramatica.Entorno.Loop
 {
     class Repetir : Funcion, IEntorno
     {
-        public new LinkedList<IEntorno> SubEntornos { get; }
-        public new Dictionary<string, Simbolo> Simbolos { get; }
-        public new ParseTreeNode SubArbol { get; }
+        public LinkedList<IEntorno> RepeatEnt { get; }
+        public Dictionary<string, Simbolo> RepeatSym { get; }
+        public ParseTreeNodeList RepeatTree { get; }
 
-        public ParseTreeNode Iteracion { get; }
+        public ParseTreeNodeList Iteracion { get; }
 
-        public Repetir(LinkedList<IEntorno> subentornos, Dictionary<string, Simbolo> simbolos, ParseTreeNode subArbol, ParseTreeNode iteracion)
+        public Repetir(ParseTreeNodeList subArbol, ParseTreeNodeList iteracion)
         {
-            this.SubEntornos = subentornos;
-            this.Simbolos = simbolos;
-            this.SubArbol = subArbol;
+            this.RepeatEnt = new LinkedList<IEntorno>();
+            this.RepeatSym = new Dictionary<string, Simbolo>();
+            this.RepeatTree = subArbol;
             this.Iteracion = iteracion;
         }
     }

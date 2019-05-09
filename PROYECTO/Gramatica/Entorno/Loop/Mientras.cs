@@ -5,18 +5,18 @@ namespace PROYECTO.Gramatica.Entorno.Loop
 {
     class Mientras: Funcion, IEntorno
     {
-        public new LinkedList<IEntorno> SubEntornos { get; }
-        public new Dictionary<string, Simbolo> Simbolos { get; }
-        public new ParseTreeNode SubArbol { get; }
+        public LinkedList<IEntorno> WhileEnt { get; }
+        public Dictionary<string, Simbolo> WhileSym { get; }
+        public ParseTreeNodeList WhileTree { get; }
 
-        public ParseTreeNode Condicion { get; }
+        public ParseTreeNodeList WhileCond { get; }
 
-        public Mientras(LinkedList<IEntorno> subentornos, Dictionary<string, Simbolo> simbolos, ParseTreeNode subArbol, ParseTreeNode condicion)
+        public Mientras(ParseTreeNodeList acciones, ParseTreeNodeList condicion)
         {
-            this.SubEntornos = subentornos;
-            this.Simbolos = simbolos;
-            this.SubArbol = subArbol;
-            this.Condicion = condicion;
+            this.WhileEnt = new LinkedList<IEntorno>();
+            this.WhileSym = new Dictionary<string, Simbolo>();
+            this.WhileTree = acciones;
+            this.WhileCond = condicion;
         }
     }
 }

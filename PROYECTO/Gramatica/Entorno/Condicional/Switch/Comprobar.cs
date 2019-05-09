@@ -6,16 +6,11 @@ namespace PROYECTO.Gramatica.Entorno.Condicional.Switch
     class Comprobar:Funcion, IEntorno
     {
         public LinkedList<IEntorno> Casos { get; }
-        public ParseTreeNode Variable { get; }
+        public ParseTreeNodeList Variable { get; }
 
-        public Comprobar()
+        public Comprobar(ParseTreeNodeList variable)
         {
-            this.Casos = null;
-        }
-
-        public Comprobar(LinkedList<IEntorno> casos, ParseTreeNode variable)
-        {
-            this.Casos = casos;
+            this.Casos = new LinkedList<IEntorno>();
             this.Variable = variable;
         }
     }

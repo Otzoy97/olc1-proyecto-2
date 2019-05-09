@@ -5,19 +5,19 @@ namespace PROYECTO.Gramatica.Entorno.Loop
 {
     class Hacer : Funcion, IEntorno
     {
-        public new LinkedList<IEntorno> SubEntornos { get; }
-        public new Dictionary<string, Simbolo> Simbolos { get; }
-        public new ParseTreeNode SubArbol { get; }
+        public LinkedList<IEntorno> DoEnt { get; }
+        public Dictionary<string, Simbolo> DoSym { get; }
+        public ParseTreeNodeList DoTree { get; }
 
-        public ParseTreeNode Condicion { get; }
+        public ParseTreeNodeList DoCond { get; }
 
 
-        public Hacer(LinkedList<IEntorno> subentornos, Dictionary<string, Simbolo> simbolos, ParseTreeNode subArbol, ParseTreeNode condicion)
+        public Hacer(ParseTreeNodeList acciones, ParseTreeNodeList condicion)
         {
-            this.SubEntornos = subentornos;
-            this.Simbolos = simbolos;
-            this.SubArbol = subArbol;
-            this.Condicion = condicion;
+            this.DoEnt = new LinkedList<IEntorno>();
+            this.DoSym = new Dictionary<string, Simbolo>();
+            this.DoTree = acciones;
+            this.DoCond = condicion;
         }
     }
 }

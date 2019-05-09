@@ -5,33 +5,32 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
 {
     class Si : Funcion, IEntorno
     {
-        public LinkedList<IEntorno> EntornoTrue { get; }
-        public Dictionary<string, Simbolo> SimbolosTrue { get; }
-        public ParseTreeNode SubArbolTrue { get; }
+        public LinkedList<IEntorno> IfEnt { get; }
+        public Dictionary<string, Simbolo> IfSym { get; }
+        public ParseTreeNodeList IfTree { get; }
 
-        public LinkedList<IEntorno> EntornoFalse { get; }
-        public Dictionary<string, Simbolo> SimbolosFalse { get; }
-        public ParseTreeNode SubArbolFalse { get; }
+        public LinkedList<IEntorno> ElseEnt { get; }
+        public Dictionary<string, Simbolo> ElseSym { get; }
+        public ParseTreeNodeList ElseTree { get; }
 
-        public ParseTreeNode Condicion { get; }
+        public ParseTreeNodeList Condicion { get; }
 
-        public Si(LinkedList<IEntorno> entornotrue, Dictionary<string, Simbolo> simbolostrue, ParseTreeNode subarboltrue, ParseTreeNode condicion)
+        public Si(ParseTreeNodeList condicion, ParseTreeNodeList accionesTrue)
         {
-            this.EntornoTrue = entornotrue;
-            this.SimbolosTrue = simbolostrue;
-            this.SubArbolTrue = subarboltrue;
+            this.IfEnt = new LinkedList<IEntorno>();
+            this.IfSym = new Dictionary<string, Simbolo>();
+            this.IfTree = subarboltrue;
             this.Condicion = condicion;
         }
-        public Si(LinkedList<IEntorno> entornotrue, Dictionary<string, Simbolo> simbolostrue, ParseTreeNode subarboltrue, ParseTreeNode condicion,
-            LinkedList<IEntorno> entornofalse, Dictionary<string, Simbolo> simbolosfalse, ParseTreeNode subarbolfalse)
+        public Si(ParseTreeNodeList condicion, ParseTreeNodeList accionesTrue, ParseTreeNodeList accionesFalse)
         {
-            this.EntornoTrue = entornotrue;
-            this.SimbolosTrue = simbolostrue;
-            this.SubArbolTrue = subarboltrue;
+            this.IfEnt = new LinkedList<IEntorno>();
+            this.IfSym = new Dictionary<string, Simbolo>();
+            this.IfTree = accionesTrue;
             this.Condicion = condicion;
-            this.EntornoFalse = entornofalse;
-            this.SimbolosFalse = simbolosfalse;
-            this.SubArbolFalse = subarbolfalse;
+            this.ElseEnt = new LinkedList<IEntorno>();
+            this.ElseSym = new Dictionary<string, Simbolo>();
+            this.ElseTree = accionesFalse;
         }
     }
 }
