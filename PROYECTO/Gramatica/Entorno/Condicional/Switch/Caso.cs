@@ -10,14 +10,14 @@ namespace PROYECTO.Gramatica.Entorno.Condicional.Switch
         public Dictionary<string, Simbolo> CaseSym { get; }
         public ParseTreeNode CaseTree { get; }
 
-        public ParseTreeNode Condicion;
+        public Simbolo Constante;
 
-        public Caso(ParseTreeNode acciones, ParseTreeNode variable)
+        public Caso(ParseTreeNode acciones, Simbolo variable)
         {
             this.CaseEnt = new LinkedList<IEntorno>();
             this.CaseSym = new Dictionary<string, Simbolo>();
             this.CaseTree = acciones;
-            this.Condicion = variable;
+            this.Constante = variable;
         }
     }
 }
