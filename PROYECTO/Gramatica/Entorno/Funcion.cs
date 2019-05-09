@@ -7,7 +7,7 @@ namespace PROYECTO.Gramatica.Entorno
     {
         public LinkedList<IEntorno> FuncEnt { get; }
         public Dictionary<string, Simbolo> FuncSym { get; }
-        public ParseTreeNodeList FuncTree { get; }
+        public ParseTreeNode FuncTree { get; }
         public bool EsPrivado { get; set; }
 
         public Funcion()
