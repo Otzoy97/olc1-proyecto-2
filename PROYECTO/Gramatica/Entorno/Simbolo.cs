@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using Irony.Parsing;
 
 namespace PROYECTO.Gramatica.Entorno
 {
@@ -12,21 +13,19 @@ namespace PROYECTO.Gramatica.Entorno
     {
         public int Fila { get; set; }
         public int Columna{get;set;}
-        //public TabPage Pestania { get; set; }
 
-        public Posicion(int fila, int columna/*, TabPage pestania*/)
+        public Posicion(int fila, int columna)
         {
             this.Fila = fila;
             this.Columna = columna;
-            //this.Pestania = pestania;
         }
 
     }
 
     public class Simbolo
     {
-        public object dat;
         public Posicion Posicion { get; set; }
+        private object dat;
         public object Dato
         {
             get
@@ -47,18 +46,39 @@ namespace PROYECTO.Gramatica.Entorno
         }
         public Tipo TipoDato { get; set; }
         public bool EsPrivado { get; set; }
+
+        public ParseTreeNode Arr { get; set; }
+        public ParseTreeNode Oper { get; set; }
+
         /// <summary>
-        /// 
+        /// Declaracion/asignación simple
         /// </summary>
         /// <param name="pos"></param>
         /// <param name="dato"></param>
         /// <param name="tipoDato"></param>
-        public Simbolo(Posicion pos, object dato, bool esPrivado, Tipo tipoDato)
+        public Simbolo(Posicion pos, bool esPrivado, ParseTreeNode oper, Tipo tipoDato)
         {
             this.Posicion = pos;
-            this.Dato = dato;
             this.TipoDato = tipoDato;
             this.EsPrivado = esPrivado;
+            this.Oper = oper;
+            this.Dato = null;
+        }
+        /// <summary>
+        /// Declaración/asignación array
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <param name="esPrivado"></param>
+        /// <param name="oper"></param>
+        /// <param name="arr"></param>
+        /// <param name="tipoDato"></param>
+        public Simbolo(Posicion pos, bool esPrivado, ParseTreeNode oper, ParseTreeNode arr, Tipo tipoDato)
+        {
+            this.Posicion = pos;
+            this.TipoDato = tipoDato;
+            this.Oper = oper;
+            this.Arr = arr;
+            this.Dato = null;
         }
     }
 }
