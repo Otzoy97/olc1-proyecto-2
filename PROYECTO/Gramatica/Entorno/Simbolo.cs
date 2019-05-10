@@ -5,7 +5,7 @@ namespace PROYECTO.Gramatica.Entorno
 {
     public enum Tipo
     {
-        INT, STRING, DOUBLE, CHAR, BOOLEAN, CLASE, 
+        VOID, INT, STRING, DOUBLE, CHAR, BOOLEAN, CLASE, 
         INTARR, STRINGARR, DOUBLEARR, CHARARR, BOOLEANARR, CLASEARR
     }
 
@@ -63,6 +63,7 @@ namespace PROYECTO.Gramatica.Entorno
             this.EsPrivado = esPrivado;
             this.Oper = oper;
             this.Dato = null;
+            this.Arr = null;
         }
         /// <summary>
         /// Declaración/asignación array
@@ -76,8 +77,21 @@ namespace PROYECTO.Gramatica.Entorno
         {
             this.Posicion = pos;
             this.TipoDato = tipoDato;
+            this.EsPrivado = esPrivado;
             this.Oper = oper;
             this.Arr = arr;
+            this.Dato = null;
+        }
+        /// <summary>
+        /// Constructor por defecto
+        /// </summary>
+        public Simbolo()
+        {
+            this.Posicion = null;
+            this.TipoDato = Tipo.VOID;
+            this.EsPrivado = false;
+            this.Oper = null;
+            this.Arr = null;
             this.Dato = null;
         }
     }
