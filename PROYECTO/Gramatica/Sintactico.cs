@@ -60,6 +60,11 @@ namespace PROYECTO.Gramatica
             var BOOL = ToTerm("bool", "tkBOOL");
             var VOID = ToTerm("void", "tkVOID");
             var ARRAY = ToTerm("array", "tkARR");
+            ConstantTerminal CSTBOOL = new ConstantTerminal("CSTBOOL");
+            CSTBOOL.Add("true", true);
+            CSTBOOL.Add("verdadero", true);
+            CSTBOOL.Add("falso", false);
+            CSTBOOL.Add("false", false);
             /*-------- CLASES --------*/
             var PUBLICO = ToTerm("publico", "tkVISIBLE");
             var PRIVADO = ToTerm("privado", "tkVISIBLE");
@@ -246,10 +251,7 @@ namespace PROYECTO.Gramatica
                 | Real
                 | Caracter
                 | Cadena
-                | "false"
-                | "true"
-                | "verdadero"
-                | "falso"
+                | CSTBOOL
                 | Variable
                 | Variable + DIMENSION_LIST
                 | NEW + Identificador + PARIZQ + PARDER
