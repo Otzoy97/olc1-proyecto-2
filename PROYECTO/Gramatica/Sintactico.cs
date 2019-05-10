@@ -58,12 +58,12 @@ namespace PROYECTO.Gramatica
             var STRING = ToTerm("string", "tkSTR");
             var DOUBLE = ToTerm("double", "tkDOUBLE");
             var BOOL = ToTerm("bool", "tkBOOL");
-            var VOID = ToTerm("void", "VOID");
+            var VOID = ToTerm("void", "tkVOID");
             var ARRAY = ToTerm("array", "tkARR");
             /*-------- CLASES --------*/
             var PUBLICO = ToTerm("publico", "tkVISIBLE");
             var PRIVADO = ToTerm("privado", "tkVISIBLE");
-            var OVERRIDE = ToTerm("override", "OVERRIDE");
+            var OVERRIDE = ToTerm("override", "tkOVERR");
             var IMPORTAR = ToTerm("importar", "IMPORTAR");
             var NEW = ToTerm("new", "NEW");
             var MAIN = ToTerm("main", "MAIN");
@@ -176,7 +176,7 @@ namespace PROYECTO.Gramatica
             #endregion
 
             #region PARAMETROS
-            PAR_LST.Rule = MakeStarRule(PAR_LST, COMMA, PAR);
+            PAR_LST.Rule = MakeListRule(PAR_LST, COMMA, PAR,TermListOptions.AllowEmpty);
             PAR.Rule = DATATYPE + Variable | DATATYPE + ARRAY + Variable + DIMENSION_LIST;
             //
             CALL.Rule = Variable + PARIZQ + OPERLIST + PARDER | Variable + PARIZQ + PARDER;
@@ -184,7 +184,7 @@ namespace PROYECTO.Gramatica
 
             #region FUNCION
             FUNCION.Rule = VISIBILIDAD + Identificador + DATATYPE + OVER_STA + PARIZQ + PAR_LST + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER
-                | VISIBILIDAD + Identificador + ARRAY + DATATYPE + DIMENSION + OVER_STA + PARIZQ + PAR_LST + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
+                | VISIBILIDAD + Identificador + ARRAY + DATATYPE + DIMENSION_LIST + OVER_STA + PARIZQ + PAR_LST + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
             #endregion
 
             #region METODO
@@ -202,12 +202,12 @@ namespace PROYECTO.Gramatica
             #region DECLARACION, ASIGNACION Y GET DE VARIABLES Y ARREGLOS
             DATATYPE.Rule = INT | CHAR | STRING | DOUBLE | BOOL | Identificador;
             //var, var , var
-            VARLIST.Rule = MakeListRule(VARLIST, COMMA, Variable);
+            VARLIST.Rule = MakeListRule(VARLIST, COMMA, Variable, TermListOptions.PlusList);
             //[oper][oper][oper]
             DIMENSION_LIST.Rule = MakePlusRule(DIMENSION_LIST, DIMENSION);
             DIMENSION.Rule = CORIZQ + OPER + CORDER;
             //{3,3} {{3,3},{3,3}} {{{3,3},{3,3}},{{3,3},{3,3}}}
-            ARRCONTENT_LIST.Rule = MakeListRule(ARRCONTENT_LIST, COMMA, ARRCONTENT);
+            ARRCONTENT_LIST.Rule = MakeListRule(ARRCONTENT_LIST, COMMA, ARRCONTENT, TermListOptions.PlusList);
             ARRCONTENT.Rule = LLVIZQ + ARRCONTENT_LIST + LLVDER | LLVIZQ + OPERLIST + LLVDER;
             //int var, var, var;
             //int var, var  = oper;
