@@ -68,6 +68,7 @@ namespace PROYECTO.Gramatica
                 }
             }
         }
+
         public void CrearEntorno(ParseTreeNode Raiz)
         {
             foreach (var rama in Raiz.ChildNodes)
@@ -152,7 +153,8 @@ namespace PROYECTO.Gramatica
                                 ClaseSym = punteroClase.ClaseSym,
                                 ClaseImp = punteroClase.ClaseImp,
                                 ClaseEnt = punteroClase.ClaseEnt,
-                                ClaseImpTree = punteroClase.ClaseImpTree
+                                ClaseImpTree = punteroClase.ClaseImpTree,
+                                FuncTree = ramaAux[0] ?? null
                             };
                             //Establece los atributos de la funcion
                             punteroClase.ClaseEnt.Add("main",main);
@@ -164,8 +166,84 @@ namespace PROYECTO.Gramatica
                         }
                         break;
                     case "FUNCION":
-                        break;
                     case "METODO":
+                        esPrivado = false;
+                        //El primer token es tkVISIBLE? entonces verifica el contenido
+                        if (ramaAux[0].Term.Name.ToString().Equals("tkVISIBLE"))
+                        {
+                            esPrivado = ramaAux[0].Token.Text.Equals("privado");
+                            //Elimna el nodo 
+                            ramaAux.RemoveAt(0);
+                        }
+                        //Verifica que no haya duplicados
+                        if (!punteroClase.ClaseEnt.ContainsKey(ramaAux[0].Token.Text))
+                        {
+                            //Recupera el nombre del metodo/función
+                            string nombre = ramaAux[0].Token.Text;
+                            ramaAux.RemoveAt(0);
+                            //Recupera las acciones que debe ejecutar la función/método
+                            var acciones = ramaAux[ramaAux.Count - 1];
+                            ramaAux.RemoveAt(ramaAux.Count - 1);
+                            //Recupera la lista de parametros
+                            var parametros = ramaAux[ramaAux.Count - 1];
+                            ramaAux.RemoveAt(ramaAux.Count - 1);
+                            //Determina si es una sobrecarga o no
+                            bool EsOverride = false;
+                            if (ramaAux[ramaAux.Count -1].Term !=null)
+                            {
+                                if (ramaAux[ramaAux.Count - 1].Term.Name.Equals("tkOVERR"))
+                                {
+                                    //Cambia el estado y elimina el nodo de override
+                                    EsOverride = true;
+                                    ramaAux.RemoveAt(ramaAux.Count - 1);
+                                }
+                            }
+                            //Obtiene el tipo de dato de la función/método
+                            Tipo data = this.GetTipo(rama);
+                            //Crea un simbolo que especifica el tipo a retornar
+                            Simbolo symbol = new Simbolo(new Posicion(0,0),false,null,data);
+                            switch (data)
+                            {
+                                /*case Tipo.INT:
+                                case Tipo.STRING:
+                                case Tipo.DOUBLE:
+                                case Tipo.CHAR:
+                                case Tipo.BOOLEAN:
+                                case Tipo.CLASE:
+                                    symbol = new Simbolo(new Posicion(0, 0), false,, data);
+                                    break;*/
+                                case Tipo.INTARR:
+                                case Tipo.STRINGARR:
+                                case Tipo.DOUBLEARR:
+                                case Tipo.CHARARR:
+                                case Tipo.BOOLEANARR:
+                                case Tipo.CLASEARR:
+                                    symbol = new Simbolo(new Posicion(0, 0), false, null, ramaAux[1], data);
+                                    break;
+                            }
+                            //Crea la funcion/metodo
+                            Funcion func = new Funcion()
+                            {
+                                //Enlaza el hijo con el padre
+                                ClaseSym = punteroClase.ClaseSym,
+                                ClaseImp = punteroClase.ClaseImp,
+                                ClaseEnt = punteroClase.ClaseEnt,
+                                ClaseImpTree = punteroClase.ClaseImpTree,
+                                //Establece los atributos de la funcion
+                                ReturnData = symbol,
+                                EsPrivado = esPrivado,
+                                FuncTree = acciones,
+                                ParTree = parametros,
+                                Override = EsOverride
+                            };
+                            //Agrega la función a la clase
+                            punteroClase.ClaseEnt.Add(nombre, func);
+                        }
+                        else
+                        {
+                            //Arroja error de nombre de función/método duplicado
+                            Console.WriteLine("Función/Método duplicado. Ya existe **{0}**", ramaAux[0].Token.Text);
+                        }
                         break;
                 }
             }
@@ -213,6 +291,45 @@ namespace PROYECTO.Gramatica
             }
             //Elimina el nodo, pues ya se recuperó la info deseada
             tipoDato.RemoveAt(0);
+            return tipo;
+        }
+        /// <summary>
+        /// Determina el tipo de dato que deberá devolver la función/método
+        /// </summary>
+        /// <param name="Raiz"></param>
+        /// <returns></returns>
+        private Tipo GetTipo(ParseTreeNode Raiz)
+        {
+            Tipo tipo = Tipo.VOID;
+            //No es void, entonces determina el tipo de dato
+            if (!Raiz.ChildNodes[0].Term.Name.Equals("tkVOID"))
+            {
+                //Determina el tipo de dato que debe devolver
+                switch (Raiz.ChildNodes[0].Token.Text)
+                {
+                    case "int":
+                        tipo = Tipo.INT;
+                        break;
+                    case "string":
+                        tipo = Tipo.STRING;
+                        break;
+                    case "bool":
+                        tipo = Tipo.BOOLEAN;
+                        break;
+                    case "char":
+                        tipo = Tipo.CHAR;
+                        break;
+                    case "double":
+                        tipo = Tipo.DOUBLE;
+                        break;
+                    default:
+                        tipo = Tipo.CLASE;
+                        break;
+                }
+                //Si hay más de un nodo es unn array
+                tipo = tipo + (Raiz.ChildNodes.Count > 1 ? 6 : 0);
+            }
+
             return tipo;
         }
     }
