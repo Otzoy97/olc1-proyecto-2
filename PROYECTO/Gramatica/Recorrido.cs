@@ -7,18 +7,20 @@ namespace PROYECTO.Gramatica
 {
     class Recorrido
     {
+        /// <summary>
+        /// Almacena todas las clases que el recorrido
+        /// encuentre
+        /// </summary>
         public Dictionary<string, Clase> Clases { get; }
+        /// <summary>
+        /// Se utiliza como una bandera que representa
+        /// la clase que se está trabajando actualmente
+        /// </summary>
         private Clase punteroClase;
-
         public Recorrido()
         {
             Clases = new Dictionary<string, Clase>();
         }
-
-        /*public Recorrido(ParseTreeNode Raiz)
-        {
-
-        }*/
         /// <summary>
         /// Recorrerá de forma parcial el árbol creado por Irony
         /// Creará la clases
@@ -68,7 +70,11 @@ namespace PROYECTO.Gramatica
                 }
             }
         }
-
+        /// <summary>
+        /// Recorre los subárboles y crea los simbolos y entornos
+        /// que encuentre
+        /// </summary>
+        /// <param name="Raiz"></param>
         public void CrearEntorno(ParseTreeNode Raiz)
         {
             foreach (var rama in Raiz.ChildNodes)
@@ -104,9 +110,9 @@ namespace PROYECTO.Gramatica
                             case Tipo.CLASE:
                                 foreach (var varlst in ramaAux[0].ChildNodes)
                                 {
-                                    if (!punteroClase.ClaseSym.ContainsKey(varlst.Token.Text))
+                                    if (!punteroClase.ClaseSym.ContainsKey(varlst.Token.Text.ToLower()))
                                     {
-                                        punteroClase.ClaseSym.Add(varlst.Token.Text, new Simbolo(pos, esPrivado, ramaAux.Count != 2 ? null : ramaAux[1], dataType));
+                                        punteroClase.ClaseSym.Add(varlst.Token.Text.ToLower(), new Simbolo(pos, esPrivado, ramaAux.Count != 2 ? null : ramaAux[1], dataType));
                                     }
                                     else
                                     {
@@ -129,9 +135,9 @@ namespace PROYECTO.Gramatica
                                     //Guarda el array
                                     foreach (var varlst in ramaAux[0].ChildNodes)
                                     {
-                                        if (!punteroClase.ClaseSym.ContainsKey(varlst.Token.Text))
+                                        if (!punteroClase.ClaseSym.ContainsKey(varlst.Token.Text.ToLower()))
                                         {
-                                            punteroClase.ClaseSym.Add(varlst.Token.Text, new Simbolo(pos, esPrivado, ramaAux.Count != 3 ? null : ramaAux[2], ramaAux[1], dataType));
+                                            punteroClase.ClaseSym.Add(varlst.Token.Text.ToLower(), new Simbolo(pos, esPrivado, ramaAux.Count != 3 ? null : ramaAux[2], ramaAux[1], dataType));
                                         }
                                         else
                                         {
@@ -176,10 +182,10 @@ namespace PROYECTO.Gramatica
                             ramaAux.RemoveAt(0);
                         }
                         //Verifica que no haya duplicados
-                        if (!punteroClase.ClaseEnt.ContainsKey(ramaAux[0].Token.Text))
+                        if (!punteroClase.ClaseEnt.ContainsKey(ramaAux[0].Token.Text.ToLower()))
                         {
                             //Recupera el nombre del metodo/función
-                            string nombre = ramaAux[0].Token.Text;
+                            string nombre = ramaAux[0].Token.Text.ToLower();
                             ramaAux.RemoveAt(0);
                             //Recupera las acciones que debe ejecutar la función/método
                             var acciones = ramaAux[ramaAux.Count - 1];
