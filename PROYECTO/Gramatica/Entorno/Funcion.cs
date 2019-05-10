@@ -5,17 +5,33 @@ namespace PROYECTO.Gramatica.Entorno
 {
     class Funcion : Clase, IEntorno
     {
+        //Subentornos
         public LinkedList<IEntorno> FuncEnt { get; }
+        //Simbolos
         public Dictionary<string, Simbolo> FuncSym { get; }
-        public ParseTreeNode FuncTree { get; }
+        //Subarbol de acciones
+        public ParseTreeNode FuncTree { get; set; }
+        //Determina si la función es privada
         public bool EsPrivado { get; set; }
+        //Determina el tipo de dato que debe devolver
+        //public Tipo DataType { get; set; }
+        //Especifica el simbolo a retornar
+        public Simbolo ReturnData { get; set; }
+        //Es sobrecarga
+        public bool Override { get; set; }
+        //Establece la lista de parametros
+        public ParseTreeNode ParTree { get; set; }
 
         public Funcion()
         {
             FuncEnt = new LinkedList<IEntorno>();
             FuncSym = new Dictionary<string, Simbolo>();
-            EsPrivado = false;
+            ReturnData = new Simbolo();
+            //DataType = Tipo.VOID;
+            EsPrivado = false;            
             FuncTree = null;
+            ParTree = null;           
+            Override = false;
         }
         /*
         public Funcion(bool esprivado, LinkedList<IEntorno> subentornos, ParseTreeNode subArbol)
