@@ -5,6 +5,8 @@ using PROYECTO.Gramatica;
 using System;
 using System.IO;
 using System.Windows.Forms;
+using PROYECTO.Gramatica.Entorno;
+using PROYECTO.Gramatica.Acciones.Operaciones;
 
 namespace PROYECTO
 {
@@ -222,14 +224,14 @@ namespace PROYECTO
             {
                 Name = "txt" + IDTab,
                 ShowScrollBars = true,
-                Dock = DockStyle.Fill,
-            };
+                Dock = DockStyle.Fill
+            }; 
             textBox.TextChanged += TextBox_TextChanged; //new EventHandler(TextBox_TextChanged);
             //Añade el textbox al tab
             tabPage.Controls.Add(textBox);
             //Añada el tab al control de Tab
             this.TabInput.Controls.Add(tabPage);
-            //Hace focusa la pestaña recién creada
+            //Hace focus a la pestaña recién creada
             tabPage.Focus();
             return textBox;
         }
@@ -254,29 +256,70 @@ namespace PROYECTO
         /// <param name="e"></param>
         private void ItemCompilar_Click(object sender, EventArgs e)
         {
-            /*
+            /*Clase clas = new Clase();
+
+            clas.ClaseSym.Add("ejemplo01", new Simbolo(new Posicion(0, 0), false, null, Tipo.INT));
+            clas.ClaseSym.Add("ejemplo02", new Simbolo(new Posicion(1, 0), false, null, Tipo.INT));
+            clas.ClaseSym.Add("ejemplo03", new Simbolo(new Posicion(2, 0), false, null, Tipo.INT));
+
+            clas.ClaseEnt.Add("entorno01",null);
+
+            Funcion mainn = new Funcion
+            {
+                ClaseSym = clas.ClaseSym,
+                ClaseEnt = clas.ClaseEnt
+            };
+            mainn.ClaseSym.Add("ejemplo05", new Simbolo(new Posicion(2, 0), false, null, Tipo.INT));
+            foreach (var dd  in clas.ClaseSym)
+            {
+                Console.WriteLine(dd.Key);
+            }
+            Console.WriteLine(clas.ClaseEnt.Count);
+            clas.ClaseSym.Add("ejemplo04", new Simbolo(new Posicion(2, 0), false, null, Tipo.INT));
+            
+            foreach (var dd in mainn.ClaseSym)
+            {
+                Console.WriteLine(dd.Key);
+            }
+            Console.WriteLine(mainn.ClaseEnt.Count);*/
+            //new Irony.Parsing.LanguageData().
             Parser p = new Parser(new LanguageData(new Sintactico()));
             ParseTree arbol = p.Parse(((FastColoredTextBox)TabInput.SelectedTab.Controls[0]).Text);
             if (arbol.Root != null)
             {
                 var ASTGraph = new ASTHtml(arbol.Root);
-                
+
                 this.SaveFile("ASTGraph.html", ASTGraph.GenerarHTML());
-                new Recorrido().CrearClase(arbol.Root);
-            } else
+                var recorrido = new Recorrido();
+                recorrido.CrearClase(arbol.Root);
+                foreach (var lst in recorrido.Clases)
+                {
+                    Console.WriteLine("clase -> {0}",lst.Key);
+                    foreach (var lst01 in lst.Value.ClaseSym)
+                    {
+                        Console.WriteLine("     simbolos -> {0}", lst01.Key);
+                        new Operar().Interpretar(lst01.Value.Oper);
+                    }
+                    foreach (var lst01 in lst.Value.ClaseEnt)
+                    {
+                        Console.WriteLine("     entornos -> {0}", lst01.Key);
+                    }
+                }
+                Console.WriteLine("end");
+            }
+            else
             {
-                try {
+                try
+                {
                     //var Errores = new ERRHtml();.
                     foreach (var msg in arbol.ParserMessages)
                     {
-                        Console.WriteLine(String.Format("{0} - {1}, ({2},{3}), {4}",msg.Level,msg.Message,msg.Location.Line,msg.Location.Column,msg.ParserState));
+                        Console.WriteLine(String.Format("{0} - {1}, ({2},{3}), {4}", msg.Level, msg.Message, msg.Location.Line, msg.Location.Column, msg.ParserState));
                     }
                     //this.SaveFile("Errores.html",Errores.GenerarHTML());
                 }
-                 catch (Exception) { }
-            }*/
-            int flag;
-            Console.WriteLine(flag);
+                catch (Exception) { }
+            }
         }
 
         private void ItemErrores_Click(object sender, EventArgs e)

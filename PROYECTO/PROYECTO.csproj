@@ -56,7 +56,16 @@
     <Compile Include="Archivo\ERRHtml.cs" />
     <Compile Include="Archivo\ES.cs" />
     <Compile Include="Gramatica\Acciones\IAccion.cs" />
-    <Compile Include="Gramatica\Acciones\Operaciones\IOperacion.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Diferente.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Divsion.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Igual.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Mayor.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Menor.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Operar.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Potencia.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Product.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Punto.cs" />
+    <Compile Include="Gramatica\Acciones\Operaciones\Resta.cs" />
     <Compile Include="Gramatica\Acciones\Operaciones\Suma.cs" />
     <Compile Include="Gramatica\Entorno\Clase.cs" />
     <Compile Include="Gramatica\Entorno\Condicional\Switch\Caso.cs" />

@@ -230,7 +230,9 @@ namespace PROYECTO.Gramatica
             #endregion
 
             #region OPERACIONES
-            OPER.Rule = OPER + MAS + OPER
+            OPER.Rule = 
+                /*TRES NODOS*/
+                OPER + MAS + OPER
                 | OPER + MENOS + OPER
                 | OPER + POR + OPER
                 | OPER + DIVISION + OPER
@@ -244,17 +246,19 @@ namespace PROYECTO.Gramatica
                 | OPER + DOT + OPER
                 | OPER + OR + OPER
                 | OPER + AND + OPER
+                /*DOS NODOS*/
                 | NOT + OPER
                 | OPER + INCREMENTO
                 | OPER + DECREMENTO
+                | NEW + Identificador + PARIZQ + PARDER
+                | Variable + DIMENSION_LIST
+                /*UN NODO*/
                 | PARIZQ + OPER + PARDER
                 | Real
                 | Caracter
                 | Cadena
                 | CSTBOOL
                 | Variable
-                | Variable + DIMENSION_LIST
-                | NEW + Identificador + PARIZQ + PARDER
                 | CALL;
 
             OPERLIST.Rule = MakeListRule(OPERLIST, COMMA, OPER);

@@ -92,7 +92,7 @@ namespace PROYECTO.Gramatica
                         //El primer token es tkVISIBLE? entonces verifica que el contenido
                         if (ramaAux[0].Term.Name.ToString().Equals("tkVISIBLE"))
                         {
-                            esPrivado = ramaAux[0].Token.Text.Equals("privado");
+                            esPrivado = ramaAux[0].Token.Text.ToLower().Equals("privado");
                             //Elimna el nodo 
                             ramaAux.RemoveAt(0);
                         }
@@ -177,7 +177,7 @@ namespace PROYECTO.Gramatica
                         //El primer token es tkVISIBLE? entonces verifica el contenido
                         if (ramaAux[0].Term.Name.ToString().Equals("tkVISIBLE"))
                         {
-                            esPrivado = ramaAux[0].Token.Text.Equals("privado");
+                            esPrivado = ramaAux[0].Token.Text.ToLower().Equals("privado");
                             //Elimna el nodo 
                             ramaAux.RemoveAt(0);
                         }
