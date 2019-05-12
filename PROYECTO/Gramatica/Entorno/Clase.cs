@@ -3,7 +3,7 @@ using Irony.Parsing;
 
 namespace PROYECTO.Gramatica.Entorno
 {
-    class Clase
+    class Clase : IEntorno
     { 
         /// <summary>
         /// Almacenará todo los subentorno (funciones/metodos) de la clase
@@ -33,31 +33,20 @@ namespace PROYECTO.Gramatica.Entorno
             ClaseImp = null;
             ClaseImpTree = null;
         }
-        /// <summary>
-        /// Constructor que acepta un diccionario de fnciones y simbolos
-        /// </summary>
-        /// <param name="subentornos"></param>
-        /// <param name="simbolos"></param>
-        /*public Clase(Dictionary<string, Funcion> subentornos, Dictionary<string, Symbol> simbolos)
+
+
+        public Simbolo BuscarSimbolo(string nombreVar)
         {
-            this.SubEntornos = subentornos;
-            this.Simbolos = simbolos;
-            this.Imports = null;
-            this.SubArbolImports = null;
-        }*/
-        /// <summary>
-        /// Construcor que acepta un diccionario de funciones y simbolos
-        /// Además guarda el arbol que especifica los imports para esta clase en particular
-        /// </summary>
-        /// <param name="subentornos"></param>
-        /// <param name="simbolos"></param>
-        /// <param name="subArbol"></param>
-        /*public Clase(Dictionary<string, Funcion> subentornos, Dictionary<string, Symbol> simbolos, ParseTreeNode subArbol )
+            Simbolo retorno = new Simbolo();
+
+
+            return retorno;
+        }
+
+        public void Ejecutar()
         {
-            this.SubEntornos = subentornos;
-            this.Simbolos = simbolos;
-            this.Imports = null;
-            this.SubArbolImports = subArbol;
-        }*/
+
+        }
+
     }
 }

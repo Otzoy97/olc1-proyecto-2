@@ -210,14 +210,6 @@ namespace PROYECTO.Gramatica
                             Simbolo symbol = new Simbolo(new Posicion(0,0),false,null,data);
                             switch (data)
                             {
-                                /*case Tipo.INT:
-                                case Tipo.STRING:
-                                case Tipo.DOUBLE:
-                                case Tipo.CHAR:
-                                case Tipo.BOOLEAN:
-                                case Tipo.CLASE:
-                                    symbol = new Simbolo(new Posicion(0, 0), false,, data);
-                                    break;*/
                                 case Tipo.INTARR:
                                 case Tipo.STRINGARR:
                                 case Tipo.DOUBLEARR:

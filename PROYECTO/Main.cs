@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Forms;
 using PROYECTO.Gramatica.Entorno;
 using PROYECTO.Gramatica.Acciones.Operaciones;
+using System.Collections.Generic;
 
 namespace PROYECTO
 {
@@ -16,6 +17,9 @@ namespace PROYECTO
         //Servirá para guardar o abrir un archivo
         private SaveFileDialog saveDialog;
         private OpenFileDialog openDialog;
+
+        public static Dictionary<string, Simbolo> VariablesUtilizadas { get; set; }
+
         public Main()
         {
             InitializeComponent();           
@@ -256,28 +260,6 @@ namespace PROYECTO
         /// <param name="e"></param>
         private void ItemCompilar_Click(object sender, EventArgs e)
         {
-            char d = (char)50;
-            int a = 50;
-            double b = 50.00;
-
-            Console.WriteLine((double)d == b);
-            Console.WriteLine(d == a);
-
-            Console.WriteLine(d != b);
-            Console.WriteLine(d != a);
-
-            Console.WriteLine(d < b);
-            Console.WriteLine(d < a);
-
-            Console.WriteLine(d > b);
-            Console.WriteLine(d > a);
-
-            Console.WriteLine(d <= b);
-            Console.WriteLine(d <= a);
-
-            Console.WriteLine(d >= b);
-            Console.WriteLine(d >= a);
-            /*
             Parser p = new Parser(new LanguageData(new Sintactico()));
             ParseTree arbol = p.Parse(((FastColoredTextBox)TabInput.SelectedTab.Controls[0]).Text);
             if (arbol.Root != null)
@@ -285,21 +267,36 @@ namespace PROYECTO
                 var ASTGraph = new ASTHtml(arbol.Root);
 
                 this.SaveFile("ASTGraph.html", ASTGraph.GenerarHTML());
-                var recorrido = new Recorrido();
+                /*var recorrido = new Recorrido();
                 recorrido.CrearClase(arbol.Root);
                 foreach (var lst in recorrido.Clases)
                 {
                     Console.WriteLine("clase -> {0}",lst.Key);
                     foreach (var lst01 in lst.Value.ClaseSym)
                     {
-                        Console.WriteLine("     simbolos -> {0}", lst01.Key);
-                        //new Operar().Interpretar(lst01.Value.Oper);
+                        //Si el simbolo no es nulo, operar
+                        if (lst01.Value.Oper != null)
+                        {
+                            var SymDat = new Operar(lst.Value).Interpretar(lst01.Value.Oper);
+                            //Verifica que los tipos coincidan
+                            if (SymDat.TipoDato == lst01.Value.TipoDato)
+                            {
+                                //Asigna el nuevo dato encontrado
+                                lst01.Value.Dato = SymDat.Dato;
+                                Console.WriteLine("     simbolos -> id: {0} , valor -> {1}, tipoDato -> {2} , System -> {3}", lst01.Key, lst01.Value.Dato, lst01.Value.TipoDato, lst01.Value.Dato.GetType());
+                            }
+                            else
+                            {
+                                Console.WriteLine("     simbolos -> id: {0} , valor -> {1}, tipoDato -> {2} , System -> {3} **** los tipo no coinciden {4}", lst01.Key, lst01.Value.Dato, lst01.Value.TipoDato, lst01.Value.Dato == null ? "" : lst01.Value.Dato.GetType().ToString(), SymDat.TipoDato);
+                            }
+                        }
+                        
                     }
                     foreach (var lst01 in lst.Value.ClaseEnt)
                     {
                         Console.WriteLine("     entornos -> {0}", lst01.Key);
                     }
-                }
+                }*/
             }
             else
             {
@@ -314,7 +311,6 @@ namespace PROYECTO
                 }
                 catch (Exception) { }
             }
-            */
         }
 
         private void ItemErrores_Click(object sender, EventArgs e)

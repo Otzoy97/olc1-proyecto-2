@@ -33,13 +33,15 @@ namespace PROYECTO.Gramatica.Entorno
             ParTree = null;           
             Override = false;
         }
-        /*
-        public Funcion(bool esprivado, LinkedList<IEntorno> subentornos, ParseTreeNode subArbol)
+
+        public new Simbolo BuscarSimbolo(string nombreVar)
         {
-            this.FuncEnt = subentornos;
-            this.FuncSym = simbolos;
-            this.FuncTree = subArbol;
-            this.EsPrivado = esprivado;
-        }*/
+            return this.FuncSym.ContainsKey(nombreVar) ? this.FuncSym[nombreVar] : base.BuscarSimbolo(nombreVar);
+        }
+        public new void Ejecutar()
+        {
+
+        }
+
     }
 }

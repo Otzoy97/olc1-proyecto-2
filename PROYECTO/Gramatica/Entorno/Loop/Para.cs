@@ -20,5 +20,10 @@ namespace PROYECTO.Gramatica.Entorno.Loop
             this.ForCond = condicion;
             this.ForVar = variable;
         }
+
+        public new Simbolo BuscarSimbolo(string nombreVar)
+        {
+            return this.ForSym.ContainsKey(nombreVar) ? this.ForSym[nombreVar] : base.BuscarSimbolo(nombreVar);
+        }
     }
 }

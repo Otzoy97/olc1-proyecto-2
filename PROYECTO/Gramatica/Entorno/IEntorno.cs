@@ -2,5 +2,7 @@
 {
     interface IEntorno
     {
+        Simbolo BuscarSimbolo(string nombreVar);
+        void Ejecutar();
     }
 }

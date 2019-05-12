@@ -19,5 +19,10 @@ namespace PROYECTO.Gramatica.Entorno.Loop
             this.DoTree = acciones;
             this.DoCond = condicion;
         }
+
+        public new Simbolo BuscarSimbolo(string nombreVar)
+        {
+            return this.DoSym.ContainsKey(nombreVar) ? this.DoSym[nombreVar] : base.BuscarSimbolo(nombreVar);
+        }
     }
 }

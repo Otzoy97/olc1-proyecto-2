@@ -18,5 +18,10 @@ namespace PROYECTO.Gramatica.Entorno.Loop
             this.RepeatTree = subArbol;
             this.Iteracion = iteracion;
         }
+
+        public new Simbolo BuscarSimbolo(string nombreVar)
+        {
+            return this.RepeatSym.ContainsKey(nombreVar) ? this.RepeatSym[nombreVar] : base.BuscarSimbolo(nombreVar);
+        }
     }
 }

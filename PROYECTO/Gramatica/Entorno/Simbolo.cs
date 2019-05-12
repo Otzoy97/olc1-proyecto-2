@@ -21,11 +21,34 @@ namespace PROYECTO.Gramatica.Entorno
         }
 
     }
-
+    public class Arreglo
+    {
+        public TipoArreglo Dimension { get; set; }
+        public int SizeUni { get; set; }
+        public int SizeBi { get; set; }
+        public int SizeTri { get; set; }
+    }
+    public enum TipoArreglo
+    {
+        UNI, BI, TRI
+    }
     public class Simbolo
     {
+        /// <summary>
+        /// Determina la posición del símbolo
+        /// </summary>
         public Posicion Posicion { get; set; }
+        /// <summary>
+        /// Guarda el dato del símbolo
+        /// </summary>
         private object dat;
+        /// <summary>
+        /// Si el simbolo es un arreglo, acá se guardan sus dimensiones y su tamaño
+        /// </summary>
+        public Arreglo Arreglo { get; set; }
+        /// <summary>
+        /// Encapsula el atributo dat
+        /// </summary>
         public object Dato
         {
             get
@@ -44,12 +67,22 @@ namespace PROYECTO.Gramatica.Entorno
                 }
             }
         }
+        /// <summary>
+        /// Determina el tipo de dato que guarda el símbolo
+        /// </summary>
         public Tipo TipoDato { get; set; }
+        /// <summary>
+        /// Específica la visibilidad del símbolo
+        /// </summary>
         public bool EsPrivado { get; set; }
-
+        /// <summary>
+        /// Almacena el AST de las dimensiones del arreglo
+        /// </summary>
         public ParseTreeNode Arr { get; set; }
+        /// <summary>
+        /// Almacena el AST del contenido del Simbolo
+        /// </summary>
         public ParseTreeNode Oper { get; set; }
-
         /// <summary>
         /// Declaracion/asignación simple
         /// </summary>
