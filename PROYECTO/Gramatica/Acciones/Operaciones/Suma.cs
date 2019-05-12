@@ -12,7 +12,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="raiz"></param>
         /// <param name="operClass"></param>
         /// <returns></returns>
-        public Simbolo Interpretar(ParseTreeNode raiz, Operar operClass)
+        public static Simbolo Interpretar(ParseTreeNode raiz, Operar operClass)
         {
             Simbolo symizq = operClass.Interpretar(raiz.ChildNodes[0]);
             Simbolo symder = operClass.Interpretar(raiz.ChildNodes[2]);
@@ -69,7 +69,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo SumarInt(int intVar, Simbolo sym)
+        private static Simbolo SumarInt(int intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -103,7 +103,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo SumarChar(char intVar, Simbolo sym)
+        private static Simbolo SumarChar(char intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -137,7 +137,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="strVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo SumarString(String strVar, Simbolo sym)
+        private static Simbolo SumarString(String strVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -161,7 +161,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo SumarDouble(double intVar, Simbolo sym)
+        private static Simbolo SumarDouble(double intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -196,7 +196,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="boolVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo SumarBool(bool boolVar, Simbolo sym)
+        private static Simbolo SumarBool(bool boolVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)

@@ -17,7 +17,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="raiz"></param>
         /// <param name="operClass"></param>
         /// <returns></returns>
-        public Simbolo Interpretar(ParseTreeNode raiz, Operar operClass, TipoRel tipo)
+        public static Simbolo Interpretar(ParseTreeNode raiz, Operar operClass, TipoRel tipo)
         {
             //Asigna la variable global
             this.tipo = tipo;
@@ -68,7 +68,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="doubleVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RelDouble(double doubleVar, Simbolo sym)
+        private static Simbolo RelDouble(double doubleVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -135,7 +135,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RelChar(char charVar, Simbolo sym)
+        private static Simbolo RelChar(char charVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -181,7 +181,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="strVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RelString(String strVar, Simbolo sym)
+        private static Simbolo RelString(String strVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -225,7 +225,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="boolVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RelBool(bool boolVar, Simbolo sym)
+        private static Simbolo RelBool(bool boolVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)

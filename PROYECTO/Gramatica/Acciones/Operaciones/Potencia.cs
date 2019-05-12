@@ -12,7 +12,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="raiz"></param>
         /// <param name="operClass"></param>
         /// <returns></returns>
-        public Simbolo Interpretar(ParseTreeNode raiz, Operar operClass)
+        public static Simbolo Interpretar(ParseTreeNode raiz, Operar operClass)
         {
             Simbolo symizq = operClass.Interpretar(raiz.ChildNodes[0]);
             Simbolo symder = operClass.Interpretar(raiz.ChildNodes[2]);
@@ -42,11 +42,11 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
             //BOOLEANO
             if (symizq.TipoDato == Tipo.BOOLEAN)
             {
-                return DividirBool((bool)symizq.Dato, symder);
+                return PotenciarBool((bool)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.BOOLEAN)
             {
-                return DividirBool((bool)symder.Dato, symizq);
+                return PotenciarBool((bool)symder.Dato, symizq);
             }
             return new Simbolo();
         }
@@ -56,7 +56,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo PotenciarInt(int intVar, Simbolo sym)
+        private static Simbolo PotenciarInt(int intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -86,7 +86,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo PotenciarDouble(double intVar, Simbolo sym)
+        private static Simbolo PotenciarDouble(double intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -113,7 +113,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="boolVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo DividirBool(bool boolVar, Simbolo sym)
+        private static Simbolo PotenciarBool(bool boolVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)

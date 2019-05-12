@@ -12,7 +12,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="raiz"></param>
         /// <param name="operClass"></param>
         /// <returns></returns>
-        public Simbolo Interpretar(ParseTreeNode raiz, Operar operClass)
+        public static Simbolo Interpretar(ParseTreeNode raiz, Operar operClass)
         {
             Simbolo symizq = operClass.Interpretar(raiz.ChildNodes[0]);
             Simbolo symder = operClass.Interpretar(raiz.ChildNodes[2]);
@@ -65,7 +65,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RestarInt(int intVar, Simbolo sym)
+        private static Simbolo RestarInt(int intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -98,7 +98,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="charVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RestarChar(char charVar, Simbolo sym)
+        private static Simbolo RestarChar(char charVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -130,7 +130,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="doubleVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RestarDouble(double doubleVar, Simbolo sym)
+        private static Simbolo RestarDouble(double doubleVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -164,7 +164,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="boolVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RestarBool(bool boolVar, Simbolo sym)
+        private static Simbolo RestarBool(bool boolVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
