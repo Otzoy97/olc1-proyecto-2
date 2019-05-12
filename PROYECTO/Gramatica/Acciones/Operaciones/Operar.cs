@@ -1,14 +1,11 @@
 ﻿using Irony.Parsing;
 using PROYECTO.Gramatica.Entorno;
 using System;
-using System.Collections.Generic;
 
 namespace PROYECTO.Gramatica.Acciones.Operaciones
 {
     class Operar 
     {
-        public ParseTreeNode OperRaiz { get; }
-
         public Simbolo Interpretar(ParseTreeNode operRaiz)
         {
             Simbolo retorno = new Simbolo();
@@ -35,11 +32,11 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                             break;
                         case "tkCHAR":
                             retorno.TipoDato = Tipo.CHAR;
-                            retorno.Dato = operRaiz.ChildNodes[0].Token.Value;
+                            retorno.Dato = (char) operRaiz.ChildNodes[0].Token.Value;
                             break;
                         case "tkSTR":
                             retorno.TipoDato = Tipo.STRING;
-                            retorno.Dato = operRaiz.ChildNodes[0].Token.Value;
+                            retorno.Dato = operRaiz.ChildNodes[0].Token.Value.ToString();
                             break;
                         case "CSTBOOL":
                             retorno.TipoDato = Tipo.BOOLEAN;
@@ -114,33 +111,54 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                     switch (operRaiz.ChildNodes[1].Term.Name)
                     {
                         case "MAS":
-
-                            break;
+                            return Suma.Interpretar(operRaiz, this);
                         case "MENOS":
-                            break;
+                            return Resta.Interpretar(operRaiz, this);
                         case "POR":
-                            break;
+                            return Producto.Interpretar(operRaiz, this);
                         case "DIVISION":
-                            break;
+                            return Division.Interpretar(operRaiz, this);
                         case "POTENCIA":
-                            break;
+                            return Potencia.Interpretar(operRaiz, this);
                         case "IGUAL":
-                            break;
+                            return Relacionar.Interpretar(operRaiz, this, TipoRel.IGUAL);
                         case "DIFERENTE":
-                            break;
+                            return Relacionar.Interpretar(operRaiz, this, TipoRel.DIFERENTE);
                         case "MAYOR":
-                            break;
+                            return Relacionar.Interpretar(operRaiz, this, TipoRel.MAYOR);
                         case "MENOR":
-                            break;
+                            return Relacionar.Interpretar(operRaiz, this, TipoRel.MENOR);
                         case "MAYOR_IGUAL":
-                            break;
+                            return Relacionar.Interpretar(operRaiz, this, TipoRel.MAYOR_IGUAL);
                         case "MENOR_IGUAL":
-                            break;
+                            return Relacionar.Interpretar(operRaiz, this, TipoRel.MENOR_IGUAL);
                         case "DOT":
                             break;
                         case "OR":
+                            Simbolo izqoper = Interpretar(operRaiz.ChildNodes[0]);
+                            Simbolo deroper = Interpretar(operRaiz.ChildNodes[2]);
+                            if (izqoper.TipoDato == Tipo.BOOLEAN && deroper.TipoDato == Tipo.BOOLEAN)
+                            {
+                                retorno.TipoDato = Tipo.BOOLEAN;
+                                retorno.Dato = ((bool)izqoper.Dato) || ((bool)deroper.Dato);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Solo se puede utilizar el operador OR con booleanos");
+                            }
                             break;
                         case "AND":
+                            izqoper = Interpretar(operRaiz.ChildNodes[0]);
+                            deroper = Interpretar(operRaiz.ChildNodes[2]);
+                            if (izqoper.TipoDato == Tipo.BOOLEAN && deroper.TipoDato == Tipo.BOOLEAN)
+                            {
+                                retorno.TipoDato = Tipo.BOOLEAN;
+                                retorno.Dato = ((bool)izqoper.Dato) && ((bool)deroper.Dato);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Solo se puede utilizar el operador AND con booleanos");
+                            }
                             break;
                     }
                     break;

@@ -10,7 +10,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
     }
     class Relacionar
     {
-        private TipoRel tipo;
+        private static TipoRel tipo;
         /// <summary>
         /// Devuelve un simbolo
         /// </summary>
@@ -20,18 +20,18 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         public static Simbolo Interpretar(ParseTreeNode raiz, Operar operClass, TipoRel tipo)
         {
             //Asigna la variable global
-            this.tipo = tipo;
+            Relacionar.tipo = tipo;
             
             Simbolo symizq = operClass.Interpretar(raiz.ChildNodes[0]);
             Simbolo symder = operClass.Interpretar(raiz.ChildNodes[2]);
             //ENTERO DOUBLE
             if (symizq.TipoDato == Tipo.INT || symizq.TipoDato == Tipo.DOUBLE)
             {
-                return RelDouble((double)symizq.Dato, symder);
+                return RelDouble(symizq.TipoDato == Tipo.INT ? (int)symizq.Dato : (double)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.INT || symder.TipoDato == Tipo.DOUBLE)
             {
-                return RelDouble((double)symder.Dato, symizq);
+                return RelDouble(symder.TipoDato == Tipo.INT ? (int) symder.Dato : (double)symder.Dato, symizq);
             }
             //STRING
             if (symizq.TipoDato == Tipo.STRING)
@@ -76,25 +76,26 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                 case Tipo.INT:
                 case Tipo.CHAR:
                 case Tipo.DOUBLE:
+                    var auxTemp = (sym.TipoDato == Tipo.INT ? (int)sym.Dato : sym.TipoDato == Tipo.CHAR ? (char)sym.Dato : (double)sym.Dato);
                     switch (tipo)
                     {
                         case TipoRel.IGUAL:
-                            retorno.Dato = doubleVar == ((double)sym.Dato);
+                            retorno.Dato = doubleVar == auxTemp;
                             break;
                         case TipoRel.DIFERENTE:
-                            retorno.Dato = doubleVar != ((double)sym.Dato);
+                            retorno.Dato = doubleVar != auxTemp;
                             break;
                         case TipoRel.MAYOR:
-                            retorno.Dato = doubleVar > ((double)sym.Dato);
+                            retorno.Dato = doubleVar > auxTemp;
                             break;
                         case TipoRel.MENOR:
-                            retorno.Dato = doubleVar < ((double)sym.Dato);
+                            retorno.Dato = doubleVar < auxTemp;
                             break;
                         case TipoRel.MENOR_IGUAL:
-                            retorno.Dato = doubleVar >= ((double)sym.Dato);
+                            retorno.Dato = doubleVar <= auxTemp;
                             break;
                         case TipoRel.MAYOR_IGUAL:
-                            retorno.Dato = doubleVar <= ((double)sym.Dato);
+                            retorno.Dato = doubleVar >= auxTemp;
                             break;
                     }
                     retorno.TipoDato = Tipo.BOOLEAN;
@@ -118,10 +119,10 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                             retorno.Dato = doubleVar < ((bool)sym.Dato ? 1 : 0);
                             break;
                         case TipoRel.MENOR_IGUAL:
-                            retorno.Dato = doubleVar >= ((bool)sym.Dato ? 1 : 0);
+                            retorno.Dato = doubleVar <= ((bool)sym.Dato ? 1 : 0);
                             break;
                         case TipoRel.MAYOR_IGUAL:
-                            retorno.Dato = doubleVar <= ((bool)sym.Dato ? 1 : 0);
+                            retorno.Dato = doubleVar >= ((bool)sym.Dato ? 1 : 0);
                             break;
                     }
                     retorno.TipoDato = Tipo.BOOLEAN;
@@ -143,25 +144,26 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                 case Tipo.INT:
                 case Tipo.DOUBLE:
                 case Tipo.CHAR:
+                    var auxTemp = (sym.TipoDato == Tipo.INT ? (int)sym.Dato : sym.TipoDato == Tipo.CHAR ? (char)sym.Dato : (double)sym.Dato);
                     switch (tipo)
                     {
                         case TipoRel.IGUAL:
-                            retorno.Dato = charVar == ((double)sym.Dato);
+                            retorno.Dato = charVar == auxTemp;
                             break;
                         case TipoRel.DIFERENTE:
-                            retorno.Dato = charVar != ((double)sym.Dato);
+                            retorno.Dato = charVar != auxTemp;
                             break;
                         case TipoRel.MAYOR:
-                            retorno.Dato = charVar > ((double)sym.Dato);
+                            retorno.Dato = charVar > auxTemp;
                             break;
                         case TipoRel.MENOR:
-                            retorno.Dato = charVar < ((double)sym.Dato);
+                            retorno.Dato = charVar < auxTemp;
                             break;
                         case TipoRel.MENOR_IGUAL:
-                            retorno.Dato = charVar >= ((double)sym.Dato);
+                            retorno.Dato = charVar <= auxTemp;
                             break;
                         case TipoRel.MAYOR_IGUAL:
-                            retorno.Dato = charVar <= ((double)sym.Dato);
+                            retorno.Dato = charVar >= auxTemp;
                             break;
                     }
                     retorno.TipoDato = Tipo.BOOLEAN;
@@ -208,10 +210,10 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                             retorno.Dato = strVar.Length < sym.Dato.ToString().Length;
                             break;
                         case TipoRel.MENOR_IGUAL:
-                            retorno.Dato = strVar.Length >= sym.Dato.ToString().Length;
+                            retorno.Dato = strVar.Length <= sym.Dato.ToString().Length;
                             break;
                         case TipoRel.MAYOR_IGUAL:
-                            retorno.Dato = strVar.Length <= sym.Dato.ToString().Length;
+                            retorno.Dato = strVar.Length >= sym.Dato.ToString().Length;
                             break;
                     }
                     retorno.TipoDato = Tipo.BOOLEAN;
@@ -247,10 +249,10 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                             retorno.Dato = (boolVar ? 1 : 0) < ((double)sym.Dato);
                             break;
                         case TipoRel.MENOR_IGUAL:
-                            retorno.Dato = (boolVar ? 1 : 0) >= ((double)sym.Dato);
+                            retorno.Dato = (boolVar ? 1 : 0) <= ((double)sym.Dato);
                             break;
                         case TipoRel.MAYOR_IGUAL:
-                            retorno.Dato = (boolVar ? 1 : 0) <= ((double)sym.Dato);
+                            retorno.Dato = (boolVar ? 1 : 0) >= ((double)sym.Dato);
                             break;
                     }
                     retorno.TipoDato = Tipo.BOOLEAN;

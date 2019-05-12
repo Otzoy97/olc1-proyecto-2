@@ -24,11 +24,11 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
             //ENTERO, DOUBLE, CHAR
             if (symizq.TipoDato == Tipo.INT || symizq.TipoDato == Tipo.DOUBLE || symizq.TipoDato == Tipo.CHAR)
             {
-                return DividirDouble((double)symizq.Dato, symder);
+                return DividirDouble(symizq.TipoDato == Tipo.INT ? (int) symizq.Dato : symizq.TipoDato == Tipo.DOUBLE ? (double)symizq.Dato : (char) symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.INT || symder.TipoDato == Tipo.DOUBLE || symder.TipoDato == Tipo.CHAR)
             {
-                return DividirDouble((double)symder.Dato, symizq);
+                return DividirDouble(symder.TipoDato == Tipo.INT ? (int)symder.Dato : symder.TipoDato == Tipo.DOUBLE ? (double)symder.Dato : (char)symder.Dato, symizq);
             }
             //BOOLEANO
             if (symizq.TipoDato == Tipo.BOOLEAN)
@@ -55,7 +55,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                 case Tipo.INT:
                 case Tipo.DOUBLE:
                 case Tipo.CHAR:
-                    retorno.Dato = doubleVar / ((double)sym.Dato);
+                    retorno.Dato = doubleVar / (sym.TipoDato == Tipo.INT ? (int)sym.Dato : sym.TipoDato == Tipo.DOUBLE ? (double)sym.Dato : (char)sym.Dato);
                     retorno.TipoDato = Tipo.DOUBLE;
                     break;
                 case Tipo.STRING:
@@ -81,7 +81,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
             {
                 case Tipo.INT:
                 case Tipo.CHAR:
-                    retorno.Dato = (boolVar ? 1 : 0) / ((int)sym.Dato);
+                    retorno.Dato = (boolVar ? 1 : 0) / ( sym.TipoDato == Tipo.INT ? (int)sym.Dato : (char)sym.Dato);
                     retorno.TipoDato = Tipo.INT;
                     break;
                 case Tipo.STRING:
