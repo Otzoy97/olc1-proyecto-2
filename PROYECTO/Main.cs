@@ -256,33 +256,28 @@ namespace PROYECTO
         /// <param name="e"></param>
         private void ItemCompilar_Click(object sender, EventArgs e)
         {
-            /*Clase clas = new Clase();
+            char d = (char)50;
+            int a = 50;
+            double b = 50.00;
 
-            clas.ClaseSym.Add("ejemplo01", new Simbolo(new Posicion(0, 0), false, null, Tipo.INT));
-            clas.ClaseSym.Add("ejemplo02", new Simbolo(new Posicion(1, 0), false, null, Tipo.INT));
-            clas.ClaseSym.Add("ejemplo03", new Simbolo(new Posicion(2, 0), false, null, Tipo.INT));
+            Console.WriteLine((double)d == b);
+            Console.WriteLine(d == a);
 
-            clas.ClaseEnt.Add("entorno01",null);
+            Console.WriteLine(d != b);
+            Console.WriteLine(d != a);
 
-            Funcion mainn = new Funcion
-            {
-                ClaseSym = clas.ClaseSym,
-                ClaseEnt = clas.ClaseEnt
-            };
-            mainn.ClaseSym.Add("ejemplo05", new Simbolo(new Posicion(2, 0), false, null, Tipo.INT));
-            foreach (var dd  in clas.ClaseSym)
-            {
-                Console.WriteLine(dd.Key);
-            }
-            Console.WriteLine(clas.ClaseEnt.Count);
-            clas.ClaseSym.Add("ejemplo04", new Simbolo(new Posicion(2, 0), false, null, Tipo.INT));
-            
-            foreach (var dd in mainn.ClaseSym)
-            {
-                Console.WriteLine(dd.Key);
-            }
-            Console.WriteLine(mainn.ClaseEnt.Count);*/
-            //new Irony.Parsing.LanguageData().
+            Console.WriteLine(d < b);
+            Console.WriteLine(d < a);
+
+            Console.WriteLine(d > b);
+            Console.WriteLine(d > a);
+
+            Console.WriteLine(d <= b);
+            Console.WriteLine(d <= a);
+
+            Console.WriteLine(d >= b);
+            Console.WriteLine(d >= a);
+            /*
             Parser p = new Parser(new LanguageData(new Sintactico()));
             ParseTree arbol = p.Parse(((FastColoredTextBox)TabInput.SelectedTab.Controls[0]).Text);
             if (arbol.Root != null)
@@ -298,14 +293,13 @@ namespace PROYECTO
                     foreach (var lst01 in lst.Value.ClaseSym)
                     {
                         Console.WriteLine("     simbolos -> {0}", lst01.Key);
-                        new Operar().Interpretar(lst01.Value.Oper);
+                        //new Operar().Interpretar(lst01.Value.Oper);
                     }
                     foreach (var lst01 in lst.Value.ClaseEnt)
                     {
                         Console.WriteLine("     entornos -> {0}", lst01.Key);
                     }
                 }
-                Console.WriteLine("end");
             }
             else
             {
@@ -320,6 +314,7 @@ namespace PROYECTO
                 }
                 catch (Exception) { }
             }
+            */
         }
 
         private void ItemErrores_Click(object sender, EventArgs e)

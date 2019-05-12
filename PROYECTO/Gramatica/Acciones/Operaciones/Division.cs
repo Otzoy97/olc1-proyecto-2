@@ -4,7 +4,7 @@ using System;
 
 namespace PROYECTO.Gramatica.Acciones.Operaciones
 {
-    class Divsion
+    class Division
     {
         /// <summary>
         /// Devuelve un simbolo
