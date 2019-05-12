@@ -1,8 +1,6 @@
 ﻿using Irony.Parsing;
 using PROYECTO.Gramatica.Entorno;
 using System;
-using System.Collections.Generic;
-using System.Data;
 
 namespace PROYECTO.Gramatica.Acciones.Operaciones
 {
@@ -71,7 +69,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        public Simbolo SumarInt(int intVar, Simbolo sym)
+        private Simbolo SumarInt(int intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -105,7 +103,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        public Simbolo SumarChar(char intVar, Simbolo sym)
+        private Simbolo SumarChar(char intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -139,7 +137,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="strVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        public Simbolo SumarString(String strVar, Simbolo sym)
+        private Simbolo SumarString(String strVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -163,7 +161,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        public Simbolo SumarDouble(double intVar, Simbolo sym)
+        private Simbolo SumarDouble(double intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
@@ -198,7 +196,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="boolVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        public Simbolo SumarBool(bool boolVar, Simbolo sym)
+        private Simbolo SumarBool(bool boolVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)

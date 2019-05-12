@@ -4,7 +4,7 @@ using System;
 
 namespace PROYECTO.Gramatica.Acciones.Operaciones
 {
-    class Resta
+    class Producto
     {
         /// <summary>
         /// Devuelve un simbolo
@@ -19,43 +19,43 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
             //STRING
             if (symizq.TipoDato == Tipo.STRING || symder.TipoDato == Tipo.STRING)
             {
-                Console.WriteLine("No se pueden restar cadenas");
+                Console.WriteLine("No se pueden multiplicar cadenas");
             }
             //ENTERO
             if (symizq.TipoDato == Tipo.INT)
             {
-                return RestarInt((int)symizq.Dato, symder);
+                return ProductoInt((int)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.INT)
             {
-                return RestarInt((int)symder.Dato, symizq);
+                return ProductoInt((int)symder.Dato, symizq);
             }
             //DOUBLE
             if (symizq.TipoDato == Tipo.DOUBLE)
             {
-                return RestarDouble((double)symizq.Dato, symder);
+                return ProductoDouble((double)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.DOUBLE)
             {
-                return RestarDouble((double)symder.Dato, symizq);
+                return ProductoDouble((double)symder.Dato, symizq);
             }
             //CHAR
             if (symizq.TipoDato == Tipo.CHAR)
             {
-                return RestarChar((char)symizq.Dato, symder);
+                return ProductoChar((char)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.CHAR)
             {
-                return RestarChar((char)symder.Dato, symizq);
+                return ProductoChar((char)symder.Dato, symizq);
             }
             //BOOLEANO
             if (symizq.TipoDato == Tipo.BOOLEAN)
             {
-                return RestarBool((bool)symizq.Dato, symder);
+                return ProductoBool((bool)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.BOOLEAN)
             {
-                return RestarBool((bool)symder.Dato, symizq);
+                return ProductoBool((bool)symder.Dato, symizq);
             }
             return new Simbolo();
         }
@@ -65,28 +65,28 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="intVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RestarInt(int intVar, Simbolo sym)
+        private Simbolo ProductoInt(int intVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
             {
                 case Tipo.INT:
-                    retorno.Dato = intVar - ((int)sym.Dato);
+                    retorno.Dato = intVar * ((int)sym.Dato);
                     retorno.TipoDato = Tipo.INT;
                     break;
                 case Tipo.STRING:
-                    Console.WriteLine("No se pueden restar cadenas");
+                    Console.WriteLine("No se puede multiplicar cadenas");
                     break;
                 case Tipo.CHAR:
-                    retorno.Dato = intVar - ((char)sym.Dato);
+                    retorno.Dato = intVar * ((char)sym.Dato);
                     retorno.TipoDato = Tipo.INT;
                     break;
                 case Tipo.DOUBLE:
-                    retorno.Dato = intVar - ((double)sym.Dato);
+                    retorno.Dato = intVar * ((double)sym.Dato);
                     retorno.TipoDato = Tipo.DOUBLE;
                     break;
                 case Tipo.BOOLEAN:
-                    retorno.Dato = intVar - ((bool)sym.Dato ? 1 : 0);
+                    retorno.Dato = intVar * ((bool)sym.Dato ? 1 : 0);
                     retorno.TipoDato = Tipo.INT;
                     break;
             }
@@ -98,28 +98,29 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="charVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RestarChar(char charVar, Simbolo sym)
+        private Simbolo ProductoChar(char charVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
             {
                 case Tipo.INT:
-                    retorno.Dato = charVar - ((int)sym.Dato);
+                    retorno.Dato = charVar * ((int)sym.Dato);
                     retorno.TipoDato = Tipo.INT;
                     break;
                 case Tipo.STRING:
-                    Console.WriteLine("No se pueden restar cadenas");
+                    Console.WriteLine("No se puede multiplicar cadenas");
                     break;
                 case Tipo.CHAR:
-                    retorno.Dato = charVar - ((char)sym.Dato);
+                    retorno.Dato = charVar * ((char)sym.Dato);
                     retorno.TipoDato = Tipo.INT;
                     break;
                 case Tipo.DOUBLE:
-                    retorno.Dato = charVar - ((double)sym.Dato);
+                    retorno.Dato = charVar * ((double)sym.Dato);
                     retorno.TipoDato = Tipo.DOUBLE;
                     break;
                 case Tipo.BOOLEAN:
-                    Console.WriteLine("No se puede realizar una resta entre un char y un boolean");
+                    retorno.Dato = charVar * ((bool)sym.Dato ? 1 : 0);
+                    retorno.TipoDato = Tipo.INT;
                     break;
             }
             return retorno;
@@ -130,29 +131,28 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="doubleVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RestarDouble(double doubleVar, Simbolo sym)
+        private Simbolo ProductoDouble(double doubleVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
             {
                 case Tipo.INT:
-                    retorno.Dato = doubleVar - ((int)sym.Dato);
+                    retorno.Dato = doubleVar * ((int)sym.Dato);
                     retorno.TipoDato = Tipo.DOUBLE;
                     break;
-
                 case Tipo.STRING:
-                    Console.WriteLine("No se pueden restar cadenas"); ;
+                    Console.WriteLine("No se puede multiplicar cadenas");
                     break;
                 case Tipo.DOUBLE:
-                    retorno.Dato = doubleVar - ((double)sym.Dato);
+                    retorno.Dato = doubleVar * ((double)sym.Dato);
                     retorno.TipoDato = Tipo.DOUBLE;
                     break;
                 case Tipo.CHAR:
-                    retorno.Dato = doubleVar - ((char)sym.Dato);
+                    retorno.Dato = doubleVar * ((char)sym.Dato);
                     retorno.TipoDato = Tipo.DOUBLE;
                     break;
                 case Tipo.BOOLEAN:
-                    retorno.Dato = doubleVar - ((bool)sym.Dato ? 1 : 0);
+                    retorno.Dato = doubleVar * ((bool)sym.Dato ? 1 : 0);
                     retorno.TipoDato = Tipo.DOUBLE;
                     break;
             }
@@ -164,27 +164,29 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         /// <param name="boolVar"></param>
         /// <param name="sym"></param>
         /// <returns></returns>
-        private Simbolo RestarBool(bool boolVar, Simbolo sym)
+        private Simbolo ProductoBool(bool boolVar, Simbolo sym)
         {
             Simbolo retorno = new Simbolo();
             switch (sym.TipoDato)
             {
                 case Tipo.INT:
-                    retorno.Dato = (boolVar ? 1 : 0) + ((int)sym.Dato);
+                    retorno.Dato = (boolVar ? 1 : 0) * ((int)sym.Dato);
                     retorno.TipoDato = Tipo.INT;
                     break;
                 case Tipo.STRING:
-                    Console.WriteLine("No se puede sumar un booleano y una cadena");
+                    Console.WriteLine("No se puede multiplicar cadenas");
                     break;
                 case Tipo.DOUBLE:
-                    retorno.Dato = (boolVar ? 1 : 0) + ((double)sym.Dato);
+                    retorno.Dato = (boolVar ? 1 : 0) * ((double)sym.Dato);
                     retorno.TipoDato = Tipo.DOUBLE;
                     break;
                 case Tipo.CHAR:
-                    Console.WriteLine("No se puede sumar un booleano y un caracter");
+                    retorno.Dato = (boolVar ? 1 : 0) * ((char)sym.Dato);
+                    retorno.TipoDato = Tipo.INT;
                     break;
                 case Tipo.BOOLEAN:
-                    Console.WriteLine("No se puede sumar entre booleanos");
+                    retorno.Dato = boolVar && (bool)sym.Dato;
+                    retorno.TipoDato = Tipo.BOOLEAN;
                     break;
             }
             return retorno;
