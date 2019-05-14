@@ -22,7 +22,7 @@ namespace PROYECTO.Archivo
             try
             {
                 //Se instancia el archivo para su lectura
-                reader = new StreamReader(URL);
+                reader = new StreamReader(URL, System.Text.Encoding.Default);
                 //Mientras el texto no sea nulo
                 while ((texto = reader.ReadLine()) != null)
                 {
