@@ -23,7 +23,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
             Simbolo retorno = new Simbolo();
             if (operRaiz == null)
             {
-                Main.Imprimir("La variable no ha sido inicializada");
+                //Main.Imprimir("La variable no ha sido inicializada");
                 return new Simbolo();
             }
             switch (operRaiz.Term.Name)
@@ -303,12 +303,12 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                 //Busca en la lista de clases si existe una clases con el nombre anterior
                                 //Clona la clase en cuestión y la asigna a retorno.Dato (No se puede clonar :'v)
                                 //Va a buscar entre la lista de clases si existe una clase con el nombre que se especificó en el segundo nodo
-                                if (Clases.ContainsKey(operRaiz.ChildNodes[0].ChildNodes[1].Token.Text.ToLower()))
+                                if (Clases.ContainsKey(operRaiz.ChildNodes[1].Token.Text.ToLower()))
                                 {
                                     //especifica el tipo de dato del retorno
                                     retorno.TipoDato = Tipo.CLASE;
                                     //Copia la clase que tiene el nombre de la instancia
-                                    retorno.Dato = Clase.Copiar(Clases[operRaiz.ChildNodes[0].ChildNodes[1].Token.Text.ToLower()]);
+                                    retorno.Dato = Clase.Copiar(Clases[operRaiz.ChildNodes[1].Token.Text.ToLower()]);
                                 }
                                 //Aviso que no funciona bien esta mierda alv
                                 Main.Imprimir("Las instancias no funcionan correctamente en esta versión.");
@@ -472,17 +472,17 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                     //Verifica que lo se haya interpertado sea una clase
                                     if (symizqClass.TipoDato != Tipo.CLASE)
                                     {
-                                        Main.Imprimir(String.Format("Esta operación solo se acepta en tipo de datos Clases: ({0}, {1})", operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1));
+                                        Main.Imprimir(String.Format("Esta operación solo se acepta en tipo de datos Clases: ({0}, {1})", operRaiz.ChildNodes[1].Token.Location.Line + 1, operRaiz.ChildNodes[1].Token.Location.Column + 1));
                                         return new Simbolo();
                                     }
                                     //Verifica que el dato no sea nulo
                                     if (symizqClass.Dato == null)
                                     {
-                                        Main.Imprimir(String.Format("La variable no se ha inicializado: ({0}, {1})", operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1));
+                                        Main.Imprimir(String.Format("La variable no se ha inicializado: ({0}, {1})", operRaiz.ChildNodes[1].Token.Location.Line + 1, operRaiz.ChildNodes[1].Token.Location.Column + 1));
                                         return new Simbolo();
                                     }
                                     //Determina si es una llamada o una búsqueda de atributo
-                                    if (operRaiz.ChildNodes[1].Term.Name.Equals("CALL"))
+                                    if (operRaiz.ChildNodes[2].Term.Name.Equals("CALL"))
                                     {
                                         //Es una llamada a función
                                         //Usando el Simbolo recuperado -symizqClass-, se deberá operar el lado derecho
@@ -494,28 +494,29 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                     else
                                     {
                                         //Verifica que el nodo derecho sea una variable
-                                        if (!operRaiz.ChildNodes[1].ChildNodes[0].Term.Name.Equals("tkVAR"))
+                                        if (!operRaiz.ChildNodes[2].ChildNodes[0].Term.Name.Equals("tkVAR"))
                                         {
-                                            Main.Imprimir(String.Format("Se esperaba un identificador:  ({0}, {1})", operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1));
+                                            Main.Imprimir(String.Format("Se esperaba un identificador:  ({0}, {1})", operRaiz.ChildNodes[1].Token.Location.Line + 1, operRaiz.ChildNodes[1].Token.Location.Column + 1));
                                             return new Simbolo();
                                         }
                                         //Hay al menos una clase ahí dentro
                                         Clase classIzq = symizqClass.Dato as Clase;
                                         //Busca la variable
-                                        if (!classIzq.ClaseSym.ContainsKey(operRaiz.ChildNodes[1].Token.Text.ToLower()))
-                                        {
-                                            Main.Imprimir(String.Format("No existe el atributo {2} : ({0}, {1})", operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1, operRaiz.ChildNodes[1].Token.Text.ToLower()));
-                                            return new Simbolo();
-                                        }
-                                        //Operara el simbolo de clase y retornará un símbolo
-                                        Simbolo AuxSimbolo = classIzq.ClaseSym[operRaiz.ChildNodes[1].Token.Text.ToLower()];
+                                        Simbolo auxSym = classIzq.BuscarSimbolo(operRaiz.ChildNodes[2].ChildNodes[0].Token.Text.ToLower());
+                                        //Opera el subarbol del simbolo
+                                        Operar varOper = new Operar(classIzq, classIzq, this.Clases);
+                                        Simbolo OperSimbolo = varOper.Interpretar(auxSym.Oper);
+                                        Simbolo OperArray = varOper.Interpretar(auxSym.Arr);
+                                        //Asigna las nuevas referencias
+                                        auxSym.Arreglo = OperArray.Arreglo;
+                                        auxSym.Dato = OperSimbolo.Dato;
                                         //Determina si el simbolo es visible al exterior
-                                        if (classIzq.ClaseSym[operRaiz.ChildNodes[1].Token.Text.ToLower()].EsPrivado)
+                                        if (auxSym.EsPrivado)
                                         {
-                                            Main.Imprimir(String.Format("El atributo no es visible {2} : ({0}, {1})", operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1, operRaiz.ChildNodes[1].Token.Text.ToLower()));
+                                            Main.Imprimir(String.Format("El atributo no es visible {2} : ({0}, {1})", operRaiz.ChildNodes[1].Token.Location.Line + 1, operRaiz.ChildNodes[1].Token.Location.Column + 1, operRaiz.ChildNodes[1].Token.Text.ToLower()));
                                             return new Simbolo();
                                         }
-                                        retorno = AuxSimbolo;
+                                        retorno = auxSym;
                                     }
                                     break;
                                 case "OR":
