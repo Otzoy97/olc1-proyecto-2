@@ -464,10 +464,9 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                 case "DOT":
                                     //Esto solo es posible en clases, por lo tanto, se debe determinar que el nodo
                                     //izquierdo sea de tipo Clase
-                                    //Luego se deber determinar que el hijo del nodo derecho es un CALL o no
+                                    //Luego se debe determinar que el hijo del nodo derecho es un CALL o no
                                     //Si es un CALL se deberá buscar en la lista de funciones
                                     //Si no lo es , se deberá buscar en la lista de variables
-
                                     //Interpreta el lado izquierdo
                                     Simbolo symizqClass = Interpretar(operRaiz.ChildNodes[0]);
                                     //Verifica que lo se haya interpertado sea una clase
@@ -483,18 +482,17 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                         return new Simbolo();
                                     }
                                     //Determina si es una llamada o una búsqueda de atributo
-                                    if (operRaiz.ChildNodes[0].Term.Name.Equals("CALL"))
+                                    if (operRaiz.ChildNodes[1].Term.Name.Equals("CALL"))
                                     {
-                                        //Se debe determinar cuál 
+                                        //Es una llamada a función
+                                        //Usando el Simbolo recuperado -symizqClass-, se deberá operar el lado derecho
+                                        //Instancia una nuevo objeto operar (el entorno es la clase recuperada)
+                                        Operar operCall = new Operar(symizqClass.Dato as IEntorno, symizqClass.Dato as Clase, this.Clases);
+                                        //Se opera el lado derecho y se devuelve el dato recuperado
+                                        retorno = operCall.Interpretar(operRaiz.ChildNodes[1]);
                                     }
                                     else
                                     {
-                                        //Verifica que el nodo derecho sea una hoja
-                                        //if (operRaiz.ChildNodes[1].ChildNodes.Count != 0)
-                                        //{
-                                        //    Main.Imprimir(String.Format("Se esperaba un identificador:  ({0}, {1})", operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1));
-                                        //    return new Simbolo();
-                                        //}
                                         //Verifica que el nodo derecho sea una variable
                                         if (!operRaiz.ChildNodes[1].ChildNodes[0].Term.Name.Equals("tkVAR"))
                                         {
