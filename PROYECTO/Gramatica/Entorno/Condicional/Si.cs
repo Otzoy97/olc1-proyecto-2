@@ -4,49 +4,57 @@ using PROYECTO.Gramatica.Acciones.Operaciones;
 
 namespace PROYECTO.Gramatica.Entorno.Condicional
 {
-    class Si : Funcion, IEntorno
+    class Si : IEntorno
     {
-        public LinkedList<IEntorno> IfEnt { get; }
+        /// <summary>
+        /// Diccionario local
+        /// </summary>
         public Dictionary<string, Simbolo> IfSym { get; }
+        /// <summary>
+        /// Nodo de acciones si verdadero
+        /// </summary>
         public ParseTreeNode IfTree { get; }
+        /// <summary>
+        /// Nodo de acciones si falso
+        /// </summary>
         public ParseTreeNode ElseTree { get; }
-
+        /// <summary>
+        /// Nodo de condición
+        /// </summary>
         public ParseTreeNode Condicion { get; }
+        /// <summary>
+        /// Entorno inmediato superior
+        /// </summary>
+        private IEntorno EntornoPadre { get; set; }
 
-        public Si(ParseTreeNode condicion, ParseTreeNode accionesTrue)
+        public Si(ParseTreeNode condicion, ParseTreeNode accionesTrue, IEntorno entornoPadre)
         {
-            this.IfEnt = new LinkedList<IEntorno>();
             this.IfSym = new Dictionary<string, Simbolo>();
             this.IfTree = accionesTrue;
             this.Condicion = condicion;
+            this.EntornoPadre = entornoPadre;
         }
-        public Si(ParseTreeNode condicion, ParseTreeNode accionesTrue, ParseTreeNode accionesFalse)
+        public Si(ParseTreeNode condicion, ParseTreeNode accionesTrue, ParseTreeNode accionesFalse, IEntorno entornoPadre)
         {
-            this.IfEnt = new LinkedList<IEntorno>();
             this.IfSym = new Dictionary<string, Simbolo>();
             this.IfTree = accionesTrue;
             this.Condicion = condicion;
             this.ElseTree = accionesFalse;
+            this.EntornoPadre = entornoPadre;
+        }
+        /// <summary>
+        /// Busca un simbolo en el diccionario local o en el diccionario del entorno padre
+        /// </summary>
+        /// <param name="nombreVar"></param>
+        /// <returns></returns>
+        public Simbolo BuscarSimbolo(string nombreVar)
+        {
+            return this.IfSym.ContainsKey(nombreVar) ? this.IfSym[nombreVar] : EntornoPadre.BuscarSimbolo(nombreVar);
         }
 
-        public new Simbolo BuscarSimbolo(string nombreVar)
+        public void Ejecutar()
         {
-            return this.IfSym.ContainsKey(nombreVar) ? this.IfSym[nombreVar] : base.BuscarSimbolo(nombreVar);
-        }
 
-        public new void Ejecutar()
-        {
-            //Opera la condición del if
-            //Simbolo varBool = new Operar(this).Interpretar(Condicion);
-            //Verifica que el valor devuelto sea un BOOLEANO
-            //if (varBool.TipoDato == Tipo.BOOLEAN && varBool.Dato != null)
-            //{
-
-            //}
-            //else
-            //{
-                //Solo se aceptan valore booleanos como condicion en un if
-            //}
         }
     }
 }
