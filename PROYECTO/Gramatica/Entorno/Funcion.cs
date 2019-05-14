@@ -1,13 +1,13 @@
 ﻿using Irony.Parsing;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PROYECTO.Gramatica.Entorno
 {
     class Funcion : Clase, IEntorno
     {
         //Simbolos almacendos en tiempo de ejecución
-        public Dictionary<string, Simbolo> FuncSym { get; }
+        public Dictionary<string, Simbolo> FuncSym { get; set; }
         //Subarbol de acciones
         public ParseTreeNode FuncTree { get; set; }
         //Determina si la función es privada
