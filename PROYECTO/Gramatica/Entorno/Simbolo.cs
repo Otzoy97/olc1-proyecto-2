@@ -1,14 +1,15 @@
-﻿using System.Windows.Forms;
-using Irony.Parsing;
+﻿using Irony.Parsing;
+using System;
 
 namespace PROYECTO.Gramatica.Entorno
 {
+    [Serializable]
     public enum Tipo
     {
         VOID, INT, STRING, DOUBLE, CHAR, BOOLEAN, CLASE, 
         INTARR, STRINGARR, DOUBLEARR, CHARARR, BOOLEANARR, CLASEARR
     }
-
+    [Serializable]
     public class Posicion
     {
         public int Fila { get; set; }
@@ -21,6 +22,7 @@ namespace PROYECTO.Gramatica.Entorno
         }
 
     }
+    [Serializable]
     public class Arreglo
     {
         public TipoArreglo Dimension { get; set; }
@@ -28,10 +30,12 @@ namespace PROYECTO.Gramatica.Entorno
         public int SizeBi { get; set; }
         public int SizeTri { get; set; }
     }
+    [Serializable]
     public enum TipoArreglo
     {
         UNI, BI, TRI
     }
+    [Serializable]
     public class Simbolo
     {
         /// <summary>

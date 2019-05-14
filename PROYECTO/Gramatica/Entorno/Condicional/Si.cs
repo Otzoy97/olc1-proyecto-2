@@ -37,16 +37,16 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
         public new void Ejecutar()
         {
             //Opera la condición del if
-            Simbolo varBool = new Operar(this).Interpretar(Condicion);
+            //Simbolo varBool = new Operar(this).Interpretar(Condicion);
             //Verifica que el valor devuelto sea un BOOLEANO
-            if (varBool.TipoDato == Tipo.BOOLEAN && varBool.Dato != null)
-            {
+            //if (varBool.TipoDato == Tipo.BOOLEAN && varBool.Dato != null)
+            //{
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 //Solo se aceptan valore booleanos como condicion en un if
-            }
+            //}
         }
     }
 }

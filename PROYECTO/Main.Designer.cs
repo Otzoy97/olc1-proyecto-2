@@ -43,11 +43,13 @@
             this.ItemCompilar = new System.Windows.Forms.ToolStripMenuItem();
             this.TabOutput = new System.Windows.Forms.TabControl();
             this.TabConsola = new System.Windows.Forms.TabPage();
+            Main.TxtOutput = new System.Windows.Forms.TextBox();
             this.TabVariable = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.TabInput = new System.Windows.Forms.TabControl();
             this.menuStrip1.SuspendLayout();
             this.TabOutput.SuspendLayout();
+            this.TabConsola.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -167,6 +169,7 @@
             // 
             // TabConsola
             // 
+            this.TabConsola.Controls.Add(Main.TxtOutput);
             this.TabConsola.Location = new System.Drawing.Point(4, 29);
             this.TabConsola.Name = "TabConsola";
             this.TabConsola.Padding = new System.Windows.Forms.Padding(3);
@@ -174,6 +177,15 @@
             this.TabConsola.TabIndex = 0;
             this.TabConsola.Text = "Consola";
             this.TabConsola.UseVisualStyleBackColor = true;
+            // 
+            // TxtOutput
+            // 
+            Main.TxtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            Main.TxtOutput.Location = new System.Drawing.Point(3, 3);
+            Main.TxtOutput.Multiline = true;
+            Main.TxtOutput.Name = "TxtOutput";
+            Main.TxtOutput.Size = new System.Drawing.Size(964, 177);
+            Main.TxtOutput.TabIndex = 0;
             // 
             // TabVariable
             // 
@@ -229,6 +241,8 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.TabOutput.ResumeLayout(false);
+            this.TabConsola.ResumeLayout(false);
+            this.TabConsola.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -253,6 +267,7 @@
         private System.Windows.Forms.TabPage TabConsola;
         private System.Windows.Forms.TabPage TabVariable;
         private System.Windows.Forms.TabControl TabInput;
+        public static System.Windows.Forms.TextBox TxtOutput;
     }
 }
 

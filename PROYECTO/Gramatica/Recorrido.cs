@@ -52,10 +52,11 @@ namespace PROYECTO.Gramatica
                         //Primero verifica que no exista esa clase ya en el Diccionario
                         if (!Clases.ContainsKey(rama.ChildNodes[0].Token.Value.ToString()))
                         {
-                            punteroClase = new Clase
+                            punteroClase = new Clase();
+                            foreach (var implst in rama.ChildNodes[1].ChildNodes)
                             {
-                                ClaseImpTree = rama.ChildNodes[1]
-                            };
+                                punteroClase.ClaseImpNames.AddLast(implst.Token.Text.ToLower());
+                            }
                             this.Clases.Add(rama.ChildNodes[0].Token.Value.ToString(), punteroClase);
                             this.CrearEntorno(rama.ChildNodes[2]);
                         }
@@ -159,7 +160,7 @@ namespace PROYECTO.Gramatica
                                 ClaseSym = punteroClase.ClaseSym,
                                 ClaseImp = punteroClase.ClaseImp,
                                 ClaseEnt = punteroClase.ClaseEnt,
-                                ClaseImpTree = punteroClase.ClaseImpTree,
+                                ClaseImpNames = punteroClase.ClaseImpNames,
                                 FuncTree = ramaAux[0] ?? null
                             };
                             //Establece los atributos de la funcion
@@ -192,6 +193,56 @@ namespace PROYECTO.Gramatica
                             ramaAux.RemoveAt(ramaAux.Count - 1);
                             //Recupera la lista de parametros
                             var parametros = ramaAux[ramaAux.Count - 1];
+                            //Genera un diccionario con la lista de parametros que se detectó
+                            Dictionary<string, Simbolo> ParLst = new Dictionary<string, Simbolo>();
+                            //Recorre el subarbol parametros
+                            foreach (var parNode in parametros.ChildNodes)
+                            {
+                                //Se obtienen 'PAR' 'PAR' PAR'
+                                //Crea el simbolo que se agregará
+                                Simbolo symPar = new Simbolo();
+                                switch (parNode.ChildNodes[0].Term.Name)
+                                {
+                                    case "tkINT":
+                                        symPar.TipoDato = Tipo.INT;
+                                        break;
+                                    case "tkSTR":
+                                        symPar.TipoDato = Tipo.STRING;
+                                        break;
+                                    case "tkCHAR":
+                                        symPar.TipoDato = Tipo.CHAR;
+                                        break;
+                                    case "tkDOUBLE":
+                                        symPar.TipoDato = Tipo.DOUBLE;
+                                        break;
+                                    case "tkBOOL":
+                                        symPar.TipoDato = Tipo.BOOLEAN;
+                                        break;
+                                    case "tkID":
+                                        symPar.TipoDato = Tipo.CLASE;
+                                        break;
+                                }
+                                //Recupera el nombre de la variable
+                                string nameSimplePar = parNode.ChildNodes[0].Token.Text.ToLower();
+                                //Ahora se debe determinar si son arreglos o variables simples
+                                //Se cuenta el numero de nodos que tiene parNode
+                                switch (parNode.ChildNodes.Count)
+                                {
+                                    case 2:
+                                        //Es una variable simple
+                                        //Agrega el simbolo al Diccionario
+                                        ParLst.Add(nameSimplePar,symPar);
+                                        break;
+                                    case 3:
+                                        //Es un arreglo
+                                        //Se modifica el tipo de dato
+                                        symPar.TipoDato += 6;
+                                        //Agrega el simbolo al Dicccionario
+                                        ParLst.Add(nameSimplePar, symPar);
+                                        break;
+                                }
+                            }
+                            //Elimina el nodo de PAR_LST
                             ramaAux.RemoveAt(ramaAux.Count - 1);
                             //Determina si es una sobrecarga o no
                             bool EsOverride = false;
@@ -226,12 +277,12 @@ namespace PROYECTO.Gramatica
                                 ClaseSym = punteroClase.ClaseSym,
                                 ClaseImp = punteroClase.ClaseImp,
                                 ClaseEnt = punteroClase.ClaseEnt,
-                                ClaseImpTree = punteroClase.ClaseImpTree,
+                                ClaseImpNames = punteroClase.ClaseImpNames,
                                 //Establece los atributos de la funcion
                                 ReturnData = symbol,
                                 EsPrivado = esPrivado,
                                 FuncTree = acciones,
-                                ParTree = parametros,
+                                FuncParSym = ParLst,
                                 Override = EsOverride
                             };
                             //Agrega la función a la clase

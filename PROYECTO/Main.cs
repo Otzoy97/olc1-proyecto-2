@@ -8,6 +8,9 @@ using System.Windows.Forms;
 using PROYECTO.Gramatica.Entorno;
 using PROYECTO.Gramatica.Acciones.Operaciones;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Linq.Expressions;
+using System.Linq;
 
 namespace PROYECTO
 {
@@ -260,6 +263,7 @@ namespace PROYECTO
         /// <param name="e"></param>
         private void ItemCompilar_Click(object sender, EventArgs e)
         {
+            TxtOutput.Text = String.Empty;
             Parser p = new Parser(new LanguageData(new Sintactico()));
             ParseTree arbol = p.Parse(((FastColoredTextBox)TabInput.SelectedTab.Controls[0]).Text);
             if (arbol.Root != null)
@@ -267,7 +271,7 @@ namespace PROYECTO
                 var ASTGraph = new ASTHtml(arbol.Root);
 
                 this.SaveFile("ASTGraph.html", ASTGraph.GenerarHTML());
-                /*var recorrido = new Recorrido();
+                var recorrido = new Recorrido();
                 recorrido.CrearClase(arbol.Root);
                 foreach (var lst in recorrido.Clases)
                 {
@@ -277,7 +281,7 @@ namespace PROYECTO
                         //Si el simbolo no es nulo, operar
                         if (lst01.Value.Oper != null)
                         {
-                            var SymDat = new Operar(lst.Value).Interpretar(lst01.Value.Oper);
+                            var SymDat = new Operar(lst.Value,lst.Value,recorrido.Clases).Interpretar(lst01.Value.Oper);
                             //Verifica que los tipos coincidan
                             if (SymDat.TipoDato == lst01.Value.TipoDato)
                             {
@@ -296,7 +300,10 @@ namespace PROYECTO
                     {
                         Console.WriteLine("     entornos -> {0}", lst01.Key);
                     }
-                }*/
+                }
+
+                //Clase prueba = recorrido.Clases["gil"];
+
             }
             else
             {
@@ -323,5 +330,11 @@ namespace PROYECTO
                 MessageBox.Show(this, "Nada que mostrar. " + ex.Message, "Archivo no existe", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        public static void Imprimir(string cadena)
+        {
+            TxtOutput.Text += cadena;
+        }
     }
+
 }
