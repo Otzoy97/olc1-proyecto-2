@@ -33,24 +33,14 @@ namespace PROYECTO.Gramatica.Entorno
             ClaseImp = new Dictionary<string, Clase>();
             ClaseImpNames = new LinkedList<string>();
         }
-
-
-        public Simbolo BuscarSimbolo(string nombreVar)
-        {
-            Simbolo retorno = new Simbolo();
-
-
-            return retorno;
-        }
-
         public void Ejecutar()
         {
 
         }
-
         /// <summary>
         /// Busca en el diccionario de Funciones de la clase y en las funciones de las clases importadas
         /// </summary>
+        /// <param name="nombreFuncion">Nombre de la Función buscada</param>
         /// <returns></returns>
         public Funcion BuscarFuncion(string nombreFuncion)
         {
@@ -74,6 +64,31 @@ namespace PROYECTO.Gramatica.Entorno
             }
             //No encontró ninguna coincidencia, retorna un null
             return null;
+        }
+        /// <summary>
+        /// Busca entre el diccionario de simbolos de la clase y en los simbolos de las clases importadas
+        /// Si no encuentra nada devuelve un Simbolo tipo VOID
+        /// </summary>
+        /// <param name="nombreVar">Nombre del Simbolo buscado</param>
+        /// <returns></returns>
+        public Simbolo BuscarSimbolo(string nombreVar)
+        {
+            //Primero buscará en sus propios simbolos
+            if (ClaseSym.ContainsKey(nombreVar))
+            {
+                return ClaseSym[nombreVar];
+            }
+            //Si llegó acá, quiere decir que no encontró nada
+            //Buscará en los simbolo de las clases importadas
+            foreach (var flagClass in ClaseImp)
+            {
+                if (flagClass.Value.ClaseSym.ContainsKey(nombreVar))
+                {
+                    return flagClass.Value.ClaseSym[nombreVar];
+                }
+            }
+            //No encontrón nada, devuelve un simbolo vacío
+            return new Simbolo();
         }
         /// <summary>
         /// Realiza una copia de la clase específicada
