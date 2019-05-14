@@ -2,6 +2,7 @@
 using PROYECTO.Gramatica.Entorno;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PROYECTO.Gramatica.Acciones.Operaciones
 {
@@ -151,12 +152,105 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                             }
                                             //Ejecuta la funcion
                                             func.Ejecutar();
-
                                             break;
+
                                         case 2:
+                                            //Tiene parametros
+                                            //Verifica que la función recuperada tenga parametros
+                                            if (func.FuncParSym.Count == 0)
+                                            {
+                                                Main.Imprimir(String.Format("No se esperaba una lista de parametros {0} : ({1}, {2})", operRaiz.ChildNodes[0].ChildNodes[0].Token.Text.ToLower(), operRaiz.ChildNodes[0].ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].ChildNodes[0].Token.Location.Column + 1));
+                                                return new Simbolo();
+                                            }
+                                            //Recorre el listado de parametros, recuperando los simbolos
+                                            //Genera una lista de simbolos
+                                            LinkedList<Simbolo> parSym = new LinkedList<Simbolo>();                                            //OPER, OPER, OPER
+                                            foreach (var oper in operRaiz.ChildNodes[0].ChildNodes[1].ChildNodes)
+                                            {
+                                                parSym.AddLast(Interpretar(oper));
+                                            }
+                                            //Verifica que posea la misma cantidad de parametros
+                                            if (parSym.Count != func.FuncParSym.Count)
+                                            {
+                                                Main.Imprimir(String.Format("Se esperaban más parametros {0} : ({1}, {2})", operRaiz.ChildNodes[0].ChildNodes[0].Token.Text.ToLower(), operRaiz.ChildNodes[0].ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].ChildNodes[0].Token.Location.Column + 1));
+                                                return new Simbolo();
+                                            }
+                                            //Compara el tipo de datos recuperados en parSym con el 
+                                            //diccionario de Simbolo-Parametros que posee la función
+                                            //Si todo es correcto agregará la lista de simbolo de la función 
+                                            //los simbolo recuperados
+                                            for (int i = 0;i<parSym.Count;i++)
+                                            {
+                                                Simbolo symPar = parSym.ElementAt(i);
+                                                var dicSymPar = func.FuncParSym.ElementAt(i);
+                                                //Verifica que el tipo sea el mismo
+                                                if (symPar.TipoDato != dicSymPar.Value.TipoDato)
+                                                {
+                                                    Main.Imprimir(String.Format("No coinciden los tipos {0} : ({1}, {2})", dicSymPar.Key.ToString(), symPar.Posicion != null ? symPar.Posicion.Fila : 0, symPar.Posicion != null ? symPar.Posicion.Columna : 0));
+                                                    return new Simbolo();
+                                                }
+                                                //Si es un array deberá de verificar que TODAS las dimensiones sean las mismas
+                                                if (symPar.TipoDato > Tipo.CLASE)
+                                                {
+                                                    //Opera las dimensiones del simbolo del diccionario
+                                                    Simbolo dimensionesDic = Interpretar(dicSymPar.Value.Arr);
+                                                    //Se asegura que las dimensiones no sean nulas
+                                                    if (symPar.Arreglo == null)
+                                                    {
+                                                        Main.Imprimir(String.Format("No se ha inicializado los tipos {0} : ({1}, {2})", dicSymPar.Key.ToString(), symPar.Posicion != null ? symPar.Posicion.Fila : 0, symPar.Posicion != null ? symPar.Posicion.Columna : 0));
+                                                        return new Simbolo();
+                                                    }
+                                                    //Verifica que las dimensiones sean las mimsas
+                                                    if (symPar.Arreglo.Dimension != dimensionesDic.Arreglo.Dimension)
+                                                    {
+                                                        Main.Imprimir(String.Format("Las dimensiones no coinciden {0} : ({1}, {2})", dicSymPar.Key.ToString(), symPar.Posicion != null ? symPar.Posicion.Fila : 0, symPar.Posicion != null ? symPar.Posicion.Columna : 0));
+                                                        return new Simbolo();
+                                                    }
+                                                    if (symPar.Arreglo.SizeUni != dimensionesDic.Arreglo.SizeUni)
+                                                    {
+                                                        Main.Imprimir(String.Format("El largo unidemensional no coincide  {0} : ({1}, {2})", dicSymPar.Key.ToString(), symPar.Posicion != null ? symPar.Posicion.Fila : 0, symPar.Posicion != null ? symPar.Posicion.Columna : 0));
+                                                        return new Simbolo();
+                                                    }
+                                                    if (symPar.Arreglo.SizeBi != dimensionesDic.Arreglo.SizeBi)
+                                                    {
+                                                        Main.Imprimir(String.Format("El largo bidemensional no coincide  {0} : ({1}, {2})", dicSymPar.Key.ToString(), symPar.Posicion != null ? symPar.Posicion.Fila : 0, symPar.Posicion != null ? symPar.Posicion.Columna : 0));
+                                                        return new Simbolo();
+                                                    }
+                                                    if (symPar.Arreglo.SizeTri != dimensionesDic.Arreglo.SizeTri)
+                                                    {
+                                                        Main.Imprimir(String.Format("El largo tridmensional no coincide  {0} : ({1}, {2})", dicSymPar.Key.ToString(), symPar.Posicion != null ? symPar.Posicion.Fila : 0, symPar.Posicion != null ? symPar.Posicion.Columna : 0));
+                                                        return new Simbolo();
+                                                    }
+                                                }
+                                                //Llegado este punto ya se verificó que los tipos son iguales
+                                                //y que si es un array las dimensiones coinciden 
+                                                //Se procederá a agregar el simbolo symPar al diccionario de Simbolos de la función
+                                                func.FuncSym.Add(dicSymPar.Key, symPar);
+                                            }
+                                            //Ya se especificaron los  parametros a la función, se procederá a ejecutar la función
+                                            func.Ejecutar();
                                             break;
                                     }
-                                    //Va a buscar entre la lista de clases si existe una clase con el nombre que se especificó en el segundo nodo
+                                    //Llegado a este punto todo debió haber salido bien, por lo tanto
+                                    //se realiza una copia del simbolo de retorno de la función
+                                    Simbolo returnDataSymFunc = new Simbolo()
+                                    {
+                                        Arr = func.ReturnData.Arr,
+                                        Dato = func.ReturnData.Dato,
+                                        TipoDato = func.ReturnData.TipoDato,
+                                        Oper = func.ReturnData.Oper,
+                                        EsPrivado = func.EsPrivado
+                                    };
+                                    //Realiza una copia del arrreglo si no es nulo
+                                    if (func.ReturnData.Arreglo != null)
+                                    {
+                                        returnDataSymFunc.Arreglo.Dimension = func.ReturnData.Arreglo.Dimension;
+                                        returnDataSymFunc.Arreglo.SizeUni = func.ReturnData.Arreglo.SizeUni;
+                                        returnDataSymFunc.Arreglo.SizeBi = func.ReturnData.Arreglo.SizeBi;
+                                        returnDataSymFunc.Arreglo.SizeTri = func.ReturnData.Arreglo.SizeTri;
+                                    }
+                                    //Asigna el simbolo copiado al retorno
+                                    retorno = returnDataSymFunc;
                                     break;
                             }
                             retorno.Posicion = new Posicion(operRaiz.ChildNodes[0].Token.Location.Line, operRaiz.ChildNodes[0].Token.Location.Column);
