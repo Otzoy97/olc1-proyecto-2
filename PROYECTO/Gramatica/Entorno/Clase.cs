@@ -88,7 +88,161 @@ namespace PROYECTO.Gramatica.Entorno
                     //Asigna el valor de symClassOpera al dato del diccionar de clases actual
                     symClass.Value.Dato = symClassOper.Dato;
                 }
-                
+                //Si es un arreglo se asegurará de inicializar el arreglo
+                else if (symClass.Value.TipoDato > Tipo.CLASE)
+                {
+                    //Inicializa el dato
+                    object arrDato = null;
+                    var dimArrSym = symClass.Value;
+                    //Según las dimensiones
+                    switch (dimArrSym.Arreglo.Dimension)
+                    {
+                        case TipoArreglo.UNI:
+                            switch (dimArrSym.TipoDato)
+                            {
+                                case Tipo.INTARR:
+                                    arrDato = new int[dimArrSym.Arreglo.SizeUni];
+                                    break;
+                                case Tipo.STRINGARR:
+                                    arrDato = new string[dimArrSym.Arreglo.SizeUni];
+                                    break;
+                                case Tipo.DOUBLEARR:
+                                    arrDato = new double[dimArrSym.Arreglo.SizeUni];
+                                    break;
+                                case Tipo.CHARARR:
+                                    arrDato = new char[dimArrSym.Arreglo.SizeUni];
+                                    break;
+                                case Tipo.BOOLEANARR:
+                                    arrDato = new bool[dimArrSym.Arreglo.SizeUni];
+                                    break;
+                                case Tipo.CLASEARR:
+                                    arrDato = new Clase[dimArrSym.Arreglo.SizeUni];
+                                    break;
+                            }
+                            break;
+                        case TipoArreglo.BI:
+                            switch (dimArrSym.TipoDato)
+                            {
+                                case Tipo.INTARR:
+                                    arrDato = new int[dimArrSym.Arreglo.SizeBi][];
+                                    //recorre el arreglo inicializando el arreglo
+                                    for (int i = 0; i < (arrDato as int[][]).Length; i++)
+                                    {
+                                        (arrDato as int[][])[i] = new int[dimArrSym.Arreglo.SizeUni];
+                                    }
+                                    break;
+                                case Tipo.STRINGARR:
+                                    arrDato = new string[dimArrSym.Arreglo.SizeBi][];
+                                    for (int i = 0; i < (arrDato as string[][]).Length; i++)
+                                    {
+                                        (arrDato as string[][])[i] = new string[dimArrSym.Arreglo.SizeUni];
+                                    }
+                                    break;
+                                case Tipo.DOUBLEARR:
+                                    arrDato = new double[dimArrSym.Arreglo.SizeBi][];
+                                    for (int i = 0; i < (arrDato as double[][]).Length; i++)
+                                    {
+                                        (arrDato as double[][])[i] = new double[dimArrSym.Arreglo.SizeUni];
+                                    }
+                                    break;
+                                case Tipo.CHARARR:
+                                    arrDato = new char[dimArrSym.Arreglo.SizeBi][];
+                                    for (int i = 0; i < (arrDato as char[][]).Length; i++)
+                                    {
+                                        (arrDato as char[][])[i] = new char[dimArrSym.Arreglo.SizeUni];
+                                    }
+                                    break;
+                                case Tipo.BOOLEANARR:
+                                    arrDato = new bool[dimArrSym.Arreglo.SizeBi][];
+                                    for (int i = 0; i < (arrDato as bool[][]).Length; i++)
+                                    {
+                                        (arrDato as bool[][])[i] = new bool[dimArrSym.Arreglo.SizeUni];
+                                    }
+                                    break;
+                                case Tipo.CLASEARR:
+                                    arrDato = new Clase[dimArrSym.Arreglo.SizeBi][];
+                                    for (int i = 0; i < (arrDato as Clase[][]).Length; i++)
+                                    {
+                                        (arrDato as Clase[][])[i] = new Clase[dimArrSym.Arreglo.SizeUni];
+                                    }
+                                    break;
+                            }
+                            break;
+                        case TipoArreglo.TRI:
+                            switch (dimArrSym.TipoDato)
+                            {
+                                case Tipo.INTARR:
+                                    arrDato = new int[dimArrSym.Arreglo.SizeTri][][];
+                                    for (int i = 0; i < dimArrSym.Arreglo.SizeTri; i++)
+                                    {
+                                        (arrDato as int[][][])[i] = new int[dimArrSym.Arreglo.SizeBi][];
+                                        for (int j = 0; j < dimArrSym.Arreglo.SizeBi; i++)
+                                        {
+                                            (arrDato as int[][][])[i][j] = new int[dimArrSym.Arreglo.SizeUni];
+                                        }
+                                    }
+                                    break;
+                                case Tipo.STRINGARR:
+                                    arrDato = new string[dimArrSym.Arreglo.SizeTri][][];
+                                    for (int i = 0; i < dimArrSym.Arreglo.SizeTri; i++)
+                                    {
+                                        (arrDato as string[][][])[i] = new string[dimArrSym.Arreglo.SizeBi][];
+                                        for (int j = 0; j < dimArrSym.Arreglo.SizeBi; i++)
+                                        {
+                                            (arrDato as string[][][])[i][j] = new string[dimArrSym.Arreglo.SizeUni];
+                                        }
+                                    }
+                                    break;
+                                case Tipo.DOUBLEARR:
+                                    arrDato = new double[dimArrSym.Arreglo.SizeTri][][];
+                                    for (int i = 0; i < dimArrSym.Arreglo.SizeTri; i++)
+                                    {
+                                        (arrDato as double[][][])[i] = new double[dimArrSym.Arreglo.SizeBi][];
+                                        for (int j = 0; j < dimArrSym.Arreglo.SizeBi; i++)
+                                        {
+                                            (arrDato as double[][][])[i][j] = new double[dimArrSym.Arreglo.SizeUni];
+                                        }
+                                    }
+                                    break;
+                                case Tipo.CHARARR:
+                                    arrDato = new char[dimArrSym.Arreglo.SizeTri][][];
+                                    for (int i = 0; i < dimArrSym.Arreglo.SizeTri; i++)
+                                    {
+                                        (arrDato as char[][][])[i] = new char[dimArrSym.Arreglo.SizeBi][];
+                                        for (int j = 0; j < dimArrSym.Arreglo.SizeBi; i++)
+                                        {
+                                            (arrDato as char[][][])[i][j] = new char[dimArrSym.Arreglo.SizeUni];
+                                        }
+                                    }
+                                    break;
+                                case Tipo.BOOLEANARR:
+                                    arrDato = new bool[dimArrSym.Arreglo.SizeTri][][];
+                                    for (int i = 0; i < dimArrSym.Arreglo.SizeTri; i++)
+                                    {
+                                        (arrDato as bool[][][])[i] = new bool[dimArrSym.Arreglo.SizeBi][];
+                                        for (int j = 0; j < dimArrSym.Arreglo.SizeBi; i++)
+                                        {
+                                            (arrDato as bool[][][])[i][j] = new bool[dimArrSym.Arreglo.SizeUni];
+                                        }
+                                    }
+                                    break;
+                                case Tipo.CLASEARR:
+                                    arrDato = new Clase[dimArrSym.Arreglo.SizeTri][][];
+                                    for (int i = 0; i < dimArrSym.Arreglo.SizeTri; i++)
+                                    {
+                                        (arrDato as Clase[][][])[i] = new Clase[dimArrSym.Arreglo.SizeBi][];
+                                        for (int j = 0; j < dimArrSym.Arreglo.SizeBi; i++)
+                                        {
+                                            (arrDato as Clase[][][])[i][j] = new Clase[dimArrSym.Arreglo.SizeUni];
+                                        }
+                                    }
+                                    break;
+                            }
+                            break;
+                    }
+                    //asigna el dato al symClass
+                    symClass.Value.Dato = arrDato;
+                }
             }
             //Importar clases
             foreach (var impNameClass in ClaseImpNames)

@@ -99,7 +99,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                 case "OPER":
                                     #region PARENTESIS
                                     return Interpretar(operRaiz.ChildNodes[0]);
-                                    #endregion
+                                #endregion
                                 case "tkREAL":
                                     #region tkREAL
                                     //Determina el tipo  (double o int)
@@ -136,19 +136,23 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                 case "tkVAR":
                                     #region tkVAR
                                     return Entorno.BuscarSimbolo(operRaiz.ChildNodes[0].Token.Text);
-                                    #endregion
+                                #endregion
                                 case "CALL":
                                     #region CALL
                                     //Esta es una llamada en la misma clase
                                     //Se debe verificar que el nombre de la función exista 
                                     //en la coleccion de entornos de la ClaseLocal
                                     //Esta función puede devolver un nulo, por lo que se debe verificar que no sea nulo
-                                    Funcion func = ClaseLocal.BuscarFuncion(operRaiz.ChildNodes[0].ChildNodes[0].Token.Text.ToLower());
+                                    Clase classFunc = Clase.Copiar(this.ClaseLocal);
+
+                                    var func = classFunc.BuscarFuncion(operRaiz.ChildNodes[0].ChildNodes[0].Token.Text.ToLower());
+
                                     if (func == null)
                                     {
                                         Main.Imprimir(String.Format("No existe el método {0} : ({1}, {2})", operRaiz.ChildNodes[0].ChildNodes[0].Token.Text.ToLower(), operRaiz.ChildNodes[0].ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].ChildNodes[0].Token.Location.Column + 1));
                                         return new Simbolo();
                                     }
+                                    
                                     //Cuenta el numero de nodos para determinar si es una llamada con parametros o no
                                     switch (operRaiz.ChildNodes[0].ChildNodes.Count)
                                     {
@@ -262,9 +266,8 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                         returnDataSymFunc.Arreglo.SizeTri = func.ReturnData.Arreglo.SizeTri;
                                     }
                                     //Asigna el simbolo copiado al retorno
-                                    retorno = returnDataSymFunc;
+                                    return returnDataSymFunc;
                                     #endregion
-                                    break;
                             }
                             retorno.Posicion = new Posicion(operRaiz.ChildNodes[0].Token.Location.Line, operRaiz.ChildNodes[0].Token.Location.Column);
                             break;

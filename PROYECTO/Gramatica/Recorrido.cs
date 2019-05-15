@@ -223,7 +223,7 @@ namespace PROYECTO.Gramatica
                                         break;
                                 }
                                 //Recupera el nombre de la variable
-                                string nameSimplePar = parNode.ChildNodes[0].Token.Text.ToLower();
+                                string nameSimplePar = parNode.ChildNodes[1].Token.Text.ToLower();
                                 //Verifica que el simbolo no exista
                                 if (ParLst.ContainsKey(nameSimplePar))
                                 {

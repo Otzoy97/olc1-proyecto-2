@@ -41,7 +41,8 @@ namespace PROYECTO.Gramatica.Entorno.Loop
 
         public bool Ejecutar()
         {
-            return false;
+            bool retorno = false;
+            return retorno;
         }
         /// <summary>
         /// Busca la clase padre
@@ -59,7 +60,6 @@ namespace PROYECTO.Gramatica.Entorno.Loop
         {
             return EntornoPadre.BuscarFuncionPadre();
         }
-
         /// <summary>
         /// Devuelve si algun padre superior es un loop
         /// </summary>

@@ -46,8 +46,6 @@
             this.txtoutput = new System.Windows.Forms.TextBox();
             this.TabVariable = new System.Windows.Forms.TabPage();
             this.gridVar = new System.Windows.Forms.DataGridView();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.TabInput = new System.Windows.Forms.TabControl();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,6 +53,8 @@
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.TabInput = new System.Windows.Forms.TabControl();
             this.menuStrip1.SuspendLayout();
             this.TabOutput.SuspendLayout();
             this.TabConsola.SuspendLayout();
@@ -148,7 +148,8 @@
             this.ItemAST.Name = "ItemAST";
             this.ItemAST.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this.ItemAST.Size = new System.Drawing.Size(257, 26);
-            this.ItemAST.Text = "Generar AST";
+            this.ItemAST.Text = "Mostrar AST";
+            this.ItemAST.Click += new System.EventHandler(this.ItemAST_Click);
             // 
             // toolStripSeparator3
             // 
@@ -230,33 +231,6 @@
             this.gridVar.Size = new System.Drawing.Size(964, 177);
             this.gridVar.TabIndex = 0;
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.AutoSize = true;
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 31);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(0, 0);
-            this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // TabInput
-            // 
-            this.TabInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TabInput.Location = new System.Drawing.Point(0, 28);
-            this.TabInput.MaximumSize = new System.Drawing.Size(99999, 99999);
-            this.TabInput.MinimumSize = new System.Drawing.Size(840, 400);
-            this.TabInput.Name = "TabInput";
-            this.TabInput.SelectedIndex = 0;
-            this.TabInput.Size = new System.Drawing.Size(978, 435);
-            this.TabInput.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.TabInput.TabIndex = 3;
-            // 
             // Column1
             // 
             this.Column1.HeaderText = "No.";
@@ -298,6 +272,33 @@
             this.Column7.HeaderText = "Entorno";
             this.Column7.Name = "Column7";
             this.Column7.ReadOnly = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 31);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(0, 0);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // TabInput
+            // 
+            this.TabInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TabInput.Location = new System.Drawing.Point(0, 28);
+            this.TabInput.MaximumSize = new System.Drawing.Size(99999, 99999);
+            this.TabInput.MinimumSize = new System.Drawing.Size(840, 400);
+            this.TabInput.Name = "TabInput";
+            this.TabInput.SelectedIndex = 0;
+            this.TabInput.Size = new System.Drawing.Size(978, 435);
+            this.TabInput.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.TabInput.TabIndex = 3;
             // 
             // Main
             // 
