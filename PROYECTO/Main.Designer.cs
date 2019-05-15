@@ -45,11 +45,21 @@
             this.TabConsola = new System.Windows.Forms.TabPage();
             Main.TxtOutput = new System.Windows.Forms.TextBox();
             this.TabVariable = new System.Windows.Forms.TabPage();
+            Main.GridVariables = new System.Windows.Forms.DataGridView();
+            this.colNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NombreVar = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ValCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TipoCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FilaCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EntornoCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.TabInput = new System.Windows.Forms.TabControl();
             this.menuStrip1.SuspendLayout();
             this.TabOutput.SuspendLayout();
             this.TabConsola.SuspendLayout();
+            this.TabVariable.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(Main.GridVariables)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -181,6 +191,7 @@
             // TxtOutput
             // 
             Main.TxtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            Main.TxtOutput.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             Main.TxtOutput.Location = new System.Drawing.Point(3, 3);
             Main.TxtOutput.Multiline = true;
             Main.TxtOutput.Name = "TxtOutput";
@@ -189,6 +200,7 @@
             // 
             // TabVariable
             // 
+            this.TabVariable.Controls.Add(Main.GridVariables);
             this.TabVariable.Location = new System.Drawing.Point(4, 29);
             this.TabVariable.Name = "TabVariable";
             this.TabVariable.Padding = new System.Windows.Forms.Padding(3);
@@ -196,6 +208,69 @@
             this.TabVariable.TabIndex = 1;
             this.TabVariable.Text = "Variables";
             this.TabVariable.UseVisualStyleBackColor = true;
+            // 
+            // GridVariables
+            // 
+            Main.GridVariables.AllowUserToAddRows = false;
+            Main.GridVariables.AllowUserToDeleteRows = false;
+            Main.GridVariables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Main.GridVariables.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colNo,
+            this.NombreVar,
+            this.ValCol,
+            this.TipoCol,
+            this.FilaCol,
+            this.ColCol,
+            this.EntornoCol});
+            Main.GridVariables.Dock = System.Windows.Forms.DockStyle.Fill;
+            Main.GridVariables.Location = new System.Drawing.Point(3, 3);
+            Main.GridVariables.Name = "GridVariables";
+            Main.GridVariables.ReadOnly = true;
+            Main.GridVariables.RowTemplate.Height = 24;
+            Main.GridVariables.Size = new System.Drawing.Size(964, 177);
+            Main.GridVariables.TabIndex = 0;
+            // 
+            // colNo
+            // 
+            this.colNo.HeaderText = "No.";
+            this.colNo.Name = "colNo";
+            this.colNo.ReadOnly = true;
+            // 
+            // NombreVar
+            // 
+            this.NombreVar.HeaderText = "Nombre";
+            this.NombreVar.Name = "NombreVar";
+            this.NombreVar.ReadOnly = true;
+            // 
+            // ValCol
+            // 
+            this.ValCol.HeaderText = "Valores";
+            this.ValCol.Name = "ValCol";
+            this.ValCol.ReadOnly = true;
+            // 
+            // TipoCol
+            // 
+            this.TipoCol.HeaderText = "Tipo";
+            this.TipoCol.Name = "TipoCol";
+            this.TipoCol.ReadOnly = true;
+            // 
+            // FilaCol
+            // 
+            this.FilaCol.HeaderText = "Fila";
+            this.FilaCol.Name = "FilaCol";
+            this.FilaCol.ReadOnly = true;
+            // 
+            // ColCol
+            // 
+            this.ColCol.HeaderText = "Columna";
+            this.ColCol.Name = "ColCol";
+            this.ColCol.ReadOnly = true;
+            // 
+            // EntornoCol
+            // 
+            this.EntornoCol.HeaderText = "Entorno";
+            this.EntornoCol.Name = "EntornoCol";
+            this.EntornoCol.ReadOnly = true;
             // 
             // tableLayoutPanel1
             // 
@@ -243,6 +318,8 @@
             this.TabOutput.ResumeLayout(false);
             this.TabConsola.ResumeLayout(false);
             this.TabConsola.PerformLayout();
+            this.TabVariable.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(Main.GridVariables)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,6 +344,14 @@
         private System.Windows.Forms.TabPage TabConsola;
         private System.Windows.Forms.TabPage TabVariable;
         private System.Windows.Forms.TabControl TabInput;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NombreVar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ValCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TipoCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FilaCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EntornoCol;
+        public static System.Windows.Forms.DataGridView GridVariables;
         public static System.Windows.Forms.TextBox TxtOutput;
     }
 }

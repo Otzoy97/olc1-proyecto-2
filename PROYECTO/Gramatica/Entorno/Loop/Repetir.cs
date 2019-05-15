@@ -57,6 +57,7 @@ namespace PROYECTO.Gramatica.Entorno.Loop
                 Main.Imprimir(String.Format("Repetir necesita un entero: ({0},{1})",
                     RepeatIteracion.Posicion != null ? RepeatIteracion.Posicion.Fila : 0,
                     RepeatIteracion.Posicion != null ? RepeatIteracion.Posicion.Columna : 0));
+                return true;
             }
             //Procede a ejecutar el nodo las n veces que se determinó anteriormente
             for (int i = 0;i< ((int)RepeatIteracion.Dato);i++)
@@ -694,35 +695,34 @@ namespace PROYECTO.Gramatica.Entorno.Loop
                             return true;
                         case "NATIVA":
                             #region NATIVAS
-                            var NativaNode = ramaAux[0].ChildNodes;
-                            if (NativaNode[0].Term.Name.Equals("PRINT"))
+                            if (ramaAux[0].Term.Name.Equals("PRINT"))
                             {
                                 //Opera el nodo OPER
-                                var symOperPrint = operar.Interpretar(NativaNode[1]);
+                                var symOperPrint = operar.Interpretar(ramaAux[1]);
                                 //Se asegura que el contenido no sea nulo
                                 if (symOperPrint.TipoDato == Tipo.VOID || symOperPrint.Dato == null)
                                 {
-                                    Main.Imprimir(String.Format("La función PRINT no acepta VOID: ({0},{1})", NativaNode[0].Token.Location.Line + 1, NativaNode[0].Token.Location.Column + 1));
+                                    Main.Imprimir(String.Format("La función PRINT no acepta VOID: ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
                                     return true;
                                 }
                                 Nativa.Print(symOperPrint.Dato.ToString());
                             }
-                            if (NativaNode[0].Term.Name.Equals("SHOW"))
+                            if (ramaAux[0].Term.Name.Equals("SHOW"))
                             {
                                 //Se asegura que los nodos hijos del nodo hijo derecho solo sean dos
-                                if (NativaNode[1].ChildNodes.Count != 2)
+                                if (ramaAux[1].ChildNodes.Count != 2)
                                 {
-                                    Main.Imprimir(String.Format("La función SHOW esperaba dos parametros : ({0},{1})", NativaNode[0].Token.Location.Line + 1, NativaNode[0].Token.Location.Column + 1));
+                                    Main.Imprimir(String.Format("La función SHOW esperaba dos parametros : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
                                     return true;
                                 }
                                 //Opera los DOS nodos hijos derechos
-                                var symOperShowIzq = operar.Interpretar(NativaNode[1].ChildNodes[0]);
-                                var symOperShowDer = operar.Interpretar(NativaNode[1].ChildNodes[1]);
+                                var symOperShowIzq = operar.Interpretar(ramaAux[1].ChildNodes[0]);
+                                var symOperShowDer = operar.Interpretar(ramaAux[1].ChildNodes[1]);
                                 //Se asegura que el contenido no sea nulo
                                 if ((symOperShowIzq.TipoDato == Tipo.VOID && symOperShowDer.TipoDato == Tipo.VOID) ||
                                     (symOperShowIzq.Dato == null && symOperShowDer.Dato == null))
                                 {
-                                    Main.Imprimir(String.Format("La función SHOW no acepta VOID: ({0},{1})", NativaNode[0].Token.Location.Line + 1, NativaNode[0].Token.Location.Column + 1));
+                                    Main.Imprimir(String.Format("La función SHOW no acepta VOID: ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
                                     return true;
                                 }
                                 Nativa.Show(symOperShowIzq.Dato, symOperShowDer);
@@ -734,7 +734,13 @@ namespace PROYECTO.Gramatica.Entorno.Loop
                     }
                 }
             }
+            //Al finalizar copia las variables que se encuentran en el diccionario de simbolos local
+            foreach (var locSym in RepeatSym)
+            {
+                Main.AgregarSimbolo(locSym.Key, locSym.Value, this.ToString());
+            }
             return false;
+            
         }
 
         /// <summary>
@@ -796,7 +802,6 @@ namespace PROYECTO.Gramatica.Entorno.Loop
         {
             return EntornoPadre.BuscarFuncionPadre();
         }
-
         /// <summary>
         /// Devuelve si algun padre superior es un loop
         /// </summary>
@@ -804,6 +809,11 @@ namespace PROYECTO.Gramatica.Entorno.Loop
         public bool EsLoop()
         {
             return true;
+        }
+
+        public override string ToString()
+        {
+            return "Repetir";
         }
     }
 }

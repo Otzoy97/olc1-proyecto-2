@@ -20,9 +20,6 @@ namespace PROYECTO
         //Servirá para guardar o abrir un archivo
         private SaveFileDialog saveDialog;
         private OpenFileDialog openDialog;
-
-        public static Dictionary<string, Simbolo> VariablesUtilizadas { get; set; }
-
         public Main()
         {
             InitializeComponent();           
@@ -342,6 +339,22 @@ namespace PROYECTO
         {
             TxtOutput.Text += (cadena + Environment.NewLine) ;
         }
+        /// <summary>
+        /// Agrega una variable a la tabla de variables
+        /// </summary>
+        /// <param name="nombre"></param>
+        /// <param name="simbolo"></param>
+        public static void AgregarSimbolo(string nombre, Simbolo simbolo, string entorno)
+        {
+            Main.GridVariables.Rows.Add(Main.GridVariables.Rows.Count + 1 + "",
+                nombre,
+                simbolo.Dato.ToString(), 
+                simbolo.TipoDato.ToString(),
+                simbolo.Posicion != null ? simbolo.Posicion.Fila.ToString() : "",
+                simbolo.Posicion != null ? simbolo.Posicion.Columna.ToString() : "",
+                entorno);
+        }
+
     }
 
 }
