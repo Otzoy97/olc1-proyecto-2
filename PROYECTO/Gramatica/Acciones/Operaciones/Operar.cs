@@ -9,13 +9,12 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
     class Operar 
     {
         private IEntorno Entorno;
-        private Dictionary<string, Clase> Clases;
+        public static Dictionary<string, Clase> Clases { get; set; }
         private Clase ClaseLocal;
 
-        public Operar(IEntorno entorno, Clase clase, Dictionary<string,Clase> clases)
+        public Operar(IEntorno entorno, Clase clase)
         {
             this.Entorno = entorno;
-            this.Clases = clases;
             this.ClaseLocal = clase;
         }
         public Simbolo Interpretar(ParseTreeNode operRaiz)
@@ -29,6 +28,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
             switch (operRaiz.Term.Name)
             {
                 case "DIMENSION_LIST":
+                    retorno.Arreglo =  new Arreglo();
                     switch (operRaiz.ChildNodes.Count)
                     {
                         case 1:
@@ -51,8 +51,8 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                             //Es un arreglo bidimensional
                             retorno.Arreglo.Dimension = TipoArreglo.BI;
                             //Opera los dos nodos
-                            sizeUni = Interpretar(operRaiz.ChildNodes[0]);
-                            var sizeBi = Interpretar(operRaiz.ChildNodes[1]);
+                            sizeUni = Interpretar(operRaiz.ChildNodes[1]);
+                            var sizeBi = Interpretar(operRaiz.ChildNodes[0]);
                             //Verifica que todos sean un entero
                             if (sizeUni.TipoDato == Tipo.INT && sizeBi.TipoDato == Tipo.INT)
                             {
@@ -69,9 +69,9 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                             //Es un arreglo tridimensional
                             retorno.Arreglo.Dimension = TipoArreglo.TRI;
                             //Opera los tres nodos
-                            sizeUni = Interpretar(operRaiz.ChildNodes[0]);
+                            sizeUni = Interpretar(operRaiz.ChildNodes[2]);
                             sizeBi = Interpretar(operRaiz.ChildNodes[1]);
-                            var sizeTri = Interpretar(operRaiz.ChildNodes[2]);
+                            var sizeTri = Interpretar(operRaiz.ChildNodes[0]);
                             //Verifica que todos sean un entero
                             if (sizeUni.TipoDato == Tipo.INT && sizeBi.TipoDato == Tipo.INT && sizeTri.TipoDato == Tipo.INT)
                             {
@@ -97,9 +97,11 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                             switch (operRaiz.ChildNodes[0].Term.Name)
                             {
                                 case "OPER":
-                                    retorno = Interpretar(operRaiz.ChildNodes[0]);
-                                    break;
+                                    #region PARENTESIS
+                                    return Interpretar(operRaiz.ChildNodes[0]);
+                                    #endregion
                                 case "tkREAL":
+                                    #region tkREAL
                                     //Determina el tipo  (double o int)
                                     if (operRaiz.ChildNodes[0].Token.Value.GetType().Equals(typeof(int)))
                                     {
@@ -111,29 +113,38 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                         retorno.TipoDato = Tipo.DOUBLE;
                                         retorno.Dato = operRaiz.ChildNodes[0].Token.Value;
                                     }
+                                    #endregion
                                     break;
                                 case "tkCHAR":
+                                    #region tkCHAR
                                     retorno.TipoDato = Tipo.CHAR;
                                     retorno.Dato = (char)operRaiz.ChildNodes[0].Token.Value;
+                                    #endregion
                                     break;
                                 case "tkSTR":
+                                    #region tkSTR
                                     retorno.TipoDato = Tipo.STRING;
                                     retorno.Dato = operRaiz.ChildNodes[0].Token.Value.ToString();
+                                    #endregion
                                     break;
                                 case "CSTBOOL":
+                                    #region CSTBOOL
                                     retorno.TipoDato = Tipo.BOOLEAN;
                                     retorno.Dato = operRaiz.ChildNodes[0].Token.Value;
+                                    #endregion
                                     break;
                                 case "tkVAR":
+                                    #region tkVAR
                                     return Entorno.BuscarSimbolo(operRaiz.ChildNodes[0].Token.Text);
+                                    #endregion
                                 case "CALL":
+                                    #region CALL
                                     //Esta es una llamada en la misma clase
                                     //Se debe verificar que el nombre de la función exista 
                                     //en la coleccion de entornos de la ClaseLocal
-
                                     //Esta función puede devolver un nulo, por lo que se debe verificar que no sea nulo
                                     Funcion func = ClaseLocal.BuscarFuncion(operRaiz.ChildNodes[0].ChildNodes[0].Token.Text.ToLower());
-                                    if (func==null)
+                                    if (func == null)
                                     {
                                         Main.Imprimir(String.Format("No existe el método {0} : ({1}, {2})", operRaiz.ChildNodes[0].ChildNodes[0].Token.Text.ToLower(), operRaiz.ChildNodes[0].ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].ChildNodes[0].Token.Location.Column + 1));
                                         return new Simbolo();
@@ -164,7 +175,8 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                             }
                                             //Recorre el listado de parametros, recuperando los simbolos
                                             //Genera una lista de simbolos
-                                            LinkedList<Simbolo> parSym = new LinkedList<Simbolo>();                                            //OPER, OPER, OPER
+                                            LinkedList<Simbolo> parSym = new LinkedList<Simbolo>();
+                                            //OPER, OPER, OPER
                                             foreach (var oper in operRaiz.ChildNodes[0].ChildNodes[1].ChildNodes)
                                             {
                                                 parSym.AddLast(Interpretar(oper));
@@ -179,7 +191,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                             //diccionario de Simbolo-Parametros que posee la función
                                             //Si todo es correcto agregará la lista de simbolo de la función 
                                             //los simbolo recuperados
-                                            for (int i = 0;i<parSym.Count;i++)
+                                            for (int i = 0; i < parSym.Count; i++)
                                             {
                                                 Simbolo symPar = parSym.ElementAt(i);
                                                 var dicSymPar = func.FuncParSym.ElementAt(i);
@@ -251,6 +263,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                     }
                                     //Asigna el simbolo copiado al retorno
                                     retorno = returnDataSymFunc;
+                                    #endregion
                                     break;
                             }
                             retorno.Posicion = new Posicion(operRaiz.ChildNodes[0].Token.Location.Line, operRaiz.ChildNodes[0].Token.Location.Column);
@@ -277,14 +290,28 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                 //Determina si el tipo de dato es el correcto
                                 if (retorno.TipoDato == Tipo.INT || retorno.TipoDato == Tipo.DOUBLE || retorno.TipoDato == Tipo.CHAR)
                                 {
-                                    switch (operRaiz.ChildNodes[0].Term.Name)
+                                    switch (operRaiz.ChildNodes[1].Term.Name)
                                     {
                                         case "INCREMENTO":
-                                            retorno.Dato = retorno.TipoDato == Tipo.INT || retorno.TipoDato == Tipo.CHAR ? ((int)retorno.Dato) + 1 : ((double)retorno.Dato) + 1;
+                                            if (retorno.TipoDato == Tipo.INT || retorno.TipoDato == Tipo.CHAR)
+                                            {
+                                                retorno.Dato =(int)retorno.Dato + 1;
+                                            }
+                                            else
+                                            {
+                                                retorno.Dato = (double)retorno.Dato + 1;
+                                            }
                                             retorno.TipoDato = retorno.TipoDato == Tipo.INT || retorno.TipoDato == Tipo.CHAR ? Tipo.INT : Tipo.DOUBLE;
                                             break;
                                         case "DECREMENTO":
-                                            retorno.Dato = retorno.TipoDato == Tipo.INT || retorno.TipoDato == Tipo.CHAR ? ((int)retorno.Dato) - 1 : ((double)retorno.Dato) - 1;
+                                            if (retorno.TipoDato == Tipo.INT || retorno.TipoDato == Tipo.CHAR)
+                                            {
+                                                retorno.Dato = (int)retorno.Dato - 1;
+                                            }
+                                            else
+                                            {
+                                                retorno.Dato = (double)retorno.Dato - 1;
+                                            }
                                             retorno.TipoDato = retorno.TipoDato == Tipo.INT || retorno.TipoDato == Tipo.CHAR ? Tipo.INT : Tipo.DOUBLE;
                                             break;
                                     }
@@ -316,9 +343,9 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                             //Variables
                             if (operRaiz.ChildNodes[0].Term.Name.Equals("tkVAR"))
                             {
-                                string nombreVariable = operRaiz.ChildNodes[1].Token.Text.ToLower();
+                                string nombreVariable = operRaiz.ChildNodes[0].Token.Text.ToLower();
                                 //Busca en la lista de simbolos, verifica que exista el nombre de la variable
-                                var varArr = this.Entorno.BuscarSimbolo(operRaiz.ChildNodes[0].Token.Text);
+                                var varArr = this.Entorno.BuscarSimbolo(nombreVariable);
                                 //Determina si es un array
                                 if (varArr.TipoDato >= Tipo.INTARR)
                                 {
@@ -334,7 +361,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                                     Main.Imprimir(String.Format("El indice específicado excede el tamaño del arreglo: {0}, ({1},{2})", nombreVariable, operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1));
                                                     return new Simbolo();
                                                 }
-                                                switch (retorno.TipoDato)
+                                                switch (varArr.TipoDato)
                                                 {
                                                     case Tipo.INTARR:
                                                         retorno.Dato = (varArr.Dato as int[])[DimensionSymbol.Arreglo.SizeUni];
@@ -365,25 +392,25 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                                     Main.Imprimir(String.Format("El indice específicado excede el tamaño del arreglo: {0}, ({1},{2})", nombreVariable, operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1));
                                                     return new Simbolo();
                                                 }
-                                                switch (retorno.TipoDato)
+                                                switch (varArr.TipoDato)
                                                 {
                                                     case Tipo.INTARR:
-                                                        retorno.Dato = (varArr.Dato as int[][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi];
+                                                        retorno.Dato = (varArr.Dato as int[][])[DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.STRINGARR:
-                                                        retorno.Dato = (varArr.Dato as string[][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi];
+                                                        retorno.Dato = (varArr.Dato as string[][])[DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.DOUBLEARR:
-                                                        retorno.Dato = (varArr.Dato as double[][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi];
+                                                        retorno.Dato = (varArr.Dato as double[][])[DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.CHARARR:
-                                                        retorno.Dato = (varArr.Dato as char[][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi];
+                                                        retorno.Dato = (varArr.Dato as char[][])[DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.BOOLEANARR:
-                                                        retorno.Dato = (varArr.Dato as bool[][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi];
+                                                        retorno.Dato = (varArr.Dato as bool[][])[DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.CLASEARR:
-                                                        retorno.Dato = (varArr.Dato as Clase[][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi];
+                                                        retorno.Dato = (varArr.Dato as Clase[][])[DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     default:
                                                         Main.Imprimir(String.Format("No sé we , algo pasó cuando se buscaban los arreglos: {0}, ({1},{2})", nombreVariable, operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1));
@@ -396,25 +423,25 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                                     Main.Imprimir(String.Format("El indice específicado excede el tamaño del arreglo: {0}, ({1},{2})", nombreVariable, operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1));
                                                     return new Simbolo();
                                                 }
-                                                switch (retorno.TipoDato)
+                                                switch (varArr.TipoDato)
                                                 {
                                                     case Tipo.INTARR:
-                                                        retorno.Dato = (varArr.Dato as int[][][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeTri];
+                                                        retorno.Dato = (varArr.Dato as int[][][])[DimensionSymbol.Arreglo.SizeTri][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.STRINGARR:
-                                                        retorno.Dato = (varArr.Dato as string[][][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeTri];
+                                                        retorno.Dato = (varArr.Dato as string[][][])[DimensionSymbol.Arreglo.SizeTri][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.DOUBLEARR:
-                                                        retorno.Dato = (varArr.Dato as double[][][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeTri];
+                                                        retorno.Dato = (varArr.Dato as double[][][])[DimensionSymbol.Arreglo.SizeTri][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.CHARARR:
-                                                        retorno.Dato = (varArr.Dato as char[][][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeTri];
+                                                        retorno.Dato = (varArr.Dato as char[][][])[DimensionSymbol.Arreglo.SizeTri][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.BOOLEANARR:
-                                                        retorno.Dato = (varArr.Dato as bool[][][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeTri];
+                                                        retorno.Dato = (varArr.Dato as bool[][][])[DimensionSymbol.Arreglo.SizeTri][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni];
                                                         break;
                                                     case Tipo.CLASEARR:
-                                                        retorno.Dato = (varArr.Dato as Clase[][][])[DimensionSymbol.Arreglo.SizeUni][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeTri];
+                                                        retorno.Dato = (varArr.Dato as Clase[][][])[DimensionSymbol.Arreglo.SizeTri][DimensionSymbol.Arreglo.SizeBi][DimensionSymbol.Arreglo.SizeUni]; ;
                                                         break;
                                                     default:
                                                         Main.Imprimir(String.Format("No sé we , algo pasó cuando se buscaban los arreglos: {0}, ({1},{2})", nombreVariable, operRaiz.ChildNodes[0].Token.Location.Line + 1, operRaiz.ChildNodes[0].Token.Location.Column + 1));
@@ -487,7 +514,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                         //Es una llamada a función
                                         //Usando el Simbolo recuperado -symizqClass-, se deberá operar el lado derecho
                                         //Instancia una nuevo objeto operar (el entorno es la clase recuperada)
-                                        Operar operCall = new Operar(symizqClass.Dato as IEntorno, symizqClass.Dato as Clase, this.Clases);
+                                        Operar operCall = new Operar(symizqClass.Dato as IEntorno, symizqClass.Dato as Clase);
                                         //Se opera el lado derecho y se devuelve el dato recuperado
                                         retorno = operCall.Interpretar(operRaiz.ChildNodes[1]);
                                     }
@@ -504,7 +531,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                         //Busca la variable
                                         Simbolo auxSym = classIzq.BuscarSimbolo(operRaiz.ChildNodes[2].ChildNodes[0].Token.Text.ToLower());
                                         //Opera el subarbol del simbolo
-                                        Operar varOper = new Operar(classIzq, classIzq, this.Clases);
+                                        Operar varOper = new Operar(classIzq, classIzq);
                                         Simbolo OperSimbolo = varOper.Interpretar(auxSym.Oper);
                                         Simbolo OperArray = varOper.Interpretar(auxSym.Arr);
                                         //Asigna las nuevas referencias
@@ -550,6 +577,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                     }
                     break;
                 case "OPERLIST":
+                    retorno.Arreglo = new Arreglo();
                     //Verifica que el arreglo tenga
                     if (operRaiz.ChildNodes.Count > 0)
                     {
@@ -570,27 +598,27 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                         switch (flag.TipoDato)
                         {
                             case Tipo.INT:
-                                retorno.TipoDato += 6;
+                                retorno.TipoDato = flag.TipoDato + 6;
                                 retorno.Dato = new int[largo];
                                 break;
                             case Tipo.STRING:
-                                retorno.TipoDato += 6;
+                                retorno.TipoDato = flag.TipoDato + 6;
                                 retorno.Dato = new string[largo];
                                 break;
                             case Tipo.DOUBLE:
-                                retorno.TipoDato += 6;
+                                retorno.TipoDato = flag.TipoDato + 6;
                                 retorno.Dato = new double[largo];
                                 break;
                             case Tipo.CHAR:
-                                retorno.TipoDato += 6;
+                                retorno.TipoDato = flag.TipoDato + 6;
                                 retorno.Dato = new char[largo];
                                 break;
                             case Tipo.BOOLEAN:
-                                retorno.TipoDato += 6;
+                                retorno.TipoDato = flag.TipoDato + 6;
                                 retorno.Dato = new bool[largo];
                                 break;
                             case Tipo.CLASE:
-                                retorno.TipoDato += 6;
+                                retorno.TipoDato = flag.TipoDato + 6;
                                 retorno.Dato = new Clase[largo];
                                 break;
                             default:
@@ -659,13 +687,14 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                     //Recupera el primero nodo el cual servirá como bandera
                     //para homogeneizar el resto de nodos
                     string strflag = operRaiz.ChildNodes[0].Term.Name;
+                    retorno.Arreglo = new Arreglo();
                     switch (strflag)
                     {
                         case "ARRCONTENT_LIST":
                             //Contador tercera dimension
                             int contador3 = 0;
                             //Largo tercera dimension
-                            int largo3 = 0;
+                            int largo3 = operRaiz.ChildNodes.Count;
                             //Es de tres dimenstiones
                             //Especifica el tamaño del retorno
                             retorno.Arreglo.Dimension = TipoArreglo.TRI;
