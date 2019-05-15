@@ -1,6 +1,7 @@
 ﻿using Irony.Parsing;
 using PROYECTO.Gramatica.Acciones;
 using PROYECTO.Gramatica.Acciones.Operaciones;
+using PROYECTO.Gramatica.Entorno.Loop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +78,7 @@ namespace PROYECTO.Gramatica.Entorno
                                     return false;
                                 }
                                 //Determina si hay algo que operar
-                                if (ramaAux.Count != 2)
+                                if (!ramaAux[ramaAux.Count-1].Term.Name.Equals("OPER"))
                                 {
                                     //Simplemente crea un simbolo y lo agrega al diccionario
                                     this.FuncSym.Add(varlst.Token.Text.ToLower(), new Simbolo(pos, false, null, dataType));
@@ -388,9 +389,14 @@ namespace PROYECTO.Gramatica.Entorno
                         break;
                     case "FOR_STA":
                         break;
-                    case "REPEAT_STA ":
+                    case "REPEAT_STA":
+                        //Crea un nuevo entorno de Repeat y lo ejecuta
+                        if (new Repetir(nodeTree.ChildNodes[1], nodeTree.ChildNodes[0], this).Ejecutar())
+                        {
+                            return true;
+                        } 
                         break;
-                    case "WHILE_STA ":
+                    case "WHILE_STA":
                         break;
                     case "SWITCH":
                         break;
@@ -716,7 +722,11 @@ namespace PROYECTO.Gramatica.Entorno
                         break;
                 }
             }
-
+            //Al finalizar copia las variables que se encuentran en el diccionario de simbolos local
+            foreach (var locSym in FuncSym)
+            {
+                Main.AgregarSimbolo(locSym.Key, locSym.Value, this.ToString());
+            }
             return false;
         }
 
@@ -835,6 +845,11 @@ namespace PROYECTO.Gramatica.Entorno
                 funcion.FuncParSym.Add(lst01.Key.ToString(), symPrueba);
             }
             return funcion;
+        }
+
+        public override string ToString()
+        {
+            return "Funcion";
         }
     }
 }

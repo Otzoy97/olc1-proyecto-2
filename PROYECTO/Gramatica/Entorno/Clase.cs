@@ -137,6 +137,11 @@ namespace PROYECTO.Gramatica.Entorno
                 //Ejecuta la ocurrencia
                 Nativa.Print(String.Format("El main terminó en : {0}",func.Ejecutar()));
             }
+            //Al finalizar copia las variables que se encuentran en el diccionario de simbolos local
+            foreach (var locSym in ClaseSym)
+            {
+                Main.AgregarSimbolo(locSym.Key, locSym.Value, this.ToString());
+            }
             return false;
         }
         /// <summary>
@@ -273,6 +278,11 @@ namespace PROYECTO.Gramatica.Entorno
         public bool EsLoop()
         {
             return true;
+        }
+
+        public override string ToString()
+        {
+            return "Clase";
         }
     }
 }
