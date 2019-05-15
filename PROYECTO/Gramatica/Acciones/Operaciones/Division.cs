@@ -26,14 +26,13 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
             {
                 return DividirDouble(symizq.TipoDato == Tipo.INT ? (int) symizq.Dato : symizq.TipoDato == Tipo.DOUBLE ? (double)symizq.Dato : (char) symizq.Dato, symder);
             }
-            if (symder.TipoDato == Tipo.INT || symder.TipoDato == Tipo.DOUBLE || symder.TipoDato == Tipo.CHAR)
-            {
-                return DividirDouble(symder.TipoDato == Tipo.INT ? (int)symder.Dato : symder.TipoDato == Tipo.DOUBLE ? (double)symder.Dato : (char)symder.Dato, symizq);
-            }
-            //BOOLEANO
             if (symizq.TipoDato == Tipo.BOOLEAN)
             {
                 return DividirBool((bool)symizq.Dato, symder);
+            }
+            if (symder.TipoDato == Tipo.INT || symder.TipoDato == Tipo.DOUBLE || symder.TipoDato == Tipo.CHAR)
+            {
+                return DividirDouble(symder.TipoDato == Tipo.INT ? (int)symder.Dato : symder.TipoDato == Tipo.DOUBLE ? (double)symder.Dato : (char)symder.Dato, symizq);
             }
             if (symder.TipoDato == Tipo.BOOLEAN)
             {

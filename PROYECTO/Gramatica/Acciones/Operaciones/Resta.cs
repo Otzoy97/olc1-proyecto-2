@@ -16,42 +16,39 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         {
             Simbolo symizq = operClass.Interpretar(raiz.ChildNodes[0]);
             Simbolo symder = operClass.Interpretar(raiz.ChildNodes[2]);
-            //STRING
+            //--IZQUIERDA
             if (symizq.TipoDato == Tipo.STRING || symder.TipoDato == Tipo.STRING)
             {
                 Console.WriteLine("No se pueden restar cadenas");
             }
-            //ENTERO
             if (symizq.TipoDato == Tipo.INT)
             {
                 return RestarInt((int)symizq.Dato, symder);
+            }
+            if (symizq.TipoDato == Tipo.DOUBLE)
+            {
+                return RestarDouble((double)symizq.Dato, symder);
+            }
+            if (symizq.TipoDato == Tipo.CHAR)
+            {
+                return RestarChar((char)symizq.Dato, symder);
+            }
+            if (symizq.TipoDato == Tipo.BOOLEAN)
+            {
+                return RestarBool((bool)symizq.Dato, symder);
+            }
+            //----DERECHA
+            if (symder.TipoDato == Tipo.CHAR)
+            {
+                return RestarChar((char)symder.Dato, symizq);
             }
             if (symder.TipoDato == Tipo.INT)
             {
                 return RestarInt((int)symder.Dato, symizq);
             }
-            //DOUBLE
-            if (symizq.TipoDato == Tipo.DOUBLE)
-            {
-                return RestarDouble((double)symizq.Dato, symder);
-            }
             if (symder.TipoDato == Tipo.DOUBLE)
             {
                 return RestarDouble((double)symder.Dato, symizq);
-            }
-            //CHAR
-            if (symizq.TipoDato == Tipo.CHAR)
-            {
-                return RestarChar((char)symizq.Dato, symder);
-            }
-            if (symder.TipoDato == Tipo.CHAR)
-            {
-                return RestarChar((char)symder.Dato, symizq);
-            }
-            //BOOLEANO
-            if (symizq.TipoDato == Tipo.BOOLEAN)
-            {
-                return RestarBool((bool)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.BOOLEAN)
             {

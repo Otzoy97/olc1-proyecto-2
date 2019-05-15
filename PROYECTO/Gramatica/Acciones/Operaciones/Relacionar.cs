@@ -29,32 +29,30 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
             {
                 return RelDouble(symizq.TipoDato == Tipo.INT ? (int)symizq.Dato : (double)symizq.Dato, symder);
             }
-            if (symder.TipoDato == Tipo.INT || symder.TipoDato == Tipo.DOUBLE)
-            {
-                return RelDouble(symder.TipoDato == Tipo.INT ? (int) symder.Dato : (double)symder.Dato, symizq);
-            }
-            //STRING
             if (symizq.TipoDato == Tipo.STRING)
             {
                 return RelString(symizq.Dato.ToString(), symder);
+            }
+            if (symizq.TipoDato == Tipo.CHAR)
+            {
+                return RelChar((char)symizq.Dato, symder);
+            }
+            if (symizq.TipoDato == Tipo.BOOLEAN)
+            {
+                return RelBool((bool)symizq.Dato, symder);
+            }
+            ////-----------
+            if (symder.TipoDato == Tipo.INT || symder.TipoDato == Tipo.DOUBLE)
+            {
+                return RelDouble(symder.TipoDato == Tipo.INT ? (int)symder.Dato : (double)symder.Dato, symizq);
             }
             if (symder.TipoDato == Tipo.STRING)
             {
                 return RelString(symder.Dato.ToString(), symizq);
             }
-            //CHAR
-            if (symizq.TipoDato == Tipo.CHAR)
-            {
-                return RelChar((char)symizq.Dato, symder);
-            }
             if (symder.TipoDato == Tipo.CHAR)
             {
                 return RelChar((char)symder.Dato, symizq);
-            }
-            //BOOLEANO
-            if (symizq.TipoDato == Tipo.BOOLEAN)
-            {
-                return RelBool((bool)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.BOOLEAN)
             {

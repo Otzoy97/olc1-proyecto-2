@@ -16,46 +16,43 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
         {
             Simbolo symizq = operClass.Interpretar(raiz.ChildNodes[0]);
             Simbolo symder = operClass.Interpretar(raiz.ChildNodes[2]);
-            //ENTERO
+            //---IZQ
             if (symizq.TipoDato == Tipo.INT)
             {
                 return SumarInt((int)symizq.Dato, symder);
+            }
+            if (symizq.TipoDato == Tipo.STRING)
+            {
+                return SumarString(symizq.Dato.ToString(), symder);
+            }
+            if (symizq.TipoDato == Tipo.DOUBLE)
+            {
+                return SumarDouble((double)symizq.Dato, symder);
+            }
+            if (symizq.TipoDato == Tipo.CHAR)
+            {
+                return SumarChar((char)symizq.Dato, symder);
+            }
+            if (symizq.TipoDato == Tipo.BOOLEAN)
+            {
+                return SumarBool((bool)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.INT)
             {
                 return SumarInt((int)symder.Dato, symizq);
             }
-            //STRING
-            if (symizq.TipoDato == Tipo.STRING)
-            {
-                return SumarString(symizq.Dato.ToString(), symder);
-            }
+            //---DER
             if (symder.TipoDato == Tipo.STRING)
             {
                 return SumarString(symder.Dato.ToString(), symizq);
-            }
-            //DOUBLE
-            if (symizq.TipoDato == Tipo.DOUBLE)
-            {
-                return SumarDouble((double)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.DOUBLE)
             {
                 return SumarDouble((double)symder.Dato, symizq);
             }
-            //CHAR
-            if (symizq.TipoDato == Tipo.CHAR)
-            {
-                return SumarChar((char)symizq.Dato, symder);
-            }
             if (symder.TipoDato == Tipo.CHAR)
             {
                 return SumarChar((char)symder.Dato, symizq);
-            }
-            //BOOLEANO
-            if (symizq.TipoDato == Tipo.BOOLEAN)
-            {
-                return SumarBool((bool)symizq.Dato, symder);
             }
             if (symder.TipoDato == Tipo.BOOLEAN)
             {

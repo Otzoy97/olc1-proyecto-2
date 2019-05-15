@@ -26,23 +26,21 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
             {
                 return PotenciarInt((int)symizq.Dato, symder);
             }
-            if (symder.TipoDato == Tipo.INT || symder.TipoDato == Tipo.CHAR)
-            {
-                return PotenciarInt((int)symder.Dato, symizq);
-            }
-            //DOUBLE
             if (symizq.TipoDato == Tipo.DOUBLE)
             {
                 return PotenciarDouble((double)symizq.Dato, symder);
             }
-            if (symder.TipoDato == Tipo.DOUBLE)
-            {
-                return PotenciarDouble((double)symder.Dato, symizq);
-            }
-            //BOOLEANO
             if (symizq.TipoDato == Tipo.BOOLEAN)
             {
                 return PotenciarBool((bool)symizq.Dato, symder);
+            }
+            if (symder.TipoDato == Tipo.INT || symder.TipoDato == Tipo.CHAR)
+            {
+                return PotenciarInt((int)symder.Dato, symizq);
+            }
+            if (symder.TipoDato == Tipo.DOUBLE)
+            {
+                return PotenciarDouble((double)symder.Dato, symizq);
             }
             if (symder.TipoDato == Tipo.BOOLEAN)
             {
