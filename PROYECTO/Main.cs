@@ -337,7 +337,7 @@ namespace PROYECTO
 
         public static void Imprimir(string cadena)
         {
-            TxtOutput.Text += (cadena + Environment.NewLine) ;
+            TxtOutput.Text += (cadena + Environment.NewLine);
         }
         /// <summary>
         /// Agrega una variable a la tabla de variables
