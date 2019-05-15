@@ -56,6 +56,7 @@
     <Compile Include="Archivo\ERRHtml.cs" />
     <Compile Include="Archivo\ES.cs" />
     <Compile Include="Gramatica\Acciones\IAccion.cs" />
+    <Compile Include="Gramatica\Acciones\Nativa.cs" />
     <Compile Include="Gramatica\Acciones\Operaciones\Division.cs" />
     <Compile Include="Gramatica\Acciones\Operaciones\Relacionar.cs" />
     <Compile Include="Gramatica\Acciones\Operaciones\Operar.cs" />
@@ -113,9 +114,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Gramatica\Acciones\Nativa\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="External\cdt.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

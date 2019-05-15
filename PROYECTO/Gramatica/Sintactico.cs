@@ -177,7 +177,11 @@ namespace PROYECTO.Gramatica
             OVER_STA.Rule = OVERRIDE | Empty;
             //LISTA DE INSTRUCCIONES VÁLIDAS DENTRO DE FUNCIONES Y MÉTODOS
             INSTRUCCION_LIST.Rule = MakeStarRule(INSTRUCCION_LIST, INSTRUCCION);
-            INSTRUCCION.Rule = DECLARACION + SEMICOLON | ASSIGNMENT + SEMICOLON | IF_STA | FOR_STA | REPEAT_STA | WHILE_STA | SWITCH | DO | CONTINUAR + SEMICOLON | SALIR + SEMICOLON | RTN_STA + SEMICOLON | PRINT + PARIZQ + OPER + PARDER + SEMICOLON | SHOW + PARIZQ + OPERLIST + PARDER + SEMICOLON | FIGURES;
+            NonTerminal NATIVA = new NonTerminal("NATIVA")
+            {
+                Rule = PRINT + PARIZQ + OPER + PARDER + SEMICOLON | SHOW + PARIZQ + OPERLIST + PARDER + SEMICOLON
+            };
+            INSTRUCCION.Rule = DECLARACION + SEMICOLON | ASSIGNMENT + SEMICOLON | IF_STA | FOR_STA | REPEAT_STA | WHILE_STA | SWITCH | DO | CONTINUAR + SEMICOLON | SALIR + SEMICOLON | RTN_STA + SEMICOLON | NATIVA | FIGURES;
             #endregion
 
             #region PARAMETROS
@@ -317,12 +321,12 @@ namespace PROYECTO.Gramatica
             MarkPunctuation(HACER, MIENTRAS, ARRAY);
             MarkPunctuation(ADDFIGURE);
             /*-------- ASOCIATIVIDAD --------*/
-            RegisterOperators(0, Associativity.Left, DOT);
+            RegisterOperators(9, Associativity.Left, DOT);
             RegisterOperators(1, Associativity.Left, OR);
             RegisterOperators(2, Associativity.Left, AND);
             RegisterOperators(3, Associativity.Left, IGUAL, DIFERENTE, MAYOR, MAYOR_IGUAL, MENOR, MENOR_IGUAL);
             RegisterOperators(4, Associativity.Right, NOT);
-            RegisterOperators(5, Associativity.Left, MAS, MENOS);
+            RegisterOperators(5, Associativity.Left, MAS, MENOS, DECREMENTO, INCREMENTO);
             RegisterOperators(6, Associativity.Left, POR, DIVISION);
             RegisterOperators(7, Associativity.Left, POTENCIA);
             RegisterOperators(8, Associativity.Left, PARIZQ, PARDER);

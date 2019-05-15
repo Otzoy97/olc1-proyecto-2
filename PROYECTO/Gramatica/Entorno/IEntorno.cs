@@ -3,6 +3,9 @@
     interface IEntorno 
     {
         Simbolo BuscarSimbolo(string nombreVar);
-        void Ejecutar();
+        Clase BuscarClasePadre();
+        Funcion BuscarFuncionPadre();
+        bool Ejecutar();
+        bool EsLoop();
     }
 }

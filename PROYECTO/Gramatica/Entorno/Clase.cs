@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PROYECTO.Gramatica.Acciones;
+using PROYECTO.Gramatica.Acciones.Operaciones;
+using System;
 using System.Collections.Generic;
 
 namespace PROYECTO.Gramatica.Entorno
@@ -33,9 +35,109 @@ namespace PROYECTO.Gramatica.Entorno
             ClaseImp = new Dictionary<string, Clase>();
             ClaseImpNames = new LinkedList<string>();
         }
-        public void Ejecutar()
+        public bool Ejecutar()
         {
-
+            Operar operar = new Operar(this, this);
+            //Ejecutará las OPER y ARR de los simbolos
+            foreach (var symClass in ClaseSym)
+            {
+                //Se recupera el tipo de simbolo
+                var symClasType = symClass.Value.TipoDato;
+                //Si no es null opera el DIMENSIONLST
+                if (symClass.Value.Arr != null)
+                {
+                    var symClassArr = operar.Interpretar(symClass.Value.Arr);
+                    symClass.Value.Arreglo = symClassArr.Arreglo;
+                }
+                //Si no es null opera el OPER
+                if (symClass.Value.Oper != null)
+                {
+                    var symClassOper = operar.Interpretar(symClass.Value.Oper);
+                    //Determina si los tipos son los mismo
+                    if (symClassOper.TipoDato != symClass.Value.TipoDato)
+                    {
+                        Main.Imprimir(String.Format("Los tipos no coinciden {0} -> {1} : ({2},{3})", symClassOper.TipoDato , symClass.Value.TipoDato, symClass.Value.Posicion.Fila, symClass.Value.Posicion.Columna));
+                        return true;
+                    }
+                    //Los tipos coinciden
+                    //Se debe determinar si es un arreglo
+                    if (symClassOper.TipoDato > Tipo.CLASE)
+                    {
+                        if (symClassOper.Arreglo.Dimension != symClass.Value.Arreglo.Dimension)
+                        {
+                            Main.Imprimir(String.Format("Las dimensiones de {0} no coincide con {1}  : ({2},{3})", symClassOper.TipoDato, symClass.Value.TipoDato, symClassOper.Posicion != null ? symClassOper.Posicion.Fila : 0, symClassOper.Posicion != null ? symClassOper.Posicion.Columna : 0));
+                            return true;
+                        }
+                        //Es un arreglo, debe asegurarse que las dimensiones coincidan
+                        if (symClassOper.Arreglo.SizeUni != symClass.Value.Arreglo.SizeUni)
+                        {
+                            Main.Imprimir(String.Format("El arreglo unidemensional de {0} no coincide con {1}  : ({2},{3})", symClassOper.TipoDato, symClass.Value.TipoDato, symClassOper.Posicion != null ? symClassOper.Posicion.Fila : 0, symClassOper.Posicion != null ? symClassOper.Posicion.Columna : 0));
+                            return true;
+                        }
+                        if (symClassOper.Arreglo.SizeBi != symClass.Value.Arreglo.SizeBi)
+                        {
+                            Main.Imprimir(String.Format("El arreglo bidemensional de {0} no coincide con {1}  : ({2},{3})", symClassOper.TipoDato, symClass.Value.TipoDato, symClassOper.Posicion != null ? symClassOper.Posicion.Fila : 0, symClassOper.Posicion != null ? symClassOper.Posicion.Columna : 0));
+                            return true;
+                        }
+                        if (symClassOper.Arreglo.SizeTri != symClass.Value.Arreglo.SizeTri)
+                        {
+                            Main.Imprimir(String.Format("El arreglo tridemensional de {0} no coincide con {1}  : ({2},{3})", symClassOper.TipoDato, symClass.Value.TipoDato, symClassOper.Posicion != null ? symClassOper.Posicion.Fila : 0, symClassOper.Posicion != null ? symClassOper.Posicion.Columna : 0));
+                            return true;
+                        }
+                    }
+                    //Asigna el valor de symClassOpera al dato del diccionar de clases actual
+                    symClass.Value.Dato = symClassOper.Dato;
+                }
+                
+            }
+            //Importar clases
+            foreach (var impNameClass in ClaseImpNames)
+            {
+                //Buscará coincidencias en el diccionario de clases
+                if (Recorrido.Clases.ContainsKey(impNameClass))
+                {
+                    ClaseImp.Add(impNameClass, Clase.Copiar(Recorrido.Clases[impNameClass]));
+                }
+                else
+                {
+                    Main.Imprimir(String.Format("No se encontró la importación : {0}", impNameClass));
+                    return true;
+                }
+            }
+            //Verificará que las funciones marcadas como override existan en alguna clase importada
+            bool flagOverride = false;
+            foreach (var funClass in ClaseEnt)
+            {
+                if (funClass.Value.Override)
+                {
+                    //Es una sobrecarga, lo que obliga que exista una función con el mismo nombre en 
+                    //el listado de entornos de clases importadas
+                    foreach (var impClass in ClaseImp)
+                    {
+                        //Buscará en sus entornos un nombre igual
+                        if (impClass.Value.ClaseEnt.ContainsKey(funClass.Key))
+                        {
+                            flagOverride = true;
+                            break;
+                        }
+                    }
+                    //No encontró ninguna coinciden, se termina la operación
+                    if (!flagOverride)
+                    {
+                        Main.Imprimir(String.Format("La función {0} no permite sobrecarga", funClass.Key));
+                        return true;
+                    }
+                }
+            }
+            //Buscará una ocurrencia del main
+            if (ClaseEnt.ContainsKey("main"))
+            {
+                //Recupera dicha ocurrencia
+                Funcion func = ClaseEnt["main"];
+                //Ejecuta la ocurrencia
+                Nativa.Print(String.Format("El main terminó en : {0}",func.Ejecutar()));
+            }
+            return false;
         }
         /// <summary>
         /// Busca en el diccionario de Funciones de la clase y en las funciones de las clases importadas
@@ -149,6 +251,28 @@ namespace PROYECTO.Gramatica.Entorno
                 prueba.ClaseImp.Add(lst01.Key.ToString(), Copiar(lst01.Value));
             }
             return prueba;
+        }
+        /// <summary>
+        /// Devuelve esta clase
+        /// </summary>
+        /// <returns></returns>
+        public Clase BuscarClasePadre()
+        {
+            return this;
+        }
+
+        public Funcion BuscarFuncionPadre()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Devuelve si algun padre superior es un loop
+        /// </summary>
+        /// <returns></returns>
+        public bool EsLoop()
+        {
+            return true;
         }
     }
 }

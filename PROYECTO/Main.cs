@@ -273,34 +273,41 @@ namespace PROYECTO
                 this.SaveFile("ASTGraph.html", ASTGraph.GenerarHTML());
                 var recorrido = new Recorrido();
                 recorrido.CrearClase(arbol.Root);
-                foreach (var lst in recorrido.Clases)
+                foreach (var clases in Recorrido.Clases)
                 {
-                    Console.WriteLine("clase -> {0}",lst.Key);
-                    foreach (var lst01 in lst.Value.ClaseSym)
+                    if (clases.Value.Ejecutar())
                     {
-                        //Si el simbolo no es nulo, operar
-                        if (lst01.Value.Oper != null)
-                        {
-                            var SymDat = new Operar(lst.Value,lst.Value,recorrido.Clases).Interpretar(lst01.Value.Oper);
-                            //Verifica que los tipos coincidan
-                            if (SymDat.TipoDato == lst01.Value.TipoDato)
-                            {
-                                //Asigna el nuevo dato encontrado
-                                lst01.Value.Dato = SymDat.Dato;
-                                Console.WriteLine("     simbolos -> id: {0} , valor -> {1}, tipoDato -> {2} , System -> {3}", lst01.Key, lst01.Value.Dato, lst01.Value.TipoDato, lst01.Value.Dato.GetType());
-                            }
-                            else
-                            {
-                                Console.WriteLine("     simbolos -> id: {0} , valor -> {1}, tipoDato -> {2} , System -> {3} **** los tipo no coinciden {4}", lst01.Key, lst01.Value.Dato, lst01.Value.TipoDato, lst01.Value.Dato == null ? "" : lst01.Value.Dato.GetType().ToString(), SymDat.TipoDato);
-                            }
-                        }
-                        
-                    }
-                    foreach (var lst01 in lst.Value.ClaseEnt)
-                    {
-                        Console.WriteLine("     entornos -> {0}", lst01.Key);
+                        break;
                     }
                 }
+                /*Console.WriteLine("clase -> {0}",lst.Key);
+                     foreach (var lst01 in lst.Value.ClaseSym)
+                     {
+                         //Si el simbolo no es nulo, operar
+                         if (lst01.Value.Oper != null)
+                         {
+                            Operar.Clases = recorrido.Clases;
+                             var SymDat = new Operar(lst.Value,lst.Value).Interpretar(lst01.Value.Oper);
+                             //Verifica que los tipos coincidan
+                             if (SymDat.TipoDato == lst01.Value.TipoDato)
+                             {
+                                 //Asigna el nuevo dato encontrado
+                                 lst01.Value.Dato = SymDat.Dato;
+                                 Console.WriteLine("     simbolos -> id: {0} , valor -> {1}, tipoDato -> {2} , System -> {3}", lst01.Key, lst01.Value.Dato, lst01.Value.TipoDato, lst01.Value.Dato.GetType());
+                             }
+                             else
+                             {
+                                 Console.WriteLine("     simbolos -> id: {0} , valor -> {1}, tipoDato -> {2} , System -> {3} **** los tipo no coinciden {4}", lst01.Key, lst01.Value.Dato, lst01.Value.TipoDato, lst01.Value.Dato == null ? "" : lst01.Value.Dato.GetType().ToString(), SymDat.TipoDato);
+                             }
+                         }
+
+                     }
+                     foreach (var lst01 in lst.Value.ClaseEnt)
+                     {
+                         Console.WriteLine("     entornos -> {0}", lst01.Key);
+                     }
+                */
+
 
                 //Clase prueba = recorrido.Clases["gil"];
 
@@ -333,7 +340,7 @@ namespace PROYECTO
 
         public static void Imprimir(string cadena)
         {
-            TxtOutput.Text += cadena;
+            TxtOutput.Text += (cadena + Environment.NewLine) ;
         }
     }
 

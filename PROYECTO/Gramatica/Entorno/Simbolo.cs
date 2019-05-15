@@ -40,7 +40,7 @@ namespace PROYECTO.Gramatica.Entorno
         /// <summary>
         /// Guarda el dato del símbolo
         /// </summary>
-        private object dat;
+        //private object dat;
         /// <summary>
         /// Si el simbolo es un arreglo, acá se guardan sus dimensiones y su tamaño
         /// </summary>
@@ -48,24 +48,7 @@ namespace PROYECTO.Gramatica.Entorno
         /// <summary>
         /// Encapsula el atributo dat
         /// </summary>
-        public object Dato
-        {
-            get
-            {
-                if (!EsPrivado)
-                {
-                    return this.dat;
-                }
-                return null;
-            }
-            set
-            {
-                if (!EsPrivado)
-                {
-                    dat = value;
-                }
-            }
-        }
+        public object Dato { get; set; }
         /// <summary>
         /// Determina el tipo de dato que guarda el símbolo
         /// </summary>

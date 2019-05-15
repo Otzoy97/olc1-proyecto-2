@@ -39,9 +39,34 @@ namespace PROYECTO.Gramatica.Entorno.Loop
             return this.DoSym.ContainsKey(nombreVar) ? this.DoSym[nombreVar] : EntornoPadre.BuscarSimbolo(nombreVar);
         }
 
-        public void Ejecutar()
+        public bool Ejecutar()
         {
+            return false;
+        }
+        /// <summary>
+        /// Busca la clase padre
+        /// </summary>
+        /// <returns></returns>
+        public Clase BuscarClasePadre()
+        {
+            return EntornoPadre.BuscarClasePadre();
+        }
+        /// <summary>
+        /// Busca la función padre
+        /// </summary>
+        /// <returns></returns>
+        public Funcion BuscarFuncionPadre()
+        {
+            return EntornoPadre.BuscarFuncionPadre();
+        }
 
+        /// <summary>
+        /// Devuelve si algun padre superior es un loop
+        /// </summary>
+        /// <returns></returns>
+        public bool EsLoop()
+        {
+            return true;
         }
     }
 }

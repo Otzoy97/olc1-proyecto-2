@@ -11,7 +11,7 @@ namespace PROYECTO.Gramatica
         /// Almacena todas las clases que el recorrido
         /// encuentre
         /// </summary>
-        public Dictionary<string, Clase> Clases { get; }
+        public static Dictionary<string, Clase> Clases { get; set; }
         /// <summary>
         /// Se utiliza como una bandera que representa
         /// la clase que se está trabajando actualmente
@@ -40,7 +40,7 @@ namespace PROYECTO.Gramatica
                         if (!Clases.ContainsKey(nombreClase))
                         {
                             punteroClase = new Clase();
-                            this.Clases.Add(rama.ChildNodes[0].Token.Value.ToString(), punteroClase);
+                            Recorrido.Clases.Add(rama.ChildNodes[0].Token.Value.ToString(), punteroClase);
                             this.CrearEntorno(rama.ChildNodes[1]);
                         }
                         else
@@ -57,7 +57,7 @@ namespace PROYECTO.Gramatica
                             {
                                 punteroClase.ClaseImpNames.AddLast(implst.Token.Text.ToLower());
                             }
-                            this.Clases.Add(rama.ChildNodes[0].Token.Value.ToString(), punteroClase);
+                            Recorrido.Clases.Add(rama.ChildNodes[0].Token.Value.ToString(), punteroClase);
                             this.CrearEntorno(rama.ChildNodes[2]);
                         }
                         else
@@ -224,23 +224,23 @@ namespace PROYECTO.Gramatica
                                 }
                                 //Recupera el nombre de la variable
                                 string nameSimplePar = parNode.ChildNodes[0].Token.Text.ToLower();
+                                //Verifica que el simbolo no exista
+                                if (ParLst.ContainsKey(nameSimplePar))
+                                {
+                                    Main.Imprimir(String.Format("Ya existe la variable {0} : ({1},{2})", nameSimplePar, parNode.ChildNodes[0].Token.Location.Line + 1, parNode.ChildNodes[0].Token.Location.Column + 1));
+                                }
                                 //Ahora se debe determinar si son arreglos o variables simples
                                 //Se cuenta el numero de nodos que tiene parNode
-                                switch (parNode.ChildNodes.Count)
+                                if (parNode.ChildNodes.Count==3)
                                 {
-                                    case 2:
-                                        //Es una variable simple
-                                        //Agrega el simbolo al Diccionario
-                                        ParLst.Add(nameSimplePar,symPar);
-                                        break;
-                                    case 3:
-                                        //Es un arreglo
-                                        //Se modifica el tipo de dato
-                                        symPar.TipoDato += 6;
-                                        //Agrega el simbolo al Dicccionario
-                                        ParLst.Add(nameSimplePar, symPar);
-                                        break;
+                                    //Es un arreglo
+                                    //Se modifica el tipo de dato
+                                    symPar.TipoDato += 6;
+                                    //Determina las dimensiones 
+                                    symPar.Arr = parNode.ChildNodes[2];
                                 }
+                                //Agrega el simbolo al diccionario de simbolos-parametros
+                                ParLst.Add(nameSimplePar, symPar);
                             }
                             //Elimina el nodo de PAR_LST
                             ramaAux.RemoveAt(ramaAux.Count - 1);
