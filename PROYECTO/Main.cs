@@ -20,6 +20,8 @@ namespace PROYECTO
         //Servirá para guardar o abrir un archivo
         private SaveFileDialog saveDialog;
         private OpenFileDialog openDialog;
+        public static TextBox TxtOutput;
+        public static DataGridView GridVariables;
         public Main()
         {
             InitializeComponent();           
@@ -48,6 +50,8 @@ namespace PROYECTO
                 RestoreDirectory = true,
             };
             tabContador = 0;
+            TxtOutput = txtoutput;
+            GridVariables = gridVar;
             //NewTab("Untitled" + tabContador, "Untitled" + tabContador++);
         }
         /// <summary>
@@ -260,7 +264,7 @@ namespace PROYECTO
         /// <param name="e"></param>
         private void ItemCompilar_Click(object sender, EventArgs e)
         {
-            TxtOutput.Text = String.Empty;
+            txtoutput.Text = String.Empty;
             Parser p = new Parser(new LanguageData(new Sintactico()));
             ParseTree arbol = p.Parse(((FastColoredTextBox)TabInput.SelectedTab.Controls[0]).Text);
             if (arbol.Root != null)
@@ -272,10 +276,18 @@ namespace PROYECTO
                 recorrido.CrearClase(arbol.Root);
                 foreach (var clases in Recorrido.Clases)
                 {
-                    if (clases.Value.Ejecutar())
-                    {
-                        break;
-                    }
+                    //try
+                    //{
+                        if (clases.Value.Ejecutar())
+                        {
+                            break;
+                        }
+                    //}
+                    //catch (Exception)
+                    //{
+
+                    //}
+                    
                 }
                 /*Console.WriteLine("clase -> {0}",lst.Key);
                      foreach (var lst01 in lst.Value.ClaseSym)
@@ -348,7 +360,7 @@ namespace PROYECTO
         {
             Main.GridVariables.Rows.Add(Main.GridVariables.Rows.Count + 1 + "",
                 nombre,
-                simbolo.Dato.ToString(), 
+                simbolo.Dato, 
                 simbolo.TipoDato.ToString(),
                 simbolo.Posicion != null ? simbolo.Posicion.Fila.ToString() : "",
                 simbolo.Posicion != null ? simbolo.Posicion.Columna.ToString() : "",

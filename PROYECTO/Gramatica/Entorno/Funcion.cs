@@ -129,7 +129,7 @@ namespace PROYECTO.Gramatica.Entorno
                                 //Opera las dimensiones
                                 Simbolo dimArrSym = operar.Interpretar(ramaAux[2]);
                                 //Determina si se opera o no el OPER
-                                if (ramaAux.Count != 3)
+                                if (ramaAux.Count == 3)
                                 {
                                     //Asigna todos los atributos al simbolo que se agregará al diccionario
                                     Simbolo ArrSym = new Simbolo

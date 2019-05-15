@@ -43,23 +43,23 @@
             this.ItemCompilar = new System.Windows.Forms.ToolStripMenuItem();
             this.TabOutput = new System.Windows.Forms.TabControl();
             this.TabConsola = new System.Windows.Forms.TabPage();
-            Main.TxtOutput = new System.Windows.Forms.TextBox();
+            this.txtoutput = new System.Windows.Forms.TextBox();
             this.TabVariable = new System.Windows.Forms.TabPage();
-            Main.GridVariables = new System.Windows.Forms.DataGridView();
-            this.colNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NombreVar = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ValCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TipoCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FilaCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EntornoCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gridVar = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.TabInput = new System.Windows.Forms.TabControl();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.TabOutput.SuspendLayout();
             this.TabConsola.SuspendLayout();
             this.TabVariable.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(Main.GridVariables)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridVar)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -179,7 +179,7 @@
             // 
             // TabConsola
             // 
-            this.TabConsola.Controls.Add(Main.TxtOutput);
+            this.TabConsola.Controls.Add(this.txtoutput);
             this.TabConsola.Location = new System.Drawing.Point(4, 29);
             this.TabConsola.Name = "TabConsola";
             this.TabConsola.Padding = new System.Windows.Forms.Padding(3);
@@ -188,19 +188,19 @@
             this.TabConsola.Text = "Consola";
             this.TabConsola.UseVisualStyleBackColor = true;
             // 
-            // TxtOutput
+            // txtoutput
             // 
-            Main.TxtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            Main.TxtOutput.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            Main.TxtOutput.Location = new System.Drawing.Point(3, 3);
-            Main.TxtOutput.Multiline = true;
-            Main.TxtOutput.Name = "TxtOutput";
-            Main.TxtOutput.Size = new System.Drawing.Size(964, 177);
-            Main.TxtOutput.TabIndex = 0;
+            this.txtoutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtoutput.Font = new System.Drawing.Font("Courier New", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtoutput.Location = new System.Drawing.Point(3, 3);
+            this.txtoutput.Multiline = true;
+            this.txtoutput.Name = "txtoutput";
+            this.txtoutput.Size = new System.Drawing.Size(964, 177);
+            this.txtoutput.TabIndex = 0;
             // 
             // TabVariable
             // 
-            this.TabVariable.Controls.Add(Main.GridVariables);
+            this.TabVariable.Controls.Add(this.gridVar);
             this.TabVariable.Location = new System.Drawing.Point(4, 29);
             this.TabVariable.Name = "TabVariable";
             this.TabVariable.Padding = new System.Windows.Forms.Padding(3);
@@ -209,68 +209,26 @@
             this.TabVariable.Text = "Variables";
             this.TabVariable.UseVisualStyleBackColor = true;
             // 
-            // GridVariables
+            // gridVar
             // 
-            Main.GridVariables.AllowUserToAddRows = false;
-            Main.GridVariables.AllowUserToDeleteRows = false;
-            Main.GridVariables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Main.GridVariables.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colNo,
-            this.NombreVar,
-            this.ValCol,
-            this.TipoCol,
-            this.FilaCol,
-            this.ColCol,
-            this.EntornoCol});
-            Main.GridVariables.Dock = System.Windows.Forms.DockStyle.Fill;
-            Main.GridVariables.Location = new System.Drawing.Point(3, 3);
-            Main.GridVariables.Name = "GridVariables";
-            Main.GridVariables.ReadOnly = true;
-            Main.GridVariables.RowTemplate.Height = 24;
-            Main.GridVariables.Size = new System.Drawing.Size(964, 177);
-            Main.GridVariables.TabIndex = 0;
-            // 
-            // colNo
-            // 
-            this.colNo.HeaderText = "No.";
-            this.colNo.Name = "colNo";
-            this.colNo.ReadOnly = true;
-            // 
-            // NombreVar
-            // 
-            this.NombreVar.HeaderText = "Nombre";
-            this.NombreVar.Name = "NombreVar";
-            this.NombreVar.ReadOnly = true;
-            // 
-            // ValCol
-            // 
-            this.ValCol.HeaderText = "Valores";
-            this.ValCol.Name = "ValCol";
-            this.ValCol.ReadOnly = true;
-            // 
-            // TipoCol
-            // 
-            this.TipoCol.HeaderText = "Tipo";
-            this.TipoCol.Name = "TipoCol";
-            this.TipoCol.ReadOnly = true;
-            // 
-            // FilaCol
-            // 
-            this.FilaCol.HeaderText = "Fila";
-            this.FilaCol.Name = "FilaCol";
-            this.FilaCol.ReadOnly = true;
-            // 
-            // ColCol
-            // 
-            this.ColCol.HeaderText = "Columna";
-            this.ColCol.Name = "ColCol";
-            this.ColCol.ReadOnly = true;
-            // 
-            // EntornoCol
-            // 
-            this.EntornoCol.HeaderText = "Entorno";
-            this.EntornoCol.Name = "EntornoCol";
-            this.EntornoCol.ReadOnly = true;
+            this.gridVar.AllowUserToAddRows = false;
+            this.gridVar.AllowUserToDeleteRows = false;
+            this.gridVar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridVar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.Column5,
+            this.Column6,
+            this.Column7});
+            this.gridVar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridVar.Location = new System.Drawing.Point(3, 3);
+            this.gridVar.Name = "gridVar";
+            this.gridVar.ReadOnly = true;
+            this.gridVar.RowTemplate.Height = 24;
+            this.gridVar.Size = new System.Drawing.Size(964, 177);
+            this.gridVar.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
@@ -299,6 +257,48 @@
             this.TabInput.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.TabInput.TabIndex = 3;
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "No.";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Nombre";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Dato";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Tipo";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "Linea";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "Columna";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "Entorno";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -319,7 +319,7 @@
             this.TabConsola.ResumeLayout(false);
             this.TabConsola.PerformLayout();
             this.TabVariable.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(Main.GridVariables)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridVar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -344,15 +344,15 @@
         private System.Windows.Forms.TabPage TabConsola;
         private System.Windows.Forms.TabPage TabVariable;
         private System.Windows.Forms.TabControl TabInput;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NombreVar;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ValCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TipoCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FilaCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn EntornoCol;
-        public static System.Windows.Forms.DataGridView GridVariables;
-        public static System.Windows.Forms.TextBox TxtOutput;
+        private System.Windows.Forms.TextBox txtoutput;
+        private System.Windows.Forms.DataGridView gridVar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
     }
 }
 
