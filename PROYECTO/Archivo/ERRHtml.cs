@@ -10,7 +10,7 @@ namespace PROYECTO.Archivo
 {
     static class ERRHtml
     {
-        private static string Log = "";
+        public static string Log = "";
         public static string ParserMessageHTML(LogMessageList Tokens)
         {
             StringBuilder sb = new StringBuilder();

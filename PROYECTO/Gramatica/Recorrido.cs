@@ -35,12 +35,12 @@ namespace PROYECTO.Gramatica
                 {
                     case 2:
                         //Recupera el nombre de la clase dada
-                        String nombreClase = rama.ChildNodes[0].Token.Value.ToString();
+                        String nombreClase = rama.ChildNodes[0].Token.Value.ToString().ToLower();
                         //Primero verifica que no exista esa clase ya en el Diccionario
                         if (!Clases.ContainsKey(nombreClase))
                         {
                             punteroClase = new Clase();
-                            Recorrido.Clases.Add(rama.ChildNodes[0].Token.Value.ToString(), punteroClase);
+                            Recorrido.Clases.Add(rama.ChildNodes[0].Token.Value.ToString().ToLower(), punteroClase);
                             this.CrearEntorno(rama.ChildNodes[1]);
                         }
                         else
@@ -50,14 +50,14 @@ namespace PROYECTO.Gramatica
                         break;
                     case 3:
                         //Primero verifica que no exista esa clase ya en el Diccionario
-                        if (!Clases.ContainsKey(rama.ChildNodes[0].Token.Value.ToString()))
+                        if (!Clases.ContainsKey(rama.ChildNodes[0].Token.Value.ToString().ToLower()))
                         {
                             punteroClase = new Clase();
                             foreach (var implst in rama.ChildNodes[1].ChildNodes)
                             {
                                 punteroClase.ClaseImpNames.AddLast(implst.Token.Text.ToLower());
                             }
-                            Recorrido.Clases.Add(rama.ChildNodes[0].Token.Value.ToString(), punteroClase);
+                            Recorrido.Clases.Add(rama.ChildNodes[0].Token.Value.ToString().ToLower(), punteroClase);
                             this.CrearEntorno(rama.ChildNodes[2]);
                         }
                         else

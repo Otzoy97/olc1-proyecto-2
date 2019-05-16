@@ -34,9 +34,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(799, 678);
             this.Name = "Figura";
             this.Text = "Figura";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Figura_Paint);
             this.ResumeLayout(false);
 
         }

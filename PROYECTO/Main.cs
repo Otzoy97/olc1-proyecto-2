@@ -31,10 +31,10 @@ namespace PROYECTO
                 //Establece el directorio inicial
                 InitialDirectory = "C:\\Users\\otzoy\\Desktop",
                 //Especifica qué tipo de archivos se aceptarán
-                Filter = "Documento de Text (*.txt) | *.txt",
+                Filter = "Código OLC1 (*.fi) | *.fi",
                 FilterIndex = 0,
                 //Indica que deberá recordar el directorio anterior
-                RestoreDirectory = true,
+                //RestoreDirectory = true,
                 //Evita que se seleccione más de un archivo a la vez
                 Multiselect = false
             };
@@ -43,12 +43,12 @@ namespace PROYECTO
                 //Establece el directorio inicial
                 InitialDirectory = "C:\\Users\\otzoy\\Desktop",
                 //Se crea y agrega un filtro para los archivos
-                Filter = "Documento de Texto (*.txt) |*.txt",
+                Filter = "Código OLC1 (*.fi) | *.fi",
                 FilterIndex = 0,
                 //Deja el directorio en el directorio en el que se cerro la 
                 //última vez que se abrio el cuadro de dialogo durante 
                 //el tiempzo de ejecuacion
-                RestoreDirectory = true,
+                //RestoreDirectory = true,
             };
             tabContador = 0;
             TxtOutput = txtoutput;
@@ -269,6 +269,8 @@ namespace PROYECTO
             Main.GridVariables.Rows.Clear();
             //Limpia el output
             txtoutput.Text = String.Empty;
+            //Limpia los mensajes
+            ERRHtml.Log = String.Empty;
             Parser p = new Parser(new LanguageData(new Sintactico()));
             ParseTree arbol = p.Parse(((FastColoredTextBox)TabInput.SelectedTab.Controls[0]).Text);
             if (arbol.Root != null)
@@ -278,17 +280,15 @@ namespace PROYECTO
                 this.SaveFile("ASTGraph.html", ASTGraph.GenerarHTML());
                 var recorrido = new Recorrido();
                 recorrido.CrearClase(arbol.Root);
-
-                /*foreach (var clases in Recorrido.Clases)
+                Operar.Clases = Recorrido.Clases;
+                foreach (var clases in Recorrido.Clases)
                 {
                        if (clases.Value.Ejecutar())
                        {
                             break;
                        }                    
-                }*/
-
-                Triangulo a = new Triangulo("", true, 1, 2, 2, 3, 4, 5);
-                Console.WriteLine(a.GetType().Name);
+                }
+                
                 /*
                 Console.WriteLine(a.Equals(b));
                 Console.WriteLine(a.Equals(c));

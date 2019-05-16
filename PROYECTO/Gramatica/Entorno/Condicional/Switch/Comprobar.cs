@@ -20,7 +20,7 @@ namespace PROYECTO.Gramatica.Entorno.Condicional.Switch
         /// </summary>
         public ParseTreeNode CaseNode { get; }
         
-        private ParseTreeNode auxDefault { get; set; }
+        private ParseTreeNode AuxDefault { get; set; }
         
         public Comprobar(ParseTreeNode variable, ParseTreeNode casos, IEntorno padre)
         {

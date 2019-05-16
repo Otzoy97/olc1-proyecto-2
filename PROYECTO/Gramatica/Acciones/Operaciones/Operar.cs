@@ -340,8 +340,6 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                     //Copia la clase que tiene el nombre de la instancia
                                     retorno.Dato = Clase.Copiar(Clases[operRaiz.ChildNodes[1].Token.Text.ToLower()]);
                                 }
-                                //Aviso que no funciona bien esta mierda alv
-                                Main.Imprimir("Las instancias no funcionan correctamente en esta versión.");
                             }
                             //Variables
                             if (operRaiz.ChildNodes[0].Term.Name.Equals("tkVAR"))
@@ -512,14 +510,14 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                         return new Simbolo();
                                     }
                                     //Determina si es una llamada o una búsqueda de atributo
-                                    if (operRaiz.ChildNodes[2].Term.Name.Equals("CALL"))
+                                    if (operRaiz.ChildNodes[2].ChildNodes[0].Term.Name.Equals("CALL"))
                                     {
                                         //Es una llamada a función
                                         //Usando el Simbolo recuperado -symizqClass-, se deberá operar el lado derecho
                                         //Instancia una nuevo objeto operar (el entorno es la clase recuperada)
                                         Operar operCall = new Operar(symizqClass.Dato as IEntorno, symizqClass.Dato as Clase);
                                         //Se opera el lado derecho y se devuelve el dato recuperado
-                                        retorno = operCall.Interpretar(operRaiz.ChildNodes[1]);
+                                        retorno = operCall.Interpretar(operRaiz.ChildNodes[2]);
                                     }
                                     else
                                     {

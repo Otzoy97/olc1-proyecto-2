@@ -16,6 +16,7 @@ namespace PROYECTO
         {
             foreach (var fig in Figuras)
             {
+                this.Show();
                 switch (fig.GetType().Name)
                 {
                     case "Triangulo":
@@ -243,6 +244,11 @@ namespace PROYECTO
             PointF punto1 = new PointF(linea.InicioX, linea.InicioY);
             PointF punto2 = new PointF(linea.FinX, linea.FinY);
             formGraphics.DrawLine(Linea, punto1, punto2);
+        }
+
+        private void Figura_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

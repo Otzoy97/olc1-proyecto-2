@@ -973,6 +973,221 @@ namespace PROYECTO.Gramatica.Entorno.Loop
                                 #endregion
                                 break;
                             case "FIGURES":
+                                Simbolo Par1, Par2, Par3, Par4, Par5, Par6, Par7, Par8;
+                                switch (ramaAux[0].Term.Name)
+                                {
+                                    case "CIRCLE":
+                                        //Cuenta el numero de nodos hijo de lado izquierdo, si 
+                                        //son diferente a los esperado , error
+                                        if (ramaAux[1].ChildNodes.Count != 5)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban 5 parametros, parametros recibidos {0} : ({1},{2})", ramaAux[1].ChildNodes.Count, ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        #region COMPROBACION ERR CIRCLE
+                                        //Recupera cada uno de los 5 simbolos y se asegura que sean del tipo esperado
+                                        Par1 = operar.Interpretar(ramaAux[1].ChildNodes[0]);
+                                        if (Par1.TipoDato != Tipo.STRING || Par1.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un STRING : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par2 = operar.Interpretar(ramaAux[1].ChildNodes[1]);
+                                        if (Par2.TipoDato != Tipo.INT || Par2.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par3 = operar.Interpretar(ramaAux[1].ChildNodes[2]);
+                                        if (Par3.TipoDato != Tipo.BOOLEAN || Par3.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un BOOLEAN : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par4 = operar.Interpretar(ramaAux[1].ChildNodes[3]);
+                                        if (Par4.TipoDato != Tipo.INT || Par4.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par5 = operar.Interpretar(ramaAux[1].ChildNodes[4]);
+                                        if (Par5.TipoDato != Tipo.INT || Par5.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        #endregion
+                                        Nativa.AgregarFigura(new Circulo(Par1.Dato.ToString(), (int)Par2.Dato, (bool)Par3.Dato, (int)Par4.Dato, (int)Par5.Dato));
+                                        break;
+                                    case "TRIAN":
+                                        //Cuenta el numero de nodos hijo de lado izquierdo, si 
+                                        //son diferente a los esperado , error
+                                        if (ramaAux[1].ChildNodes.Count != 8)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban 8 parametros, parametros recibidos {0} : ({1},{2})", ramaAux[1].ChildNodes.Count, ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                        }
+                                        #region COMPROBACION ERRORES TRINAGULO
+                                        //Recupera cada uno de los 8 simbolos y se asegura que sean del tipo esperado
+                                        Par1 = operar.Interpretar(ramaAux[1].ChildNodes[0]);
+                                        if (Par1.TipoDato != Tipo.STRING || Par1.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un STRING : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par2 = operar.Interpretar(ramaAux[1].ChildNodes[1]);
+                                        if (Par2.TipoDato != Tipo.BOOLEAN || Par2.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un BOOLEAN : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par3 = operar.Interpretar(ramaAux[1].ChildNodes[2]);
+                                        if (Par3.TipoDato != Tipo.INT || Par3.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par4 = operar.Interpretar(ramaAux[1].ChildNodes[3]);
+                                        if (Par4.TipoDato != Tipo.INT || Par4.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par5 = operar.Interpretar(ramaAux[1].ChildNodes[4]);
+                                        if (Par5.TipoDato != Tipo.INT || Par5.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par6 = operar.Interpretar(ramaAux[1].ChildNodes[5]);
+                                        if (Par6.TipoDato != Tipo.INT || Par6.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par7 = operar.Interpretar(ramaAux[1].ChildNodes[6]);
+                                        if (Par7.TipoDato != Tipo.INT || Par7.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par8 = operar.Interpretar(ramaAux[1].ChildNodes[7]);
+                                        if (Par8.TipoDato != Tipo.INT || Par8.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        #endregion
+                                        Nativa.AgregarFigura(new Triangulo(Par1.Dato.ToString(), (bool)Par2.Dato, (int)Par3.Dato, (int)Par4.Dato, (int)Par5.Dato, (int)Par6.Dato, (int)Par7.Dato, (int)Par8.Dato));
+                                        break;
+                                    case "SQA":
+                                        //Cuenta el numero de nodos hijo de lado izquierdo, si 
+                                        //son diferente a los esperado , error
+                                        if (ramaAux[1].ChildNodes.Count != 6)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban 6 parametros, parametros recibidos {0} : ({1},{2})", ramaAux[1].ChildNodes.Count, ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                        }
+                                        #region COMPROBACION ERRORES SQUARE
+                                        //Recupera cada uno de los 6 simbolos y se asegura que sean del tipo esperado
+                                        Par1 = operar.Interpretar(ramaAux[1].ChildNodes[0]);
+                                        if (Par1.TipoDato != Tipo.STRING || Par1.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un STRING : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par2 = operar.Interpretar(ramaAux[1].ChildNodes[1]);
+                                        if (Par2.TipoDato != Tipo.BOOLEAN || Par2.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un BOOLEAN : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par3 = operar.Interpretar(ramaAux[1].ChildNodes[2]);
+                                        if (Par3.TipoDato != Tipo.INT || Par3.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par4 = operar.Interpretar(ramaAux[1].ChildNodes[3]);
+                                        if (Par4.TipoDato != Tipo.INT || Par4.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par5 = operar.Interpretar(ramaAux[1].ChildNodes[4]);
+                                        if (Par5.TipoDato != Tipo.INT || Par5.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par6 = operar.Interpretar(ramaAux[1].ChildNodes[5]);
+                                        if (Par6.TipoDato != Tipo.INT || Par6.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        #endregion
+                                        Nativa.AgregarFigura(new Rectangulo(Par1.Dato.ToString(), (bool)Par2.Dato, (int)Par3.Dato, (int)Par4.Dato, (int)Par5.Dato, (int)Par6.Dato));
+                                        break;
+                                    case "LINE":
+                                        //Cuenta el numero de nodos hijo de lado izquierdo, si 
+                                        //son diferente a los esperado , error
+                                        if (ramaAux[1].ChildNodes.Count != 6)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban 6 parametros, parametros recibidos {0} : ({1},{2})", ramaAux[1].ChildNodes.Count, ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                        }
+                                        //Recupera cada uno de los 6 simbolos y se asegura que sean del tipo esperado
+                                        #region COMPROBACION ERRORES LINE
+                                        Par1 = operar.Interpretar(ramaAux[1].ChildNodes[0]);
+                                        if (Par1.TipoDato != Tipo.STRING || Par1.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un STRING : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par2 = operar.Interpretar(ramaAux[1].ChildNodes[1]);
+                                        if (Par2.TipoDato != Tipo.INT || Par2.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par3 = operar.Interpretar(ramaAux[1].ChildNodes[2]);
+                                        if (Par3.TipoDato != Tipo.INT || Par3.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par4 = operar.Interpretar(ramaAux[1].ChildNodes[3]);
+                                        if (Par4.TipoDato != Tipo.INT || Par4.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par5 = operar.Interpretar(ramaAux[1].ChildNodes[4]);
+                                        if (Par5.TipoDato != Tipo.INT || Par5.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        Par6 = operar.Interpretar(ramaAux[1].ChildNodes[5]);
+                                        if (Par6.TipoDato != Tipo.INT || Par6.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("Se esperaban un INT : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1));
+                                            return true;
+                                        }
+                                        #endregion
+                                        Nativa.AgregarFigura(new Linea(Par1.Dato.ToString(), (int)Par2.Dato, (int)Par3.Dato, (int)Par4.Dato, (int)Par5.Dato, (int)Par6.Dato));
+                                        break;
+                                    case "FIGURE":
+                                        //Opera el lado derecho del nodo
+                                        var OperSymFigure = operar.Interpretar(ramaAux[1]);
+                                        //Se asegura que no sea nulo y que sea un tipo de dato válido
+                                        if (OperSymFigure.TipoDato == Tipo.VOID || OperSymFigure.TipoDato >= Tipo.CLASE || OperSymFigure.Dato == null)
+                                        {
+                                            Main.Imprimir(String.Format("No se puede asignar un {2} a esta sentencia : ({0},{1})", ramaAux[0].Token.Location.Line + 1, ramaAux[0].Token.Location.Column + 1, OperSymFigure.TipoDato));
+                                            return true;
+                                        }
+                                        //Opera la sentencia
+                                        Nativa.PintarFigura(OperSymFigure.Dato.ToString());
+                                        break;
+                                }
                                 break;
                         }
                     }

@@ -91,7 +91,7 @@ namespace PROYECTO.Gramatica.Acciones
     static class Nativa
     {
 
-        public static LinkedList<IFigura> ColaFiguras = new LinkedList<IFigura>();
+        private static LinkedList<IFigura> ColaFiguras = new LinkedList<IFigura>();
         /// <summary>
         /// Imprime un mensaje en la consola de salida
         /// </summary>
@@ -115,10 +115,10 @@ namespace PROYECTO.Gramatica.Acciones
         /// <param name="figura"></param>
         public static void AgregarFigura(IFigura figura)
         {
-            ColaFiguras.Enqueue(figura);
+            ColaFiguras.AddLast(figura);
         }
         /// <summary>
-        /// 
+        /// Muestra una ventana con los gráficos que se encuentren actualmente en el buffer
         /// </summary>
         public static void PintarFigura(string nombreFig)
         {
@@ -126,8 +126,8 @@ namespace PROYECTO.Gramatica.Acciones
             {
                 //Despliega el form y dibuja las figuras almacenadas en el linked list
                 Figura fig = new Figura(ColaFiguras);
-                fig.Dibujar();
                 fig.Show();
+                fig.Dibujar();
                 fig.Text = nombreFig;
                 //Reinicia el buffer
                 ColaFiguras = new LinkedList<IFigura>();
