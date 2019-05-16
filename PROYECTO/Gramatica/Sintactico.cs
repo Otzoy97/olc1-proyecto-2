@@ -274,9 +274,16 @@ namespace PROYECTO.Gramatica
             #endregion
 
             #region FOR
+            NonTerminal FOR_DEC = new NonTerminal("FOR_DEC")
+            {
+                Rule = INT + Variable + ASIGNACION + OPER | Variable + ASIGNACION + OPER
+            };
+            NonTerminal FOR_ASS = new NonTerminal("FOR_ASS")
+            {
+                Rule = Variable + ASIGNACION + OPER | OPER
+            };
             FOR_STA.Rule = FOR + PARIZQ + FOR_CND + PARDER + LLVIZQ + INSTRUCCION_LIST + LLVDER;
-            FOR_CND.Rule = DECLARACION + SEMICOLON + OPER + SEMICOLON + ASSIGNMENT
-                | ASSIGNMENT + SEMICOLON + OPER + SEMICOLON + ASSIGNMENT;
+            FOR_CND.Rule = FOR_DEC + SEMICOLON + OPER + SEMICOLON + FOR_ASS;
             #endregion
 
             #region REPEAT

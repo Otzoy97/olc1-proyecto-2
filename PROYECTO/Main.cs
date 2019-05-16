@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Linq;
+using PROYECTO.Gramatica.Acciones;
 
 namespace PROYECTO
 {
@@ -277,15 +278,23 @@ namespace PROYECTO
                 this.SaveFile("ASTGraph.html", ASTGraph.GenerarHTML());
                 var recorrido = new Recorrido();
                 recorrido.CrearClase(arbol.Root);
-                ///*
-                foreach (var clases in Recorrido.Clases)
+
+                /*foreach (var clases in Recorrido.Clases)
                 {
                        if (clases.Value.Ejecutar())
                        {
                             break;
                        }                    
-                }
-                //*/
+                }*/
+
+                Triangulo a = new Triangulo("", true, 1, 2, 2, 3, 4, 5);
+                Console.WriteLine(a.GetType().Name);
+                /*
+                Console.WriteLine(a.Equals(b));
+                Console.WriteLine(a.Equals(c));
+                Console.WriteLine(c.Equals(b));
+                */
+
             }
             try
             {

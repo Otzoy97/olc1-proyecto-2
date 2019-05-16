@@ -55,6 +55,12 @@
     <Compile Include="Archivo\ASTHtml.cs" />
     <Compile Include="Archivo\ERRHtml.cs" />
     <Compile Include="Archivo\ES.cs" />
+    <Compile Include="Figura.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Figura.Designer.cs">
+      <DependentUpon>Figura.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gramatica\Acciones\IAccion.cs" />
     <Compile Include="Gramatica\Acciones\Nativa.cs" />
     <Compile Include="Gramatica\Acciones\Operaciones\Division.cs" />
@@ -85,6 +91,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Figura.resx">
+      <DependentUpon>Figura.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>

@@ -54,9 +54,9 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
         {
             return this.IfSym.ContainsKey(nombreVar) ? this.IfSym[nombreVar] : EntornoPadre.BuscarSimbolo(nombreVar);
         }
-
         private bool Exec(ParseTreeNode FuncTree, Operar operar)
         {
+            
             //Verifica si el primer nodo es un IF_STA
             if (FuncTree.Term.Name.Equals("IF_STA"))
             {
@@ -398,7 +398,7 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
                                         return true;
                                     }
                                     //Los simbolos son del mismo tipo por lo el simbolo Ref toma el dato de symOper
-                                    symOper.Dato = symRef.Dato;
+                                    symRef.Dato = symOper.Dato;
                                     #endregion
                                     break;
                                 case 3:
@@ -587,6 +587,10 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
                             }
                             break;
                         case "FOR_STA":
+                            if (new Para(nodeTree.ChildNodes[0].ChildNodes[0], nodeTree.ChildNodes[0].ChildNodes[1], nodeTree.ChildNodes[0].ChildNodes[2], nodeTree.ChildNodes[1], this).Ejecutar())
+                            {
+                                return true;
+                            }
                             break;
                         case "REPEAT_STA":
                             //Crea un nuevo entorno de Repeat y lo ejecuta
@@ -596,10 +600,18 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
                             }
                             break;
                         case "WHILE_STA":
+                            if (new Mientras(nodeTree.ChildNodes[1], nodeTree.ChildNodes[0], this).Ejecutar())
+                            {
+                                return true;
+                            }
                             break;
                         case "SWITCH":
                             break;
                         case "DO":
+                            if (new Hacer(nodeTree.ChildNodes[0], nodeTree.ChildNodes[1], this).Ejecutar())
+                            {
+                                return true;
+                            }
                             break;
                         case "CONTINUAR":
                             #region CONTINUAR STATEMENT
@@ -883,6 +895,11 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
                             funcionPadre.ReturnData.Dato = SymRefRtn.Dato;
                             funcionPadre.ReturnData.Arreglo = SymRefRtn.Arreglo;
                             #endregion
+                            //Al finalizar copia las variables que se encuentran en el diccionario de simbolos local
+                            foreach (var locSym in IfSym)
+                            {
+                                Main.AgregarSimbolo(locSym.Key, locSym.Value, this.ToString());
+                            }
                             return true;
                         case "NATIVA":
                             #region NATIVAS
@@ -961,6 +978,11 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
             catch (Exception e)
             {
                 Main.Imprimir(String.Format("Excepción en tiempo de ejecución: {0} -> {1}", e.Message, e.Source));
+                //Al finalizar copia las variables que se encuentran en el diccionario de simbolos local
+                foreach (var locSym in IfSym)
+                {
+                    Main.AgregarSimbolo(locSym.Key, locSym.Value, this.ToString());
+                }
                 retorno = true;
             }
             finally
@@ -969,7 +991,7 @@ namespace PROYECTO.Gramatica.Entorno.Condicional
                 foreach (var locSym in IfSym)
                 {
                     Main.AgregarSimbolo(locSym.Key, locSym.Value, this.ToString());
-               }
+                }
             }
             return retorno;
         }
