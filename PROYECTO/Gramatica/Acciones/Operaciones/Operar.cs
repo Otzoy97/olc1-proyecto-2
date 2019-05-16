@@ -135,7 +135,7 @@ namespace PROYECTO.Gramatica.Acciones.Operaciones
                                     break;
                                 case "tkVAR":
                                     #region tkVAR
-                                    return Entorno.BuscarSimbolo(operRaiz.ChildNodes[0].Token.Text);
+                                    return Entorno.BuscarSimbolo(operRaiz.ChildNodes[0].Token.Text.ToLower());
                                 #endregion
                                 case "CALL":
                                     #region CALL
